@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Terminal, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Terminal, Mail, Lock, ArrowRight, Github } from 'lucide-react';
 import { Button, Input, Alert } from '@shared/components/ui';
 import { useAuthStore } from '@shared/stores';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login, isLoading } = useAuthStore();
+  const { login, loginWithGitHub, isLoading } = useAuthStore();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -106,6 +106,30 @@ export const LoginPage: React.FC = () => {
               Entrar
             </Button>
           </form>
+
+          {/* Separador */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-brand-dark text-gray-500">ou continue com</span>
+            </div>
+          </div>
+
+          {/* GitHub OAuth */}
+          <Button
+            type="button"
+            variant="outline"
+            fullWidth
+            size="lg"
+            onClick={() => loginWithGitHub()}
+            disabled={isLoading}
+            className="flex items-center justify-center gap-3"
+          >
+            <Github className="w-5 h-5" />
+            Continuar com GitHub
+          </Button>
 
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
             <p className="text-gray-400 text-sm">

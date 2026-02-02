@@ -5,6 +5,7 @@ import type { User, AuthState } from '@shared/types';
 
 interface AuthStore extends AuthState {
   login: (email: string, password: string) => Promise<{ error?: string }>;
+  loginWithGitHub: () => Promise<{ error?: string }>;
   signup: (email: string, password: string, fullName?: string) => Promise<{ error?: string }>;
   logout: () => Promise<void>;
   checkSession: () => Promise<void>;
@@ -53,6 +54,26 @@ export const useAuthStore = create<AuthStore>()(
         } catch (err) {
           set({ isLoading: false });
           return { error: 'Erro ao fazer login. Tente novamente.' };
+        }
+      },
+
+      loginWithGitHub: async () => {
+        try {
+          const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'github',
+            options: {
+              redirectTo: `${window.location.origin}/app`,
+              scopes: 'read:user user:email repo',
+            },
+          });
+
+          if (error) {
+            return { error: error.message };
+          }
+
+          return {};
+        } catch (err) {
+          return { error: 'Erro ao conectar com GitHub. Tente novamente.' };
         }
       },
 
