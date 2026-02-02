@@ -1,0 +1,153 @@
+import type { 
+  Job, 
+  JobWithAnalysis, 
+  LLMModel, 
+  ModelsByProvider, 
+  CreateJobForm,
+  UpdateJobForm,
+  ApiResponse 
+} from '@shared/types';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+
+/**
+ * Base fetch wrapper with error handling
+ */
+async function fetchApi<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<ApiResponse<T>> {
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || data.message || 'Request failed',
+      };
+    }
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Network error',
+    };
+  }
+}
+
+// ===== Health =====
+export async function checkHealth() {
+  return fetchApi<{ status: string; timestamp: string }>('/health');
+}
+
+// ===== Jobs =====
+export async function getJobs(params?: { 
+  status?: string; 
+  limit?: number; 
+  offset?: number 
+}) {
+  const searchParams = new URLSearchParams();
+  if (params?.status) searchParams.set('status', params.status);
+  if (params?.limit) searchParams.set('limit', params.limit.toString());
+  if (params?.offset) searchParams.set('offset', params.offset.toString());
+  
+  const query = searchParams.toString();
+  return fetchApi<Job[]>(`/jobs${query ? `?${query}` : ''}`);
+}
+
+export async function getJob(jobId: string) {
+  return fetchApi<Job>(`/jobs/${jobId}`);
+}
+
+export async function getJobWithAnalysis(jobId: string) {
+  return fetchApi<JobWithAnalysis>(`/jobs/${jobId}/full`);
+}
+
+export async function updateJob(jobId: string, data: UpdateJobForm) {
+  return fetchApi<Job>(`/jobs/${jobId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function cancelJob(jobId: string) {
+  return fetchApi<{ message: string }>(`/jobs/${jobId}`, {
+    method: 'DELETE',
+  });
+}
+
+// ===== Repos =====
+export async function createJob(data: CreateJobForm) {
+  return fetchApi<Job>('/repos', {
+    method: 'POST',
+    body: JSON.stringify({
+      repo_url: data.repo_url,
+      selected_model: data.selected_model,
+    }),
+  });
+}
+
+export async function retryJob(jobId: string) {
+  return fetchApi<Job>(`/repos/${jobId}/retry`, {
+    method: 'POST',
+  });
+}
+
+// ===== Models =====
+export async function getModels() {
+  return fetchApi<LLMModel[]>('/models');
+}
+
+export async function getModelsByProvider() {
+  return fetchApi<ModelsByProvider>('/models/by-provider');
+}
+
+export async function getLocalModels() {
+  return fetchApi<LLMModel[]>('/models/local');
+}
+
+export async function getCloudModels() {
+  return fetchApi<LLMModel[]>('/models/cloud');
+}
+
+export async function getModel(modelId: string) {
+  return fetchApi<LLMModel>(`/models/${modelId}`);
+}
+
+export async function checkModelAvailability(modelId: string) {
+  return fetchApi<{ available: boolean; model: LLMModel }>(`/models/${modelId}/available`);
+}
+
+// ===== API Client Export =====
+export const api = {
+  health: checkHealth,
+  jobs: {
+    list: getJobs,
+    get: getJob,
+    getFull: getJobWithAnalysis,
+    update: updateJob,
+    cancel: cancelJob,
+    create: createJob,
+    retry: retryJob,
+  },
+  models: {
+    list: getModels,
+    byProvider: getModelsByProvider,
+    local: getLocalModels,
+    cloud: getCloudModels,
+    get: getModel,
+    checkAvailable: checkModelAvailability,
+  },
+};
