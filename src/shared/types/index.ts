@@ -67,6 +67,12 @@ export interface AnalysisResult {
   agent_reasoning: AgentReasoning[];
   dependencies_graph: Record<string, unknown>;
   suggested_improvements: SuggestedImprovement[];
+  // Pull Request information
+  pr_url?: string | null;
+  pr_number?: number | null;
+  pr_branch?: string | null;
+  pr_status?: 'none' | 'created' | 'merged' | 'closed' | 'failed';
+  pr_created_at?: string | null;
   created_at: string;
 }
 
@@ -148,7 +154,9 @@ export interface User {
   user_metadata?: {
     full_name?: string;
     avatar_url?: string;
+    user_name?: string; // GitHub username
   };
+  github_token?: string; // GitHub provider token for repo access
 }
 
 export interface AuthState {
@@ -161,6 +169,7 @@ export interface AuthState {
 export interface CreateJobForm {
   repo_url: string;
   selected_model: string;
+  github_token?: string; // Token for creating PR with docs
 }
 
 export interface UpdateJobForm {

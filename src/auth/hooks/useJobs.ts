@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@shared/lib/api';
+import { useAuthStore } from '@shared/stores/authStore';
 import type { Job, JobWithAnalysis } from '@shared/types';
 
 export function useJobs(params?: { status?: string; limit?: number }) {
@@ -65,6 +66,7 @@ export function useJob(jobId: string) {
 export function useCreateJob() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuthStore();
 
   const createJob = async (repoUrl: string, selectedModel: string) => {
     setIsLoading(true);
@@ -73,6 +75,7 @@ export function useCreateJob() {
     const result = await api.jobs.create({
       repo_url: repoUrl,
       selected_model: selectedModel,
+      github_token: user?.github_token, // Include token for PR creation
     });
 
     setIsLoading(false);

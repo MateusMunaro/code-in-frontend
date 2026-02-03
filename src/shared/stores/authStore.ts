@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthStore>()(
             provider: 'github',
             options: {
               redirectTo: `${window.location.origin}/app`,
-              scopes: 'read:user user:email',
+              scopes: 'read:user user:email repo',
             },
           });
 
@@ -131,6 +131,7 @@ export const useAuthStore = create<AuthStore>()(
               email: session.user.email!,
               created_at: session.user.created_at,
               user_metadata: session.user.user_metadata,
+              github_token: session.provider_token ?? undefined, // GitHub token for repo operations
             };
             set({ user, isAuthenticated: true, isLoading: false });
           } else {
@@ -149,13 +150,14 @@ export const useAuthStore = create<AuthStore>()(
 );
 
 // Auth state change listener
-supabase.auth.onAuthStateChange((event, session) => {
+supabase.auth.onAuthStateChange(async (event, session) => {
   if (event === 'SIGNED_IN' && session?.user) {
     useAuthStore.getState().setUser({
       id: session.user.id,
       email: session.user.email!,
       created_at: session.user.created_at,
       user_metadata: session.user.user_metadata,
+      github_token: session.provider_token ?? undefined, // GitHub token for repo operations
     });
   } else if (event === 'SIGNED_OUT') {
     useAuthStore.getState().setUser(null);

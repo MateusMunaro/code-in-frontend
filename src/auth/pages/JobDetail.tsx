@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   GitBranch,
+  GitPullRequest,
   Clock,
   FileText,
   Download,
@@ -235,6 +236,34 @@ export const JobDetail: React.FC = () => {
               )}
             </CardContent>
           </Card>
+
+          {/* Pull Request Info */}
+          {job.analysis.pr_url && (
+            <Card variant="elevated" padding="lg" className="border-l-4 border-l-green-500">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-500/10 rounded-lg">
+                    <GitPullRequest className="w-5 h-5 text-green-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-green-400">Pull Request Criado</CardTitle>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Branch: <code className="bg-white/5 px-2 py-0.5 rounded">{job.analysis.pr_branch}</code>
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href={job.analysis.pr_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button variant="primary" icon={ExternalLink} iconPosition="right">
+                    Ver PR #{job.analysis.pr_number}
+                  </Button>
+                </a>
+              </div>
+            </Card>
+          )}
 
           {/* Patterns & Architecture */}
           <div className="grid md:grid-cols-2 gap-6">
