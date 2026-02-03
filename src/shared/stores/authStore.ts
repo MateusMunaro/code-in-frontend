@@ -63,16 +63,19 @@ export const useAuthStore = create<AuthStore>()(
             provider: 'github',
             options: {
               redirectTo: `${window.location.origin}/app`,
-              scopes: 'read:user user:email repo',
+              scopes: 'read:user user:email',
             },
           });
 
           if (error) {
+            console.error('GitHub OAuth error:', error);
             return { error: error.message };
           }
 
+          // OAuth will redirect automatically, no need to return anything
           return {};
         } catch (err) {
+          console.error('GitHub OAuth exception:', err);
           return { error: 'Erro ao conectar com GitHub. Tente novamente.' };
         }
       },
