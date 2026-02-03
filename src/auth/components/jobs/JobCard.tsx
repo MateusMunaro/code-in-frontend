@@ -45,8 +45,8 @@ export const JobCard: React.FC<JobCardProps> = ({
 
             <div className="flex items-center gap-4 mt-4">
               <StatusBadge status={job.status} size="sm" />
-              <span className={`text-xs font-mono ${getProviderColor(job.selected_model.split('-')[0])}`}>
-                {job.selected_model}
+              <span className={`text-xs font-mono ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
+                {job.selected_model || 'N/A'}
               </span>
               <span className="flex items-center gap-1 text-xs text-gray-500">
                 <Clock className="w-3 h-3" />

@@ -150,8 +150,8 @@ export const JobDetail: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-gray-400">Modelo:</span>
-            <span className={`font-mono ${getProviderColor(job.selected_model.split('-')[0])}`}>
-              {job.selected_model}
+            <span className={`font-mono ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
+              {job.selected_model || 'N/A'}
             </span>
           </div>
           <div className="flex items-center gap-2">

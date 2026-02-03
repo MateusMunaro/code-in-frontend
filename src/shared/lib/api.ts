@@ -78,7 +78,7 @@ export async function getJob(jobId: string) {
 export async function getJobWithAnalysis(jobId: string): Promise<ApiResponse<JobWithAnalysis>> {
   const result = await fetchApi<JobWithAnalysisResponse>(`/jobs/${jobId}/analysis`);
   
-  if (result.success && result.data) {
+  if (result.success && result.data && result.data.job) {
     // Flatten the response: merge job properties with analysis
     return {
       success: true,
@@ -91,7 +91,7 @@ export async function getJobWithAnalysis(jobId: string): Promise<ApiResponse<Job
   
   return {
     success: false,
-    error: result.error,
+    error: result.error || 'Job data not found',
   };
 }
 
