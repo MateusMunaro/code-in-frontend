@@ -72,13 +72,13 @@ export async function getJob(jobId: string) {
 }
 
 export async function getJobWithAnalysis(jobId: string) {
-  return fetchApi<JobWithAnalysis>(`/jobs/${jobId}/full`);
+  return fetchApi<JobWithAnalysis>(`/jobs/${jobId}/analysis`);
 }
 
 export async function updateJob(jobId: string, data: UpdateJobForm) {
-  return fetchApi<Job>(`/jobs/${jobId}`, {
+  return fetchApi<Job>(`/jobs/${jobId}/model`, {
     method: 'PATCH',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ model_id: data.selected_model }),
   });
 }
 
@@ -111,7 +111,7 @@ export async function getModels() {
 }
 
 export async function getModelsByProvider() {
-  return fetchApi<ModelsByProvider>('/models/by-provider');
+  return fetchApi<ModelsByProvider>('/models/grouped');
 }
 
 export async function getLocalModels() {
@@ -127,7 +127,7 @@ export async function getModel(modelId: string) {
 }
 
 export async function checkModelAvailability(modelId: string) {
-  return fetchApi<{ available: boolean; model: LLMModel }>(`/models/${modelId}/available`);
+  return fetchApi<{ model_id: string; available: boolean; message: string }>(`/models/${modelId}/status`);
 }
 
 // ===== API Client Export =====
