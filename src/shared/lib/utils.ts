@@ -10,8 +10,10 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Format date to locale string
  */
-export function formatDate(date: string | Date, locale = 'pt-BR'): string {
+export function formatDate(date: string | Date | undefined | null, locale = 'pt-BR'): string {
+  if (!date) return '-';
   const d = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(d.getTime())) return '-';
   return d.toLocaleDateString(locale, {
     day: '2-digit',
     month: 'short',
@@ -24,8 +26,10 @@ export function formatDate(date: string | Date, locale = 'pt-BR'): string {
 /**
  * Format relative time (e.g., "2 hours ago")
  */
-export function formatRelativeTime(date: string | Date): string {
+export function formatRelativeTime(date: string | Date | undefined | null): string {
+  if (!date) return '-';
   const d = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(d.getTime())) return '-';
   const now = new Date();
   const diffMs = now.getTime() - d.getTime();
   const diffSecs = Math.floor(diffMs / 1000);

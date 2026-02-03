@@ -17,6 +17,12 @@ export interface JobWithAnalysis extends Job {
   repo?: Repository;
 }
 
+// Backend response format for /jobs/:id/analysis
+export interface JobWithAnalysisResponse {
+  job: Job;
+  analysis: AnalysisResult | null;
+}
+
 // ===== Repository Types =====
 export interface Repository {
   id: string;
