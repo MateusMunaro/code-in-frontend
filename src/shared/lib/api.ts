@@ -158,7 +158,7 @@ export async function getDocumentationFiles(jobId: string) {
 }
 
 export async function getDocumentationFile(jobId: string, filePath: string) {
-  return fetchApi<DocumentationFileContent>(`/jobs/${jobId}/docs/${filePath}`);
+  return fetchApi<DocumentationFileContent>(`/jobs/${jobId}/files/${filePath}`);
 }
 
 // ===== API Client Export =====
