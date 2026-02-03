@@ -35,11 +35,32 @@ export interface Repository {
   created_at: string;
 }
 
+// ===== Documentation File Types =====
+export interface DocumentationFile {
+  path: string;
+  url: string;
+  size: number;
+}
+
+export interface DocumentationFilesResponse {
+  files: DocumentationFile[];
+  storage_path: string | null;
+  total_files: number;
+}
+
+export interface DocumentationFileContent {
+  path: string;
+  content: string;
+  url: string;
+}
+
 // ===== Analysis Types =====
 export interface AnalysisResult {
   id: string;
   job_id: string;
   documentation: string;
+  documentation_files?: DocumentationFile[];
+  storage_path?: string | null;
   patterns: string[];
   architecture_type: string | null;
   confidence_score: number;

@@ -14,6 +14,7 @@ import {
   Layers,
   BookOpen,
   Lightbulb,
+  FolderTree,
 } from 'lucide-react';
 import {
   Card,
@@ -27,6 +28,7 @@ import {
   EmptyState,
 } from '@shared/components/ui';
 import { JobProgress } from '@auth/components/jobs';
+import { DocumentationViewer } from '@auth/components/docs';
 import { useJob, useRetryJob, useWebSocket } from '@auth/hooks';
 import { formatDate, extractRepoName, getProviderColor } from '@shared/lib/utils';
 
@@ -189,28 +191,48 @@ export const JobDetail: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          {/* Documentation */}
+          {/* Documentation - Multi-file viewer or fallback to simple view */}
           <Card variant="elevated" padding="lg">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-brand-primary" />
+                {job.analysis.storage_path ? (
+                  <FolderTree className="w-5 h-5 text-brand-primary" />
+                ) : (
+                  <BookOpen className="w-5 h-5 text-brand-primary" />
+                )}
                 <CardTitle>Documentação Gerada</CardTitle>
+                {job.analysis.storage_path && (
+                  <Badge variant="secondary" className="ml-2">
+                    Multi-arquivo
+                  </Badge>
+                )}
               </div>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" icon={Copy} onClick={handleCopyDocumentation}>
-                  Copiar
-                </Button>
-                <Button variant="ghost" size="sm" icon={Download}>
-                  Exportar
-                </Button>
-              </div>
+              {!job.analysis.storage_path && (
+                <div className="flex gap-2">
+                  <Button variant="ghost" size="sm" icon={Copy} onClick={handleCopyDocumentation}>
+                    Copiar
+                  </Button>
+                  <Button variant="ghost" size="sm" icon={Download}>
+                    Exportar
+                  </Button>
+                </div>
+              )}
             </div>
             <CardContent>
-              <div className="bg-brand-black rounded-xl p-6 border border-white/5 max-h-96 overflow-y-auto">
-                <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono">
-                  {job.analysis.documentation}
-                </pre>
-              </div>
+              {job.analysis.storage_path ? (
+                /* Multi-file documentation viewer */
+                <DocumentationViewer 
+                  jobId={jobId!} 
+                  className="h-[600px]"
+                />
+              ) : (
+                /* Fallback to simple text view */
+                <div className="bg-brand-black rounded-xl p-6 border border-white/5 max-h-96 overflow-y-auto">
+                  <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono">
+                    {job.analysis.documentation}
+                  </pre>
+                </div>
+              )}
             </CardContent>
           </Card>
 

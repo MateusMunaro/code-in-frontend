@@ -7,7 +7,9 @@ import type {
   CreateJobForm,
   CreateJobResponse,
   UpdateJobForm,
-  ApiResponse 
+  ApiResponse,
+  DocumentationFilesResponse,
+  DocumentationFileContent,
 } from '@shared/types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
@@ -150,6 +152,15 @@ export async function checkModelAvailability(modelId: string) {
   return fetchApi<{ model_id: string; available: boolean; message: string }>(`/models/${modelId}/status`);
 }
 
+// ===== Documentation =====
+export async function getDocumentationFiles(jobId: string) {
+  return fetchApi<DocumentationFilesResponse>(`/jobs/${jobId}/docs`);
+}
+
+export async function getDocumentationFile(jobId: string, filePath: string) {
+  return fetchApi<DocumentationFileContent>(`/jobs/${jobId}/docs/${filePath}`);
+}
+
 // ===== API Client Export =====
 export const api = {
   health: checkHealth,
@@ -161,6 +172,10 @@ export const api = {
     cancel: cancelJob,
     create: createJob,
     retry: retryJob,
+  },
+  docs: {
+    list: getDocumentationFiles,
+    get: getDocumentationFile,
   },
   models: {
     list: getModels,
