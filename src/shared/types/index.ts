@@ -140,6 +140,16 @@ export interface UpdateJobForm {
   selected_model: string;
 }
 
+// ===== API Response Types for Create/Retry =====
+export interface CreateJobResponse {
+  job_id: string;
+  repo_url: string;
+  repo_name: string;
+  selected_model: string;
+  status: JobStatus;
+  message: string;
+}
+
 // ===== Settings Types =====
 export interface ApiKeySettings {
   openai?: string;

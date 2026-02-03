@@ -78,11 +78,12 @@ export function useCreateJob() {
     setIsLoading(false);
 
     if (result.success && result.data) {
-      return { job: result.data, error: null };
+      // Backend returns job_id, not id
+      return { jobId: result.data.job_id, error: null };
     }
 
     setError(result.error || 'Erro ao criar job');
-    return { job: null, error: result.error };
+    return { jobId: null, error: result.error };
   };
 
   return { createJob, isLoading, error };

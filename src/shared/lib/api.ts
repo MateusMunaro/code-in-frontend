@@ -4,6 +4,7 @@ import type {
   LLMModel, 
   ModelsByProvider, 
   CreateJobForm,
+  CreateJobResponse,
   UpdateJobForm,
   ApiResponse 
 } from '@shared/types';
@@ -92,11 +93,11 @@ export async function cancelJob(jobId: string) {
 
 // ===== Repos =====
 export async function createJob(data: CreateJobForm) {
-  return fetchApi<Job>('/repos', {
+  return fetchApi<CreateJobResponse>('/repos', {
     method: 'POST',
     body: JSON.stringify({
       repo_url: data.repo_url,
-      selected_model: data.selected_model,
+      model_id: data.selected_model,
     }),
   });
 }

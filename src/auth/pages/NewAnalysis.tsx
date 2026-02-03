@@ -24,8 +24,8 @@ export const NewAnalysis: React.FC = () => {
 
     const result = await createJob(repoUrl, selectedModel);
 
-    if (result.job) {
-      navigate(`/app/jobs/${result.job.id}`);
+    if (result.jobId) {
+      navigate(`/app/jobs/${result.jobId}`);
     }
   };
 
