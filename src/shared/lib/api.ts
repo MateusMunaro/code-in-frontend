@@ -12,6 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
 
 /**
  * Base fetch wrapper with error handling
+ * Backend returns { success: boolean, data: T, error?: string }
  */
 async function fetchApi<T>(
   endpoint: string,
@@ -26,18 +27,19 @@ async function fetchApi<T>(
       ...options,
     });
 
-    const data = await response.json();
+    const json = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok || json.success === false) {
       return {
         success: false,
-        error: data.error || data.message || 'Request failed',
+        error: json.error || json.message || 'Request failed',
       };
     }
 
+    // Backend wraps response in { success, data }, extract the inner data
     return {
       success: true,
-      data,
+      data: json.data as T,
     };
   } catch (error) {
     return {
