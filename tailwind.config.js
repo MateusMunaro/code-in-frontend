@@ -8,14 +8,14 @@ export default {
     extend: {
       colors: {
         brand: {
-          black: '#0a0a0a',
-          dark: '#171717',
-          gray: '#262626',
-          primary: '#10b981',
-          primaryHover: '#059669',
-          secondary: '#8b5cf6',
-          secondaryHover: '#7c3aed',
-          accent: '#f59e0b',
+          black: '#0A1929',          // Deep Void Blue
+          dark: '#0F172A',           // Onyx Canvas
+          gray: '#1E293B',           // Slate 800
+          primary: '#00B4D8',        // Electric Cyan
+          primaryHover: '#0096B7',   // Electric Cyan (darker)
+          secondary: '#94A3B8',      // Technical Slate
+          secondaryHover: '#CBD5E1', // Slate 300
+          accent: '#38BDF8',         // Sky 400
         },
       },
       fontFamily: {
@@ -23,9 +23,9 @@ export default {
         mono: ['Fira Code', 'Consolas', 'monospace'],
       },
       boxShadow: {
-        'glow': '0 0 15px rgba(16, 185, 129, 0.3)',
-        'glow-lg': '0 0 25px rgba(16, 185, 129, 0.5)',
-        'glow-violet': '0 0 15px rgba(139, 92, 246, 0.3)',
+        'glow': '0 0 15px rgba(0, 180, 216, 0.25)',
+        'glow-lg': '0 0 25px rgba(0, 180, 216, 0.45)',
+        'glow-slate': '0 0 15px rgba(148, 163, 184, 0.2)',
       },
       animation: {
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
@@ -33,8 +33,8 @@ export default {
       },
       keyframes: {
         'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 15px rgba(16, 185, 129, 0.3)' },
-          '50%': { boxShadow: '0 0 25px rgba(16, 185, 129, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 15px rgba(0, 180, 216, 0.25)' },
+          '50%': { boxShadow: '0 0 25px rgba(0, 180, 216, 0.5)' },
         },
         'fade-in': {
           from: { opacity: '0', transform: 'translateY(10px)' },

@@ -7,11 +7,8 @@ import { ProtectedRoute, PublicOnlyRoute } from '@shared/components/ProtectedRou
 import { LandingPage, LoginPage, SignupPage } from '@public/pages';
 
 // Auth Pages
-import { AppLayout } from '@auth/components/layout/AppLayout';
-import { Dashboard } from '@auth/pages/Dashboard';
-import { NewAnalysis } from '@auth/pages/NewAnalysis';
-import { JobDetail } from '@auth/pages/JobDetail';
-import { Settings } from '@auth/pages/Settings';
+import AuthLayout from '@/(auth)/layout';
+import { Dashboard, NewAnalysis, JobDetail, Settings } from '@/(auth)';
 
 const App: React.FC = () => {
   const { checkSession } = useAuthStore();
@@ -24,7 +21,7 @@ const App: React.FC = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
-      
+
       <Route
         path="/login"
         element={
@@ -33,7 +30,7 @@ const App: React.FC = () => {
           </PublicOnlyRoute>
         }
       />
-      
+
       <Route
         path="/signup"
         element={
@@ -48,7 +45,7 @@ const App: React.FC = () => {
         path="/app"
         element={
           <ProtectedRoute>
-            <AppLayout />
+            <AuthLayout />
           </ProtectedRoute>
         }
       >

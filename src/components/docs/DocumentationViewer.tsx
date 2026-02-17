@@ -58,18 +58,18 @@ interface DocumentationViewerProps {
  */
 function buildFileTree(files: DocumentationFile[]): TreeNode[] {
   const root: TreeNode[] = [];
-  
+
   for (const file of files) {
     const parts = file.path.split('/');
     let currentLevel = root;
-    
+
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
       const isLast = i === parts.length - 1;
       const currentPath = parts.slice(0, i + 1).join('/');
-      
+
       let existing = currentLevel.find(n => n.name === part);
-      
+
       if (!existing) {
         existing = {
           name: part,
@@ -81,13 +81,13 @@ function buildFileTree(files: DocumentationFile[]): TreeNode[] {
         };
         currentLevel.push(existing);
       }
-      
+
       if (!isLast) {
         currentLevel = existing.children;
       }
     }
   }
-  
+
   // Sort: folders first, then alphabetically
   const sortNodes = (nodes: TreeNode[]): TreeNode[] => {
     return nodes
@@ -101,7 +101,7 @@ function buildFileTree(files: DocumentationFile[]): TreeNode[] {
         return a.name.localeCompare(b.name);
       });
   };
-  
+
   return sortNodes(root);
 }
 
@@ -139,19 +139,19 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
 }) => {
   const isExpanded = expandedPaths.has(node.path);
   const isSelected = selectedPath === node.path;
-  const matchesSearch = searchQuery === '' || 
+  const matchesSearch = searchQuery === '' ||
     node.name.toLowerCase().includes(searchQuery.toLowerCase());
-  
+
   // Check if any child matches search
   const hasMatchingChild = (n: TreeNode): boolean => {
     if (n.name.toLowerCase().includes(searchQuery.toLowerCase())) return true;
     return n.children.some(hasMatchingChild);
   };
-  
+
   const showNode = searchQuery === '' || matchesSearch || hasMatchingChild(node);
-  
+
   if (!showNode) return null;
-  
+
   return (
     <div>
       <button
@@ -186,7 +186,7 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
           <span className="text-xs text-gray-500">{formatSize(node.size)}</span>
         )}
       </button>
-      
+
       {node.isFolder && isExpanded && (
         <div>
           {node.children.map(child => (
@@ -218,13 +218,13 @@ interface MarkdownViewerProps {
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content, fileName }) => {
   const [copied, setCopied] = useState(false);
-  
+
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-  
+
   // Simple Markdown to HTML conversion (basic)
   // In production, use a proper library like react-markdown
   const renderMarkdown = (md: string): string => {
@@ -253,10 +253,10 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content, fileName }) =>
       // Line breaks
       .replace(/\n\n/g, '</p><p class="text-gray-300 leading-relaxed mb-4">')
       .replace(/\n/g, '<br />');
-    
+
     return `<p class="text-gray-300 leading-relaxed mb-4">${html}</p>`;
   };
-  
+
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -267,13 +267,13 @@ const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content, fileName }) =>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={handleCopy}>
-            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-4 h-4 text-cyan-500" /> : <Copy className="w-4 h-4" />}
           </Button>
         </div>
       </div>
-      
+
       {/* Content */}
-      <div 
+      <div
         className="flex-1 overflow-auto p-6 prose prose-invert max-w-none"
         dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
       />
@@ -299,14 +299,14 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  
+
   // Build tree from files
   const fileTree = useMemo(() => buildFileTree(files), [files]);
-  
+
   // Load files if not provided
   useEffect(() => {
     if (initialFiles) return;
-    
+
     const loadFiles = async () => {
       setIsLoading(true);
       const result = await api.docs.list(jobId);
@@ -315,14 +315,14 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
       }
       setIsLoading(false);
     };
-    
+
     loadFiles();
   }, [jobId, initialFiles]);
-  
+
   // Load file content when selected
   useEffect(() => {
     if (!selectedFile || selectedFile.isFolder) return;
-    
+
     const loadContent = async () => {
       setIsLoadingContent(true);
       const result = await api.docs.get(jobId, selectedFile.path);
@@ -331,24 +331,24 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
       }
       setIsLoadingContent(false);
     };
-    
+
     loadContent();
   }, [jobId, selectedFile]);
-  
+
   // Auto-expand to show selected file
   useEffect(() => {
     if (!selectedFile) return;
-    
+
     const parts = selectedFile.path.split('/');
     const newExpanded = new Set(expandedPaths);
-    
+
     for (let i = 1; i < parts.length; i++) {
       newExpanded.add(parts.slice(0, i).join('/'));
     }
-    
+
     setExpandedPaths(newExpanded);
   }, [selectedFile]);
-  
+
   const handleToggleFolder = useCallback((path: string) => {
     setExpandedPaths(prev => {
       const next = new Set(prev);
@@ -360,13 +360,13 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
       return next;
     });
   }, []);
-  
+
   const handleSelectFile = useCallback((node: TreeNode) => {
     if (!node.isFolder) {
       setSelectedFile(node);
     }
   }, []);
-  
+
   if (isLoading) {
     return (
       <Card className={cn('p-6', className)}>
@@ -377,7 +377,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
       </Card>
     );
   }
-  
+
   if (files.length === 0) {
     return (
       <Card className={cn('p-6 text-center', className)}>
@@ -386,7 +386,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
       </Card>
     );
   }
-  
+
   return (
     <div className={cn(
       'flex border border-gray-700 rounded-lg overflow-hidden bg-gray-900',
@@ -415,7 +415,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
                 />
               </div>
             </div>
-            
+
             {/* File Tree */}
             <div className="flex-1 overflow-auto py-2">
               {fileTree.map(node => (
@@ -431,7 +431,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
                 />
               ))}
             </div>
-            
+
             {/* Stats */}
             <div className="p-3 border-t border-gray-700 text-xs text-gray-500">
               {files.length} files
@@ -439,7 +439,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Toolbar */}
@@ -477,7 +477,7 @@ export const DocumentationViewer: React.FC<DocumentationViewerProps> = ({
             </Button>
           </div>
         </div>
-        
+
         {/* Content Area */}
         <div className="flex-1 overflow-hidden">
           {isLoadingContent ? (

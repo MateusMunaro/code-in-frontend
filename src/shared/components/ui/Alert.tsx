@@ -24,7 +24,7 @@ export const Alert: React.FC<AlertProps> = ({
       icon: Info,
     },
     success: {
-      container: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+      container: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400',
       icon: CheckCircle,
     },
     warning: {

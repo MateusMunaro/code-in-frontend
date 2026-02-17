@@ -30,25 +30,25 @@ export const JobCard: React.FC<JobCardProps> = ({
       transition={{ duration: 0.2 }}
     >
       <Card variant="interactive" padding="md">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-4 max-w-full">
           {/* Left: Info */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 w-full sm:w-auto">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-brand-primary/10 rounded-lg">
+              <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
                 <GitBranch className="w-4 h-4 text-brand-primary" />
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-white truncate">{repoName}</h3>
                 <p className="text-xs text-gray-500 truncate">{job.repo_url}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 mt-4">
+            <div className="flex items-center gap-4 mt-4 flex-wrap">
               <StatusBadge status={job.status} size="sm" />
-              <span className={`text-xs font-mono ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
+              <span className={`text-xs font-mono truncate ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
                 {job.selected_model || 'N/A'}
               </span>
-              <span className="flex items-center gap-1 text-xs text-gray-500">
+              <span className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap">
                 <Clock className="w-3 h-3" />
                 {formatRelativeTime(job.created_at)}
               </span>
@@ -62,7 +62,7 @@ export const JobCard: React.FC<JobCardProps> = ({
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap flex-shrink-0 w-full sm:w-auto justify-end">
             {job.status === 'failed' && onRetry && (
               <Button
                 variant="ghost"

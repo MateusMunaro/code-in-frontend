@@ -65,14 +65,14 @@ export const Problem: React.FC = () => {
           <div className="flex gap-2 mb-4 text-gray-500">
             <span className="text-red-500">●</span>
             <span className="text-yellow-500">●</span>
-            <span className="text-green-500">●</span>
+            <span className="text-cyan-500">●</span>
           </div>
           <div className="space-y-2">
             <p className="text-gray-500">// IA Padrão (Sem Code-in)</p>
             <p className="text-purple-400">
               const <span className="text-blue-300">userService</span> ={' '}
               <span className="text-yellow-300">new</span>{' '}
-              <span className="text-green-300">UserService</span>();
+              <span className="text-cyan-300">UserService</span>();
             </p>
             <p className="text-gray-400">
               <span className="text-red-400">Error:</span> Direct instantiation

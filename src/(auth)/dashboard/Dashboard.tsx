@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, TrendingUp, Clock, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { Card, CardTitle, Button } from '@shared/components/ui';
-import { JobList } from '@auth/components/jobs';
-import { useJobs, useRetryJob, useCancelJob, useJobUpdates } from '@auth/hooks';
+import { JobList } from '@components/jobs';
+import { useJobs, useRetryJob, useCancelJob, useJobUpdates } from '@config/hooks';
 
 export const Dashboard: React.FC = () => {
   const { jobs, isLoading, error, refresh } = useJobs();
@@ -42,7 +42,7 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-full overflow-x-hidden">
       {/* Welcome Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -79,7 +79,7 @@ export const Dashboard: React.FC = () => {
             label: 'Concluídas',
             value: stats.completed,
             icon: CheckCircle,
-            color: 'text-emerald-400',
+            color: 'text-cyan-400',
           },
           {
             label: 'Falharam',

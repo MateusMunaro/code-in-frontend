@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  
+
   return {
     publicDir: 'public',
     server: {
@@ -28,7 +28,10 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, './src'),
         '@shared': path.resolve(__dirname, './src/shared'),
         '@public': path.resolve(__dirname, './src/public'),
-        '@auth': path.resolve(__dirname, './src/auth'),
+        '@/(auth)': path.resolve(__dirname, './src/(auth)'),
+        '@config': path.resolve(__dirname, './src/config'),
+        '@entities': path.resolve(__dirname, './src/entities'),
+        '@components': path.resolve(__dirname, './src/components'),
       },
     },
   };

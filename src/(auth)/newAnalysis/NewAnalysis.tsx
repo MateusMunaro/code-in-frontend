@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GitBranch, ArrowRight, AlertCircle } from 'lucide-react';
 import { Card, CardTitle, CardDescription, Input, Button, Alert } from '@shared/components/ui';
-import { ModelSelector } from '@auth/components/models';
-import { useModels, useCreateJob } from '@auth/hooks';
+import { ModelSelector } from '@components/models';
+import { useModels, useCreateJob } from '@config/hooks';
 
 export const NewAnalysis: React.FC = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export const NewAnalysis: React.FC = () => {
   const { createJob, isLoading: isCreating, error } = useCreateJob();
 
   const [repoUrl, setRepoUrl] = useState('');
-  const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
+  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
   const [step, setStep] = useState(1);
 
   const isValidGitUrl = (url: string) => {
@@ -45,22 +45,20 @@ export const NewAnalysis: React.FC = () => {
           <React.Fragment key={label}>
             <button
               onClick={() => idx + 1 < step && setStep(idx + 1)}
-              className={`flex items-center gap-2 ${
-                step === idx + 1
-                  ? 'text-brand-primary'
-                  : step > idx + 1
+              className={`flex items-center gap-2 ${step === idx + 1
+                ? 'text-brand-primary'
+                : step > idx + 1
                   ? 'text-white'
                   : 'text-gray-500'
-              }`}
+                }`}
             >
               <span
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  step === idx + 1
-                    ? 'bg-brand-primary/20 border-2 border-brand-primary'
-                    : step > idx + 1
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === idx + 1
+                  ? 'bg-brand-primary/20 border-2 border-brand-primary'
+                  : step > idx + 1
                     ? 'bg-brand-primary text-white'
                     : 'bg-white/10'
-                }`}
+                  }`}
               >
                 {step > idx + 1 ? '✓' : idx + 1}
               </span>
@@ -68,9 +66,8 @@ export const NewAnalysis: React.FC = () => {
             </button>
             {idx < 1 && (
               <div
-                className={`flex-1 h-0.5 rounded-full ${
-                  step > idx + 1 ? 'bg-brand-primary' : 'bg-white/10'
-                }`}
+                className={`flex-1 h-0.5 rounded-full ${step > idx + 1 ? 'bg-brand-primary' : 'bg-white/10'
+                  }`}
               />
             )}
           </React.Fragment>
@@ -78,7 +75,7 @@ export const NewAnalysis: React.FC = () => {
       </div>
 
       {error && (
-        <Alert variant="error" onClose={() => {}}>
+        <Alert variant="error" onClose={() => { }}>
           {error}
         </Alert>
       )}

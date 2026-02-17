@@ -58,7 +58,7 @@ export const SignupPage: React.FC = () => {
         >
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 mb-8">
-            <div className="p-2 bg-gradient-to-br from-brand-primary to-emerald-800 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-brand-primary to-cyan-900 rounded-lg">
               <Terminal className="text-white w-6 h-6" />
             </div>
             <span className="text-2xl font-bold text-white">Code-in</span>

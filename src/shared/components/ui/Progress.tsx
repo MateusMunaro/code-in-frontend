@@ -32,7 +32,7 @@ export const Progress: React.FC<ProgressProps> = ({
     default: 'bg-white',
     primary: 'bg-brand-primary',
     secondary: 'bg-brand-secondary',
-    success: 'bg-emerald-500',
+    success: 'bg-cyan-500',
   };
 
   return (
@@ -63,7 +63,7 @@ export const Progress: React.FC<ProgressProps> = ({
 };
 
 // Indeterminate Progress (Loading)
-export interface LoadingProgressProps extends Omit<ProgressProps, 'value' | 'showLabel'> {}
+export interface LoadingProgressProps extends Omit<ProgressProps, 'value' | 'showLabel'> { }
 
 export const LoadingProgress: React.FC<LoadingProgressProps> = ({
   size = 'md',
@@ -81,7 +81,7 @@ export const LoadingProgress: React.FC<LoadingProgressProps> = ({
     default: 'bg-white',
     primary: 'bg-brand-primary',
     secondary: 'bg-brand-secondary',
-    success: 'bg-emerald-500',
+    success: 'bg-cyan-500',
   };
 
   return (

@@ -37,7 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
     ),
     secondary: cn(
       'bg-brand-secondary text-white hover:bg-brand-secondaryHover',
-      'shadow-glow-violet border border-transparent',
+      'shadow-glow-slate border border-transparent',
       'focus:ring-brand-secondary'
     ),
     outline: cn(

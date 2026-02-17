@@ -6,16 +6,12 @@ import { useAuthStore } from '@shared/stores';
 
 export const Settings: React.FC = () => {
   const { user } = useAuthStore();
-  
+
   const [apiKeys, setApiKeys] = useState({
-    openai: '',
-    anthropic: '',
     google: '',
   });
-  
+
   const [showKeys, setShowKeys] = useState({
-    openai: false,
-    anthropic: false,
     google: false,
   });
 
@@ -94,62 +90,16 @@ export const Settings: React.FC = () => {
 
           {saveSuccess && (
             <Alert variant="success" className="mb-6">
-              Chaves salvas com sucesso!
+              Chave salva com sucesso!
             </Alert>
           )}
 
           <div className="space-y-6">
-            {/* OpenAI */}
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                OpenAI
-                <Badge variant="primary" size="sm">GPT-4</Badge>
-              </label>
-              <div className="relative">
-                <Input
-                  type={showKeys.openai ? 'text' : 'password'}
-                  placeholder="sk-..."
-                  value={apiKeys.openai}
-                  onChange={(e) => setApiKeys((prev) => ({ ...prev, openai: e.target.value }))}
-                />
-                <button
-                  type="button"
-                  onClick={() => toggleShowKey('openai')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
-                >
-                  {showKeys.openai ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Anthropic */}
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                Anthropic
-                <Badge variant="secondary" size="sm">Claude</Badge>
-              </label>
-              <div className="relative">
-                <Input
-                  type={showKeys.anthropic ? 'text' : 'password'}
-                  placeholder="sk-ant-..."
-                  value={apiKeys.anthropic}
-                  onChange={(e) => setApiKeys((prev) => ({ ...prev, anthropic: e.target.value }))}
-                />
-                <button
-                  type="button"
-                  onClick={() => toggleShowKey('anthropic')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white"
-                >
-                  {showKeys.anthropic ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Google */}
+            {/* Google AI */}
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                 Google AI
-                <Badge variant="default" size="sm">Gemini</Badge>
+                <Badge variant="primary" size="sm">Gemini</Badge>
               </label>
               <div className="relative">
                 <Input
@@ -166,12 +116,15 @@ export const Settings: React.FC = () => {
                   {showKeys.google ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Obtenha sua chave em <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Google AI Studio</a>
+              </p>
             </div>
 
             <div className="flex items-start gap-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
               <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-blue-300">
-                <strong>Privacidade BYOK:</strong> Suas chaves são usadas apenas para fazer
+                <strong>Privacidade BYOK:</strong> Sua chave é usada apenas para fazer
                 requisições em seu nome. Nunca armazenamos ou acessamos seus dados de API.
               </p>
             </div>
@@ -182,7 +135,7 @@ export const Settings: React.FC = () => {
               icon={Save}
               iconPosition="left"
             >
-              Salvar Chaves
+              Salvar Chave
             </Button>
           </div>
         </Card>

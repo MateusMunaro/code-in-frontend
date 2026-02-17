@@ -92,7 +92,7 @@ export interface SuggestedImprovement {
 }
 
 // ===== Model Types =====
-export type ModelProvider = 'openai' | 'anthropic' | 'ollama' | 'google';
+export type ModelProvider = 'google';
 
 export interface LLMModel {
   id: string;
@@ -188,7 +188,5 @@ export interface CreateJobResponse {
 
 // ===== Settings Types =====
 export interface ApiKeySettings {
-  openai?: string;
-  anthropic?: string;
   google?: string;
 }

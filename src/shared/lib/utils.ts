@@ -82,7 +82,7 @@ export function getStatusColor(status: string): string {
  */
 export function getProviderColor(provider: string): string {
   const colors: Record<string, string> = {
-    openai: 'text-emerald-400',
+    openai: 'text-cyan-400',
     anthropic: 'text-orange-400',
     google: 'text-blue-400',
     ollama: 'text-purple-400',

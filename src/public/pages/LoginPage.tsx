@@ -8,7 +8,7 @@ import { useAuthStore } from '@shared/stores';
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login, loginWithGitHub, isLoading } = useAuthStore();
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +23,7 @@ export const LoginPage: React.FC = () => {
     }
 
     const result = await login(email, password);
-    
+
     if (result.error) {
       setError(result.error);
     } else {
@@ -35,7 +35,7 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-brand-black flex items-center justify-center p-6">
       {/* Background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-primary/10 rounded-full blur-[120px] -z-10" />
-      
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ export const LoginPage: React.FC = () => {
       >
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="p-2 bg-gradient-to-br from-brand-primary to-emerald-800 rounded-lg">
+          <div className="p-2 bg-gradient-to-br from-brand-primary to-cyan-900 rounded-lg">
             <Terminal className="text-white w-6 h-6" />
           </div>
           <span className="text-2xl font-bold text-white">Code-in</span>

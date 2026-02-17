@@ -13,7 +13,7 @@ export const Card: React.FC<CardProps> = ({
   className,
   ...props
 }) => {
-  const baseStyles = 'rounded-2xl transition-all duration-300';
+  const baseStyles = 'rounded-2xl transition-all duration-300 max-w-full';
 
   const variants = {
     default: 'bg-white/5 border border-white/5',
@@ -43,7 +43,7 @@ export const Card: React.FC<CardProps> = ({
   );
 };
 
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardHeader: React.FC<CardHeaderProps> = ({
   children,
@@ -77,7 +77,7 @@ export const CardTitle: React.FC<CardTitleProps> = ({
   );
 };
 
-export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> { }
 
 export const CardDescription: React.FC<CardDescriptionProps> = ({
   children,
@@ -91,7 +91,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   );
 };
 
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardContent: React.FC<CardContentProps> = ({
   children,
@@ -105,7 +105,7 @@ export const CardContent: React.FC<CardContentProps> = ({
   );
 };
 
-export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export const CardFooter: React.FC<CardFooterProps> = ({
   children,

@@ -28,9 +28,9 @@ import {
   Alert,
   EmptyState,
 } from '@shared/components/ui';
-import { JobProgress } from '@auth/components/jobs';
-import { DocumentationViewer } from '@auth/components/docs';
-import { useJob, useRetryJob, useWebSocket } from '@auth/hooks';
+import { JobProgress } from '@components/jobs';
+import { DocumentationViewer } from '@components/docs';
+import { useJob, useRetryJob, useWebSocket } from '@config/hooks';
 import { formatDate, extractRepoName, getProviderColor } from '@shared/lib/utils';
 
 export const JobDetail: React.FC = () => {
@@ -222,8 +222,8 @@ export const JobDetail: React.FC = () => {
             <CardContent>
               {job.analysis.storage_path ? (
                 /* Multi-file documentation viewer */
-                <DocumentationViewer 
-                  jobId={jobId!} 
+                <DocumentationViewer
+                  jobId={jobId!}
                   className="h-[600px]"
                 />
               ) : (
@@ -239,14 +239,14 @@ export const JobDetail: React.FC = () => {
 
           {/* Pull Request Info */}
           {job.analysis.pr_url && (
-            <Card variant="elevated" padding="lg" className="border-l-4 border-l-green-500">
+            <Card variant="elevated" padding="lg" className="border-l-4 border-l-cyan-500">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-500/10 rounded-lg">
-                    <GitPullRequest className="w-5 h-5 text-green-500" />
+                  <div className="p-2 bg-cyan-500/10 rounded-lg">
+                    <GitPullRequest className="w-5 h-5 text-cyan-500" />
                   </div>
                   <div>
-                    <CardTitle className="text-green-400">Pull Request Criado</CardTitle>
+                    <CardTitle className="text-cyan-400">Pull Request Criado</CardTitle>
                     <p className="text-sm text-gray-400 mt-1">
                       Branch: <code className="bg-white/5 px-2 py-0.5 rounded">{job.analysis.pr_branch}</code>
                     </p>
@@ -357,8 +357,8 @@ export const JobDetail: React.FC = () => {
                               improvement.priority === 'high'
                                 ? 'error'
                                 : improvement.priority === 'medium'
-                                ? 'warning'
-                                : 'default'
+                                  ? 'warning'
+                                  : 'default'
                             }
                             size="sm"
                           >
