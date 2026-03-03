@@ -13,16 +13,16 @@ export const Card: React.FC<CardProps> = ({
   className,
   ...props
 }) => {
-  const baseStyles = 'rounded-2xl transition-all duration-300 max-w-full';
+  const baseStyles = 'transition-all duration-150 max-w-full font-mono';
 
   const variants = {
-    default: 'bg-white/5 border border-white/5',
-    elevated: 'bg-brand-dark border border-white/10 shadow-xl',
-    bordered: 'bg-transparent border border-white/10',
+    default: 'bg-brand-dark border border-[#333]',
+    elevated: 'bg-brand-dark border border-[#333] shadow-retro-dim',
+    bordered: 'bg-transparent border border-[#333]',
     interactive: cn(
-      'bg-white/5 border border-white/5 cursor-pointer',
-      'hover:bg-white/10 hover:border-brand-primary/20',
-      'hover:shadow-lg hover:-translate-y-0.5'
+      'bg-brand-dark border border-[#333] cursor-pointer',
+      'hover:border-brand-primary',
+      'hover:shadow-retro-sm'
     ),
   };
 
@@ -69,7 +69,7 @@ export const CardTitle: React.FC<CardTitleProps> = ({
 }) => {
   return (
     <Component
-      className={cn('text-lg font-semibold text-white', className)}
+      className={cn('text-lg font-bold text-white font-display uppercase tracking-wide', className)}
       {...props}
     >
       {children}
@@ -85,7 +85,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   ...props
 }) => {
   return (
-    <p className={cn('text-sm text-gray-400 mt-1', className)} {...props}>
+    <p className={cn('text-sm text-gray-400 mt-1 font-mono', className)} {...props}>
       {children}
     </p>
   );
@@ -114,7 +114,7 @@ export const CardFooter: React.FC<CardFooterProps> = ({
 }) => {
   return (
     <div
-      className={cn('mt-4 pt-4 border-t border-white/5 flex items-center', className)}
+      className={cn('mt-4 pt-4 border-t border-[#333] flex items-center', className)}
       {...props}
     >
       {children}

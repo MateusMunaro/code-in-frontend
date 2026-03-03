@@ -34,12 +34,12 @@ export const JobCard: React.FC<JobCardProps> = ({
           {/* Left: Info */}
           <div className="flex-1 min-w-0 w-full sm:w-auto">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-brand-primary/10 rounded-lg flex-shrink-0">
+              <div className="p-2 border border-brand-primary/30 bg-brand-primary/10 flex-shrink-0">
                 <GitBranch className="w-4 h-4 text-brand-primary" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-white truncate">{repoName}</h3>
-                <p className="text-xs text-gray-500 truncate">{job.repo_url}</p>
+                <h3 className="font-bold text-white truncate font-mono">{repoName}</h3>
+                <p className="text-xs text-gray-500 truncate font-mono">{job.repo_url}</p>
               </div>
             </div>
 
@@ -48,15 +48,15 @@ export const JobCard: React.FC<JobCardProps> = ({
               <span className={`text-xs font-mono truncate ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
                 {job.selected_model || 'N/A'}
               </span>
-              <span className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap">
+              <span className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap font-mono">
                 <Clock className="w-3 h-3" />
                 {formatRelativeTime(job.created_at)}
               </span>
             </div>
 
             {job.error_message && (
-              <p className="mt-3 text-xs text-red-400 truncate">
-                {job.error_message}
+              <p className="mt-3 text-xs text-red-400 truncate font-mono">
+                &gt; ERROR: {job.error_message}
               </p>
             )}
           </div>

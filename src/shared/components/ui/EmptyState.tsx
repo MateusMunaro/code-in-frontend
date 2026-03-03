@@ -19,19 +19,19 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center py-16 px-6 text-center',
+        'flex flex-col items-center justify-center py-16 px-6 text-center border border-[#333] bg-brand-dark font-mono',
         className
       )}
       {...props}
     >
       {icon && (
-        <div className="mb-4 text-gray-500">
+        <div className="mb-4 text-brand-primary opacity-50">
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-medium text-white mb-2">{title}</h3>
+      <h3 className="text-lg font-display uppercase tracking-widest text-white mb-2">{title}</h3>
       {description && (
-        <p className="text-gray-400 max-w-sm mb-6">{description}</p>
+        <p className="text-gray-400 max-w-sm mb-6 text-sm">// {description}</p>
       )}
       {action && (
         <div>{action}</div>

@@ -20,19 +20,19 @@ export const Alert: React.FC<AlertProps> = ({
 }) => {
   const variants = {
     info: {
-      container: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
+      container: 'bg-blue-500/10 border-blue-500/30 text-blue-400',
       icon: Info,
     },
     success: {
-      container: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400',
+      container: 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary',
       icon: CheckCircle,
     },
     warning: {
-      container: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400',
+      container: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
       icon: AlertTriangle,
     },
     error: {
-      container: 'bg-red-500/10 border-red-500/20 text-red-400',
+      container: 'bg-red-500/10 border-red-500/30 text-red-400',
       icon: AlertCircle,
     },
   };
@@ -44,7 +44,7 @@ export const Alert: React.FC<AlertProps> = ({
     <div
       role="alert"
       className={cn(
-        'flex gap-3 p-4 rounded-lg border',
+        'flex gap-3 p-4 border font-mono',
         config.container,
         className
       )}
@@ -53,14 +53,14 @@ export const Alert: React.FC<AlertProps> = ({
       <IconComponent className="w-5 h-5 flex-shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
         {title && (
-          <h4 className="font-medium mb-1">{title}</h4>
+          <h4 className="font-bold uppercase tracking-wider mb-1">{title}</h4>
         )}
         <div className="text-sm opacity-90">{children}</div>
       </div>
       {onClose && (
         <button
           onClick={onClose}
-          className="flex-shrink-0 p-1 rounded hover:bg-white/10 transition-colors"
+          className="flex-shrink-0 p-1 border border-transparent hover:border-current transition-colors"
         >
           <X className="w-4 h-4" />
         </button>

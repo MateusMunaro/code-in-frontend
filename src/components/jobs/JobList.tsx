@@ -24,9 +24,9 @@ export const JobList: React.FC<JobListProps> = ({
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="p-6 bg-white/5 rounded-2xl border border-white/5">
+          <div key={i} className="p-6 bg-brand-dark border border-[#333]">
             <div className="flex items-start gap-4">
-              <Skeleton variant="rectangular" width={40} height={40} className="rounded-lg" />
+              <Skeleton variant="rectangular" width={40} height={40} />
               <div className="flex-1 space-y-3">
                 <Skeleton variant="text" width="60%" />
                 <Skeleton variant="text" width="40%" />

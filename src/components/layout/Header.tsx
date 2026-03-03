@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, Search, Plus, Moon, Sun } from 'lucide-react';
+import { Search, Plus, Moon, Sun } from 'lucide-react';
 import { Button } from '@shared/components/ui';
 import { useTheme } from '@shared/contexts';
 
@@ -22,34 +22,37 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="h-16 backdrop-blur-lg border-b sticky top-0 z-20" style={{
+    <header className="h-16 border-b sticky top-0 z-20" style={{
       backgroundColor: colors.background.content,
       borderColor: colors.border.subtle
     }}>
       <div className="h-full px-6 lg:px-8 flex items-center justify-between">
         {/* Page Title */}
         <div className="flex items-center gap-4">
-          <div className="lg:hidden w-10" /> {/* Spacer for mobile menu button */}
-          <h1 className="text-xl font-semibold" style={{ color: colors.text.primary }}>{getTitle()}</h1>
+          <div className="lg:hidden w-10" />
+          <h1 className="text-xl font-display uppercase tracking-widest" style={{ color: colors.brand.primary }}>
+            {getTitle()} <span className="blink">_</span>
+          </h1>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-4">
           {/* Search */}
-          <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg" style={{
-            backgroundColor: `${colors.background.elevated}80`,
-            border: `1px solid ${colors.border.default}`
+          <div className="hidden md:flex items-center gap-2 px-4 py-2" style={{
+            backgroundColor: colors.background.surface,
+            borderBottom: `2px solid ${colors.border.default}`
           }}>
             <Search className="w-4 h-4" style={{ color: colors.text.muted }} />
             <input
               type="text"
               placeholder="Buscar jobs..."
-              className="bg-transparent border-none outline-none text-sm w-48"
+              className="bg-transparent border-none outline-none text-sm w-48 font-mono"
               style={{ color: colors.text.primary }}
             />
-            <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs rounded" style={{
-              color: colors.text.muted,
-              backgroundColor: colors.border.subtle
+            <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs font-mono" style={{
+              color: colors.brand.primary,
+              border: `1px solid ${colors.border.default}`,
+              backgroundColor: colors.background.content
             }}>
               ⌘K
             </kbd>
@@ -58,34 +61,23 @@ export const Header: React.FC = () => {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg transition-colors"
-            style={{ color: colors.text.muted }}
+            className="p-2 transition-colors border"
+            style={{
+              color: colors.text.muted,
+              borderColor: colors.border.default,
+              backgroundColor: 'transparent'
+            }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = colors.text.primary;
-              e.currentTarget.style.backgroundColor = colors.border.subtle;
+              e.currentTarget.style.color = colors.brand.primary;
+              e.currentTarget.style.borderColor = colors.brand.primary;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = colors.text.muted;
-              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = colors.border.default;
             }}
             title={`Mudar para tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
           >
             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
-
-          {/* Notifications */}
-          <button className="relative p-2 rounded-lg transition-colors" style={{ color: colors.text.muted }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = colors.text.primary;
-              e.currentTarget.style.backgroundColor = colors.border.subtle;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = colors.text.muted;
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style={{ backgroundColor: colors.brand.primary }} />
           </button>
 
           {/* New Analysis CTA */}

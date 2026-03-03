@@ -22,9 +22,9 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
     return (
       <div className="grid md:grid-cols-2 gap-4">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="p-6 bg-white/5 rounded-2xl border border-white/5">
+          <div key={i} className="p-6 bg-brand-dark border border-[#333]">
             <div className="flex items-start gap-4">
-              <Skeleton variant="rectangular" width={48} height={48} className="rounded-xl" />
+              <Skeleton variant="rectangular" width={48} height={48} />
               <div className="flex-1 space-y-2">
                 <Skeleton variant="text" width="70%" />
                 <Skeleton variant="text" width="100%" />
@@ -54,7 +54,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
       <div>
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-5 h-5 text-brand-primary" />
-          <h3 className="font-semibold text-white">Recomendado</h3>
+          <h3 className="font-bold text-white font-display text-xl uppercase tracking-wider">Recomendado</h3>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           {recommendedModels.map((model) => (
@@ -72,8 +72,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({
       {otherModels.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Crown className="w-5 h-5 text-amber-400" />
-            <h3 className="font-semibold text-white">Outros Modelos Gemini</h3>
+            <Crown className="w-5 h-5 text-yellow-400" />
+            <h3 className="font-bold text-white font-display text-xl uppercase tracking-wider">Outros Modelos</h3>
             <Badge variant="default" size="sm">
               {otherModels.length} disponíveis
             </Badge>

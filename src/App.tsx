@@ -63,15 +63,16 @@ const App: React.FC = () => {
 
 const NotFound: React.FC = () => {
   return (
-    <div className="min-h-screen bg-brand-black flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-6xl font-bold text-brand-primary mb-4">404</h1>
-        <p className="text-gray-400 mb-8">Página não encontrada</p>
+    <div className="min-h-screen bg-brand-black flex items-center justify-center font-mono">
+      <div className="text-center border border-[#333] p-12 bg-brand-dark shadow-retro">
+        <h1 className="text-7xl font-display text-brand-primary mb-4 tracking-widest">404</h1>
+        <p className="text-gray-400 mb-2 uppercase tracking-wider text-sm">&gt; ERROR: Page not found</p>
+        <p className="text-gray-500 mb-8 text-xs">// O recurso solicitado não existe</p>
         <a
           href="/"
-          className="text-brand-primary hover:underline"
+          className="text-brand-primary hover:text-white border border-brand-primary px-6 py-3 inline-block uppercase tracking-widest text-sm font-bold transition-colors hover:bg-brand-primary hover:text-black"
         >
-          Voltar para o início
+          &gt; Voltar ao início_
         </a>
       </div>
     </div>

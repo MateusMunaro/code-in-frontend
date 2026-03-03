@@ -24,35 +24,31 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles = cn(
-    'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-lg',
-    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-brand-black',
+    'inline-flex items-center justify-center font-bold uppercase tracking-wider transition-all duration-100 font-mono',
+    'focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 focus:ring-offset-brand-black',
     'disabled:opacity-50 disabled:cursor-not-allowed'
   );
 
   const variants = {
     primary: cn(
-      'bg-brand-primary text-white hover:bg-brand-primaryHover',
-      'shadow-glow hover:shadow-glow-lg border border-transparent',
-      'focus:ring-brand-primary'
+      'bg-brand-primary text-black hover:bg-white',
+      'shadow-retro hover:shadow-none border-2 border-transparent hover:border-brand-primary'
     ),
     secondary: cn(
-      'bg-brand-secondary text-white hover:bg-brand-secondaryHover',
-      'shadow-glow-slate border border-transparent',
-      'focus:ring-brand-secondary'
+      'bg-brand-gray text-brand-secondary hover:text-white',
+      'border border-[#333] hover:border-brand-primary'
     ),
     outline: cn(
-      'bg-transparent border border-brand-primary text-brand-primary',
-      'hover:bg-brand-primary/10',
-      'focus:ring-brand-primary'
+      'bg-transparent border-2 border-brand-primary text-brand-primary',
+      'hover:bg-brand-primary hover:text-black hover:shadow-retro'
     ),
     ghost: cn(
-      'bg-transparent text-gray-400 hover:text-white hover:bg-white/5',
-      'focus:ring-white/20'
+      'bg-transparent text-gray-400 hover:text-brand-primary',
+      'border border-transparent hover:border-brand-primary/30'
     ),
     danger: cn(
-      'bg-red-500/10 text-red-400 border border-red-500/20',
-      'hover:bg-red-500/20 hover:border-red-500/40',
-      'focus:ring-red-500'
+      'bg-transparent text-red-400 border border-red-500/50',
+      'hover:bg-red-500 hover:text-black hover:border-red-500'
     ),
   };
 
@@ -81,26 +77,9 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {isLoading && (
-        <svg
-          className={cn('animate-spin', iconSizes[size], iconPosition === 'right' && 'order-last')}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          />
-        </svg>
+        <span className={cn('font-mono animate-blink', iconPosition === 'right' && 'order-last')}>
+          [...]
+        </span>
       )}
       {Icon && !isLoading && iconPosition === 'left' && (
         <Icon className={iconSizes[size]} />

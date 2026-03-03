@@ -36,74 +36,79 @@ export interface ThemeColors {
     };
 }
 
-// ===== Deep Focus Palette =====
+// ===== Retro Terminal Palette =====
 //
-// Deep Void Blue:       #0A1929  — Base sólida, profundidade
-// Onyx Canvas:          #0F172A  — Background dark mode
-// Technical Slate:      #94A3B8  — Texto secundário, metálico
-// Electric Cyan:        #00B4D8  — Acento, cursor ativo
+// Matrix Green:        #00FF41  — Primary action, accents
+// Primary Dim:         #008F11  — Subtle green accent
+// Deep Obsidian:       #0D0D0D  — Page background
+// Surface Dark:        #1A1A1A  — Card/panel surfaces
+// Border Dark:         #333333  — Default borders
+// Phosphor White:      #F2F2F2  — Off-white main text
+// Text Dim:            #A0A0A0  — Secondary text
+// Kernel Panic:        #FF3333  — Error state
+// Warning:             #FFCC00  — Warning state
 // ================================
 
 // ===== Theme Definitions =====
 
 export const dark: ThemeColors = {
     background: {
-        content: '#0F172A',   // Onyx Canvas — fundo geral
-        surface: '#0A1929',   // Deep Void Blue — superfícies
-        elevated: '#1E293B',  // Slate 800 — elementos elevados
+        content: '#0D0D0D',   // Deep Obsidian — page background
+        surface: '#1A1A1A',   // Surface Dark — cards, panels
+        elevated: '#252525',  // Elevated — modals, dropdowns
     },
     text: {
-        primary: '#F1F5F9',   // Slate 100 — texto principal (quase branco, não puro)
-        secondary: '#CBD5E1', // Slate 300 — texto secundário
-        muted: '#94A3B8',     // Technical Slate — texto muted
+        primary: '#F2F2F2',   // Phosphor White — main text
+        secondary: '#A0A0A0', // Text Dim — secondary text
+        muted: '#666666',     // Muted — disabled, hints
     },
     brand: {
-        primary: '#00B4D8',          // Electric Cyan — cor de ação principal
-        primaryHover: '#0096B7',     // Electric Cyan escurecido — hover
-        secondary: '#94A3B8',        // Technical Slate — elementos estruturais
-        secondaryHover: '#CBD5E1',   // Slate 300 — hover do secondary
-        accent: '#38BDF8',           // Sky 400 — acento complementar (cyan mais claro)
+        primary: '#00FF41',          // Matrix Green — primary action
+        primaryHover: '#33FF6A',     // Matrix Green lighter — hover
+        secondary: '#A0A0A0',        // Text Dim — structural elements
+        secondaryHover: '#F2F2F2',   // Phosphor White — hover
+        accent: '#008F11',           // Primary Dim — accent
     },
     border: {
-        default: 'rgba(148, 163, 184, 0.15)',    // Technical Slate c/ alpha
-        subtle: 'rgba(148, 163, 184, 0.08)',      // Technical Slate sutil
-        emphasis: 'rgba(0, 180, 216, 0.35)',       // Electric Cyan c/ alpha
+        default: '#333333',                   // Border Dark
+        subtle: 'rgba(0, 255, 65, 0.15)',     // Matrix Green subtle
+        emphasis: 'rgba(0, 255, 65, 0.5)',    // Matrix Green emphasis
     },
     status: {
-        success: '#34D399',   // Emerald 400
-        error: '#F87171',     // Red 400
-        warning: '#FBBF24',   // Amber 400
-        info: '#38BDF8',      // Sky 400 (harmoniza com cyan)
+        success: '#00FF41',   // Matrix Green
+        error: '#FF3333',     // Kernel Panic
+        warning: '#FFCC00',   // Warning Yellow
+        info: '#00B4D8',      // Info Cyan
     },
     glow: {
-        primary: 'rgba(0, 180, 216, 0.25)',       // Electric Cyan glow
-        primaryLg: 'rgba(0, 180, 216, 0.45)',     // Electric Cyan glow intenso
-        secondary: 'rgba(148, 163, 184, 0.2)',    // Technical Slate glow
+        primary: 'rgba(0, 255, 65, 0.25)',    // Matrix Green glow
+        primaryLg: 'rgba(0, 255, 65, 0.45)',  // Matrix Green glow intense
+        secondary: 'rgba(51, 51, 51, 0.3)',   // Dim border glow
     },
 };
 
 export const light: ThemeColors = {
     background: {
-        content: '#F8FAFC',   // Slate 50
-        surface: '#F1F5F9',   // Slate 100
-        elevated: '#E2E8F0',  // Slate 200
+        content: '#F3F4F6',   // Light gray background
+        surface: '#FFFFFF',   // White surfaces
+        elevated: '#E5E7EB',  // Elevated elements
     },
     text: {
-        primary: '#0A1929',   // Deep Void Blue — contraste máximo
-        secondary: '#334155', // Slate 700
-        muted: '#64748B',     // Slate 500
+        primary: '#0D0D0D',   // Deep Obsidian — max contrast
+        secondary: '#4B5563', // Gray 600
+        muted: '#9CA3AF',     // Gray 400
     },
     brand: {
-        primary: '#0096B7',          // Electric Cyan escurecido (legibilidade em fundo claro)
-        primaryHover: '#007A96',     // Cyan mais escuro
-        secondary: '#64748B',        // Slate 500
-        secondaryHover: '#475569',   // Slate 600
-        accent: '#0284C7',           // Sky 600
+        primary: '#008F11',          // Primary Dim — legible on light bg
+        primaryHover: '#006B0D',     // Darker green hover
+        secondary: '#6B7280',        // Gray 500
+        secondaryHover: '#374151',   // Gray 700
+        accent: '#00FF41',           // Matrix Green accent
     },
     border: {
-        default: 'rgba(10, 25, 41, 0.12)',       // Deep Void Blue c/ alpha
-        subtle: 'rgba(10, 25, 41, 0.06)',         // Deep Void Blue sutil
-        emphasis: 'rgba(0, 150, 183, 0.3)',        // Cyan c/ alpha
+        default: 'rgba(0, 0, 0, 0.12)',       // Subtle dark border
+        subtle: 'rgba(0, 143, 17, 0.1)',       // Green tint subtle
+        emphasis: 'rgba(0, 143, 17, 0.35)',    // Green tint emphasis
     },
     status: {
         success: '#059669',   // Emerald 600
@@ -112,9 +117,9 @@ export const light: ThemeColors = {
         info: '#0284C7',      // Sky 600
     },
     glow: {
-        primary: 'rgba(0, 150, 183, 0.15)',
-        primaryLg: 'rgba(0, 150, 183, 0.3)',
-        secondary: 'rgba(100, 116, 139, 0.15)',
+        primary: 'rgba(0, 143, 17, 0.15)',
+        primaryLg: 'rgba(0, 143, 17, 0.3)',
+        secondary: 'rgba(107, 114, 128, 0.15)',
     },
 };
 

@@ -51,9 +51,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="block text-xs uppercase tracking-widest text-brand-primary mb-2 font-mono"
           >
-            {label}
+            &gt; {label}
           </label>
         )}
         <div className="relative">
@@ -61,12 +61,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={cn(
-              'w-full bg-brand-dark border border-white/10 rounded-lg',
-              'text-white appearance-none cursor-pointer',
+              'w-full bg-brand-black border border-[#333]',
+              'text-white appearance-none cursor-pointer font-mono',
               'px-4 py-3 pr-10',
-              'transition-all duration-200',
-              'focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary',
-              error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+              'transition-colors duration-150',
+              'focus:outline-none focus:border-brand-primary',
+              error && 'border-red-500 focus:border-red-500',
               className
             )}
             {...props}
@@ -76,49 +76,49 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
             {hasGroups
               ? Object.entries(groupedOptions).map(([group, groupOptions]) =>
-                  group ? (
-                    <optgroup key={group} label={group} className="bg-brand-dark text-gray-400">
-                      {groupOptions.map((option) => (
-                        <option
-                          key={option.value}
-                          value={option.value}
-                          disabled={option.disabled}
-                          className="bg-brand-dark text-white"
-                        >
-                          {option.label}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ) : (
-                    groupOptions.map((option) => (
+                group ? (
+                  <optgroup key={group} label={group} className="bg-brand-black text-gray-400">
+                    {groupOptions.map((option) => (
                       <option
                         key={option.value}
                         value={option.value}
                         disabled={option.disabled}
-                        className="bg-brand-dark text-white"
+                        className="bg-brand-black text-white"
                       >
                         {option.label}
                       </option>
-                    ))
-                  )
+                    ))}
+                  </optgroup>
+                ) : (
+                  groupOptions.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      disabled={option.disabled}
+                      className="bg-brand-black text-white"
+                    >
+                      {option.label}
+                    </option>
+                  ))
                 )
+              )
               : options.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                    disabled={option.disabled}
-                    className="bg-brand-dark text-white"
-                  >
-                    {option.label}
-                  </option>
-                ))}
+                <option
+                  key={option.value}
+                  value={option.value}
+                  disabled={option.disabled}
+                  className="bg-brand-black text-white"
+                >
+                  {option.label}
+                </option>
+              ))}
           </select>
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-brand-primary">
             <ChevronDown className="w-5 h-5" />
           </div>
         </div>
-        {error && <p className="mt-1.5 text-sm text-red-400">{error}</p>}
-        {hint && !error && <p className="mt-1.5 text-sm text-gray-500">{hint}</p>}
+        {error && <p className="mt-1.5 text-sm text-red-400 font-mono">&gt; ERROR: {error}</p>}
+        {hint && !error && <p className="mt-1.5 text-xs text-gray-500 font-mono">// {hint}</p>}
       </div>
     );
   }

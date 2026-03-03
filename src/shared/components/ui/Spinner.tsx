@@ -13,28 +13,31 @@ export const Spinner: React.FC<SpinnerProps> = ({
   ...props
 }) => {
   const sizes = {
-    sm: 'w-4 h-4 border-2',
-    md: 'w-6 h-6 border-2',
-    lg: 'w-8 h-8 border-3',
-    xl: 'w-12 h-12 border-4',
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base',
+    xl: 'text-lg',
   };
 
   const variants = {
-    default: 'border-white/20 border-t-white',
-    primary: 'border-brand-primary/20 border-t-brand-primary',
-    secondary: 'border-brand-secondary/20 border-t-brand-secondary',
+    default: 'text-white',
+    primary: 'text-brand-primary',
+    secondary: 'text-brand-secondary',
   };
 
+  // Terminal-style loading indicator instead of spinning circle
   return (
-    <div
+    <span
       className={cn(
-        'rounded-full animate-spin',
+        'font-mono animate-blink inline-block',
         sizes[size],
         variants[variant],
         className
       )}
       {...props}
-    />
+    >
+      [...]
+    </span>
   );
 };
 
@@ -44,17 +47,15 @@ export interface LoadingScreenProps {
 }
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({
-  message = 'Carregando...',
+  message = 'LOADING...',
 }) => {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-black">
-      <div className="relative">
-        <Spinner size="xl" />
-        <div className="absolute inset-0 animate-ping">
-          <Spinner size="xl" className="opacity-30" />
-        </div>
+      <div className="border border-brand-primary p-8 bg-brand-dark shadow-retro">
+        <p className="font-display text-3xl text-brand-primary uppercase tracking-widest animate-blink">
+          {message}
+        </p>
       </div>
-      <p className="mt-4 text-gray-400 animate-pulse">{message}</p>
     </div>
   );
 };
@@ -65,12 +66,12 @@ export interface InlineLoadingProps {
 }
 
 export const InlineLoading: React.FC<InlineLoadingProps> = ({
-  text = 'Carregando',
+  text = 'Loading',
 }) => {
   return (
-    <div className="flex items-center gap-2 text-gray-400">
+    <div className="flex items-center gap-2 text-brand-primary font-mono">
       <Spinner size="sm" />
-      <span className="text-sm">{text}</span>
+      <span className="text-sm uppercase tracking-wider">{text}</span>
     </div>
   );
 };
@@ -89,17 +90,11 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   className,
   ...props
 }) => {
-  const variants = {
-    text: 'h-4 rounded',
-    circular: 'rounded-full',
-    rectangular: 'rounded-lg',
-  };
-
   return (
     <div
       className={cn(
-        'bg-white/10 animate-pulse',
-        variants[variant],
+        'bg-[#333] animate-pulse',
+        variant === 'text' && 'h-4',
         className
       )}
       style={{

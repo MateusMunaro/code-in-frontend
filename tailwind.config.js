@@ -8,33 +8,44 @@ export default {
     extend: {
       colors: {
         brand: {
-          black: '#0A1929',          // Deep Void Blue
-          dark: '#0F172A',           // Onyx Canvas
-          gray: '#1E293B',           // Slate 800
-          primary: '#00B4D8',        // Electric Cyan
-          primaryHover: '#0096B7',   // Electric Cyan (darker)
-          secondary: '#94A3B8',      // Technical Slate
-          secondaryHover: '#CBD5E1', // Slate 300
-          accent: '#38BDF8',         // Sky 400
+          black: '#0D0D0D',          // Deep Obsidian
+          dark: '#1A1A1A',           // Surface Dark
+          gray: '#252525',           // Elevated
+          primary: '#00FF41',        // Matrix Green
+          primaryHover: '#33FF6A',   // Matrix Green lighter
+          secondary: '#A0A0A0',      // Text Dim
+          secondaryHover: '#F2F2F2', // Phosphor White
+          accent: '#008F11',         // Primary Dim
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['Fira Code', 'Consolas', 'monospace'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['"VT323"', 'monospace'],
+      },
+      borderRadius: {
+        DEFAULT: '0px',
+        sm: '0px',
+        md: '0px',
+        lg: '0px',
+        xl: '0px',
+        '2xl': '0px',
+        '3xl': '0px',
+        full: '0px',
       },
       boxShadow: {
-        'glow': '0 0 15px rgba(0, 180, 216, 0.25)',
-        'glow-lg': '0 0 25px rgba(0, 180, 216, 0.45)',
-        'glow-slate': '0 0 15px rgba(148, 163, 184, 0.2)',
+        'retro': '4px 4px 0px 0px #00FF41',
+        'retro-dim': '4px 4px 0px 0px #333333',
+        'retro-sm': '2px 2px 0px 0px #00FF41',
+        'glow': '0 0 15px rgba(0, 255, 65, 0.25)',
+        'glow-lg': '0 0 25px rgba(0, 255, 65, 0.45)',
       },
       animation: {
-        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'blink': 'blinker 1s step-end infinite',
         'fade-in': 'fade-in 0.5s ease-out forwards',
       },
       keyframes: {
-        'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 15px rgba(0, 180, 216, 0.25)' },
-          '50%': { boxShadow: '0 0 25px rgba(0, 180, 216, 0.5)' },
+        'blinker': {
+          '50%': { opacity: '0' },
         },
         'fade-in': {
           from: { opacity: '0', transform: 'translateY(10px)' },

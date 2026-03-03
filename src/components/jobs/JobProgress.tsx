@@ -16,7 +16,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({
   message,
 }) => {
   const steps = [
-    { id: 'pending', label: 'Na fila' },
+    { id: 'pending', label: 'Na Fila' },
     { id: 'processing', label: 'Analisando' },
     { id: 'completed', label: 'Concluído' },
   ];
@@ -27,7 +27,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({
       if (stepId === 'processing') return 'failed';
       return 'pending';
     }
-    
+
     const currentIndex = steps.findIndex((s) => s.id === status);
     const stepIndex = steps.findIndex((s) => s.id === stepId);
 
@@ -49,19 +49,19 @@ export const JobProgress: React.FC<JobProgressProps> = ({
                   initial={{ scale: 0.8 }}
                   animate={{ scale: stepStatus === 'current' ? 1.1 : 1 }}
                   className={cn(
-                    'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors',
-                    stepStatus === 'completed' && 'bg-brand-primary text-white',
-                    stepStatus === 'current' && 'bg-brand-primary/20 text-brand-primary border-2 border-brand-primary',
-                    stepStatus === 'pending' && 'bg-white/10 text-gray-500',
-                    stepStatus === 'failed' && 'bg-red-500/20 text-red-400 border-2 border-red-500'
+                    'w-10 h-10 flex items-center justify-center text-sm font-bold font-mono transition-colors border',
+                    stepStatus === 'completed' && 'bg-brand-primary text-black border-brand-primary',
+                    stepStatus === 'current' && 'bg-brand-primary/10 text-brand-primary border-brand-primary shadow-retro-sm',
+                    stepStatus === 'pending' && 'bg-brand-gray text-gray-500 border-[#444]',
+                    stepStatus === 'failed' && 'bg-red-500/10 text-red-400 border-red-500'
                   )}
                 >
                   {stepStatus === 'completed' ? '✓' : idx + 1}
                 </motion.div>
                 <span
                   className={cn(
-                    'text-sm',
-                    stepStatus === 'current' ? 'text-white font-medium' : 'text-gray-500'
+                    'text-sm font-mono uppercase tracking-wider',
+                    stepStatus === 'current' ? 'text-brand-primary font-bold' : 'text-gray-500'
                   )}
                 >
                   {step.label}
@@ -71,8 +71,8 @@ export const JobProgress: React.FC<JobProgressProps> = ({
                 <div className="flex-1 mx-4">
                   <div
                     className={cn(
-                      'h-0.5 rounded-full',
-                      stepStatus === 'completed' ? 'bg-brand-primary' : 'bg-white/10'
+                      'h-0.5',
+                      stepStatus === 'completed' ? 'bg-brand-primary' : 'bg-[#333]'
                     )}
                   />
                 </div>
@@ -87,7 +87,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({
         <div className="space-y-2">
           <Progress value={progress} showLabel animated />
           {message && (
-            <p className="text-sm text-gray-400 text-center">{message}</p>
+            <p className="text-sm text-gray-400 text-center font-mono">&gt; {message}</p>
           )}
         </div>
       )}
@@ -96,7 +96,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({
       {status === 'failed' && (
         <div className="text-center">
           <Badge variant="error" size="lg">
-            Análise falhou - verifique os logs
+            [FAIL] Análise falhou - verifique os logs
           </Badge>
         </div>
       )}
@@ -104,7 +104,7 @@ export const JobProgress: React.FC<JobProgressProps> = ({
       {status === 'completed' && (
         <div className="text-center">
           <Badge variant="success" size="lg">
-            Análise concluída com sucesso!
+            [OK] Análise concluída com sucesso
           </Badge>
         </div>
       )}

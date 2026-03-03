@@ -2,79 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Custom Fonts ===== */
+/* ===== Base Styles ===== */
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background-color: #0F172A;
-  color: #CBD5E1;
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #0D0D0D;
+  color: #F2F2F2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===== Sharp Edges (Global) ===== */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
+/* ===== Font Classes ===== */
 .font-mono {
-  font-family: 'Fira Code', 'Consolas', monospace;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-display {
+  font-family: 'VT323', monospace;
 }
 
 /* ===== Custom Scrollbar ===== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0F172A;
+  width: 12px;
+  background: #0D0D0D;
+  border-left: 1px solid #333;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
-  border-radius: 4px;
+  background: #333;
+  border: 1px solid #00FF41;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00B4D8;
+  background: #00FF41;
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #1E293B #0F172A;
+  scrollbar-color: #333 #0D0D0D;
 }
 
 /* ===== Selection ===== */
 ::selection {
-  background-color: #00B4D8;
-  color: white;
+  background-color: #00FF41;
+  color: #000;
 }
 
 /* ===== Focus Styles ===== */
 :focus-visible {
-  outline: 2px solid #00B4D8;
+  outline: 2px solid #00FF41;
   outline-offset: 2px;
 }
 
-/* ===== Glow Effects ===== */
-.shadow-glow {
-  box-shadow: 0 0 15px rgba(0, 180, 216, 0.25);
+/* ===== Scanlines Overlay ===== */
+.scanlines {
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2));
+  background-size: 100% 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 50;
 }
 
-.shadow-glow-lg {
-  box-shadow: 0 0 25px rgba(0, 180, 216, 0.45);
-}
-
-.shadow-glow-slate {
-  box-shadow: 0 0 15px rgba(148, 163, 184, 0.2);
+/* ===== Grid Background ===== */
+.grid-bg {
+  background-image:
+    linear-gradient(#00FF41 1px, transparent 1px),
+    linear-gradient(90deg, #00FF41 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* ===== Animations ===== */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(0, 180, 216, 0.25);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(0, 180, 216, 0.5);
-  }
+.blink {
+  animation: blinker 1s step-end infinite;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 
 @keyframes fade-in {
@@ -82,6 +102,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -92,20 +113,24 @@ body {
   animation: fade-in 0.5s ease-out forwards;
 }
 
-/* ===== Glass Effect ===== */
-.glass {
-  background: rgba(148, 163, 184, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(148, 163, 184, 0.1);
+/* ===== Retro Shadow Utilities ===== */
+.shadow-retro {
+  box-shadow: 4px 4px 0px 0px #00FF41;
+}
+
+.shadow-retro-dim {
+  box-shadow: 4px 4px 0px 0px #333333;
+}
+
+.shadow-retro-sm {
+  box-shadow: 2px 2px 0px 0px #00FF41;
 }
 
 /* ===== Card Hover Effect ===== */
 .card-hover {
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
 }
 
 .card-hover:hover {
-  background: rgba(148, 163, 184, 0.08);
-  border-color: rgba(0, 180, 216, 0.3);
-  transform: translateY(-2px);
+  border-color: #00FF41;
 }

@@ -32,26 +32,26 @@ export const Progress: React.FC<ProgressProps> = ({
     default: 'bg-white',
     primary: 'bg-brand-primary',
     secondary: 'bg-brand-secondary',
-    success: 'bg-cyan-500',
+    success: 'bg-brand-primary',
   };
 
   return (
     <div className={cn('w-full', className)} {...props}>
       {showLabel && (
         <div className="flex justify-between items-center mb-1">
-          <span className="text-sm text-gray-400">Progresso</span>
-          <span className="text-sm font-mono text-white">{Math.round(percentage)}%</span>
+          <span className="text-xs text-gray-400 font-mono uppercase tracking-wider">Progress</span>
+          <span className="text-xs font-mono text-brand-primary">{Math.round(percentage)}%</span>
         </div>
       )}
       <div
         className={cn(
-          'w-full bg-white/10 rounded-full overflow-hidden',
+          'w-full bg-[#333] overflow-hidden border border-[#444]',
           sizes[size]
         )}
       >
         <div
           className={cn(
-            'h-full rounded-full transition-all duration-500 ease-out',
+            'h-full transition-all duration-500 ease-out',
             variants[variant],
             animated && percentage < 100 && 'animate-pulse'
           )}
@@ -81,13 +81,13 @@ export const LoadingProgress: React.FC<LoadingProgressProps> = ({
     default: 'bg-white',
     primary: 'bg-brand-primary',
     secondary: 'bg-brand-secondary',
-    success: 'bg-cyan-500',
+    success: 'bg-brand-primary',
   };
 
   return (
     <div
       className={cn(
-        'w-full bg-white/10 rounded-full overflow-hidden',
+        'w-full bg-[#333] overflow-hidden border border-[#444]',
         sizes[size],
         className
       )}
@@ -95,7 +95,7 @@ export const LoadingProgress: React.FC<LoadingProgressProps> = ({
     >
       <div
         className={cn(
-          'h-full w-1/3 rounded-full animate-[loading_1.5s_ease-in-out_infinite]',
+          'h-full w-1/3 animate-[loading_1.5s_ease-in-out_infinite]',
           variants[variant]
         )}
         style={{

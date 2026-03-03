@@ -19,18 +19,18 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const baseStyles = cn(
-    'inline-flex items-center font-medium rounded-full',
-    'transition-colors duration-200'
+    'inline-flex items-center font-mono uppercase tracking-wider',
+    'transition-colors duration-150 border'
   );
 
   const variants = {
-    default: 'bg-white/10 text-gray-300',
-    primary: 'bg-brand-primary/10 text-brand-primary',
-    secondary: 'bg-brand-secondary/10 text-brand-secondary',
-    success: 'bg-cyan-500/10 text-cyan-400',
-    warning: 'bg-yellow-500/10 text-yellow-400',
-    error: 'bg-red-500/10 text-red-400',
-    outline: 'bg-transparent border border-white/20 text-gray-300',
+    default: 'bg-brand-gray/50 border-[#333] text-gray-300',
+    primary: 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary',
+    secondary: 'bg-brand-gray/50 border-[#333] text-brand-secondary',
+    success: 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary',
+    warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
+    error: 'bg-red-500/10 border-red-500/30 text-red-400',
+    outline: 'bg-transparent border-[#333] text-gray-300',
   };
 
   const sizes = {
@@ -49,7 +49,7 @@ export const Badge: React.FC<BadgeProps> = ({
     default: 'bg-gray-400',
     primary: 'bg-brand-primary',
     secondary: 'bg-brand-secondary',
-    success: 'bg-cyan-400',
+    success: 'bg-brand-primary',
     warning: 'bg-yellow-400',
     error: 'bg-red-400',
     outline: 'bg-gray-400',
@@ -63,7 +63,7 @@ export const Badge: React.FC<BadgeProps> = ({
       {dot && (
         <span
           className={cn(
-            'rounded-full animate-pulse',
+            'animate-pulse',
             size === 'sm' ? 'w-1.5 h-1.5' : size === 'md' ? 'w-2 h-2' : 'w-2.5 h-2.5',
             dotColors[variant]
           )}
@@ -82,10 +82,10 @@ export interface StatusBadgeProps extends Omit<BadgeProps, 'variant'> {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, ...props }) => {
   const statusConfig = {
-    pending: { variant: 'warning' as const, label: 'Pendente', dot: true },
-    processing: { variant: 'primary' as const, label: 'Processando', dot: true },
-    completed: { variant: 'success' as const, label: 'Concluído', dot: false },
-    failed: { variant: 'error' as const, label: 'Falhou', dot: false },
+    pending: { variant: 'warning' as const, label: '[PENDING]', dot: true },
+    processing: { variant: 'primary' as const, label: '[ACTIVE]', dot: true },
+    completed: { variant: 'success' as const, label: '[DONE]', dot: false },
+    failed: { variant: 'error' as const, label: '[FAIL]', dot: false },
   };
 
   const config = statusConfig[status];

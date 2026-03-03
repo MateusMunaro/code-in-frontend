@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { ThemeColors, ThemeName, themes } from '../styles/colors';
+import { ThemeTypography, typography } from '../styles/typography';
 
 // ===== Context Type =====
 
 interface ThemeContextType {
     theme: ThemeName;
     colors: ThemeColors;
+    typography: ThemeTypography;
     setTheme: (theme: ThemeName) => void;
     toggleTheme: () => void;
 }
@@ -53,6 +55,27 @@ function applyThemeCSSVariables(colors: ThemeColors) {
     root.style.setProperty('--color-glow-secondary', colors.glow.secondary);
 }
 
+function applyTypographyCSSVariables(typo: ThemeTypography) {
+    const root = document.documentElement;
+
+    // Font families
+    root.style.setProperty('--font-display', typo.fontFamily.display);
+    root.style.setProperty('--font-body', typo.fontFamily.body);
+
+    // Font sizes
+    root.style.setProperty('--font-size-h1', typo.fontSize.h1);
+    root.style.setProperty('--font-size-h2', typo.fontSize.h2);
+    root.style.setProperty('--font-size-h3', typo.fontSize.h3);
+    root.style.setProperty('--font-size-body', typo.fontSize.body);
+    root.style.setProperty('--font-size-caption', typo.fontSize.caption);
+    root.style.setProperty('--font-size-small', typo.fontSize.small);
+
+    // Letter spacing
+    root.style.setProperty('--letter-spacing-normal', typo.letterSpacing.normal);
+    root.style.setProperty('--letter-spacing-wide', typo.letterSpacing.wide);
+    root.style.setProperty('--letter-spacing-widest', typo.letterSpacing.widest);
+}
+
 // ===== Provider =====
 
 interface ThemeProviderProps {
@@ -83,11 +106,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     // Apply CSS variables whenever theme changes
     useEffect(() => {
         applyThemeCSSVariables(colors);
+        applyTypographyCSSVariables(typography);
         document.documentElement.setAttribute('data-theme', theme);
     }, [colors, theme]);
 
     const value = useMemo(
-        () => ({ theme, colors, setTheme, toggleTheme }),
+        () => ({ theme, colors, typography, setTheme, toggleTheme }),
         [theme, colors, setTheme, toggleTheme]
     );
 
