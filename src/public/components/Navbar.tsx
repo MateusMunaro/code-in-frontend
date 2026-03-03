@@ -17,16 +17,16 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'Problema', href: '#problem' },
-    { label: 'Solução', href: '#solution' },
-    { label: 'Diferenciais', href: '#features' },
-    { label: 'ROI', href: '#roi' },
+    { label: 'Como Funciona', href: '#how-it-works' },
+    { label: 'Funcionalidades', href: '#features' },
+    { label: 'Por Que Usar', href: '#roi' },
   ];
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-brand-black/90 backdrop-blur-md border-b border-white/10 py-4'
-          : 'bg-transparent py-6'
+        ? 'bg-brand-black/90 backdrop-blur-md border-b border-white/10 py-4'
+        : 'bg-transparent py-6'
         }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">

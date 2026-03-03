@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Code2, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, Terminal, GitBranch, FileText } from 'lucide-react';
 import { Button } from '@shared/components/ui';
 
 export const Hero: React.FC = () => {
@@ -20,7 +20,7 @@ export const Hero: React.FC = () => {
         >
           <span className="flex h-2 w-2 rounded-full bg-brand-primary animate-pulse" />
           <span className="text-sm font-medium text-gray-300">
-            Nova Integração com Cursor & Copilot
+            CLI em C + MCP Server + Agente LangGraph
           </span>
         </motion.div>
 
@@ -30,9 +30,9 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400"
         >
-          O <span className="text-brand-primary">Tech Lead</span> para as
+          Contexto <span className="text-brand-primary">arquitetural</span>
           <br />
-          suas IAs de desenvolvimento.
+          para suas IAs de código.
         </motion.h1>
 
         <motion.p
@@ -41,9 +41,11 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed"
         >
-          Transforme IAs "Júnior" em Engenheiros Sênior. Analisamos a arquitetura
-          profunda do seu repositório para gerar contextos perfeitos, não apenas
-          código sintático.
+          Analisamos seu repositório com Tree-sitter e LangGraph para gerar{' '}
+          <span className="text-white font-medium">llms.txt</span>,{' '}
+          <span className="text-white font-medium">AGENTS.md</span> e{' '}
+          <span className="text-white font-medium">repomap.txt</span> — arquivos
+          que ensinam Cursor, Copilot e Claude a respeitar sua arquitetura.
         </motion.p>
 
         <motion.div
@@ -54,17 +56,17 @@ export const Hero: React.FC = () => {
         >
           <Link to="/signup">
             <Button size="lg" icon={ArrowRight}>
-              Analisar meu Repo Agora
+              Começar Análise Grátis
             </Button>
           </Link>
-          <a href="#solution">
-            <Button variant="outline" size="lg" icon={Code2}>
-              Ver Demonstração
+          <a href="#how-it-works">
+            <Button variant="outline" size="lg" icon={Terminal}>
+              Ver Como Funciona
             </Button>
           </a>
         </motion.div>
 
-        {/* Stats / Trust Badges */}
+        {/* Real metrics - what actually exists */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -72,10 +74,10 @@ export const Hero: React.FC = () => {
           className="mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 opacity-70"
         >
           {[
-            { label: 'Menos Refatoração', value: '40%', icon: ShieldCheck },
-            { label: 'Economia de Tokens', value: '65%', icon: Zap },
-            { label: 'Contexto Arquitetural', value: '100%', icon: Code2 },
-            { label: 'Privacidade', value: 'BYOK', icon: ShieldCheck },
+            { label: 'Linguagens Suportadas', value: '6+', icon: Terminal },
+            { label: 'Arquivos Gerados por Análise', value: '5+', icon: FileText },
+            { label: 'Providers de LLM', value: '4', icon: GitBranch },
+            { label: 'Modelos Disponíveis', value: '10+', icon: Terminal },
           ].map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center gap-2">
               <stat.icon className="w-6 h-6 text-brand-primary mb-2" />

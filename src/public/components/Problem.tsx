@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, GitPullRequest, BrainCircuit } from 'lucide-react';
+import { AlertTriangle, Clock, MessageSquare } from 'lucide-react';
 
 export const Problem: React.FC = () => {
   return (
@@ -8,11 +8,12 @@ export const Problem: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            A Realidade da IA "Júnior"
+            O Problema Real que Resolvemos
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Ferramentas como ChatGPT e Copilot são incríveis, mas sem contexto
-            profundo, elas agem como estagiários talentosos porém imprudentes.
+            IAs de código como ChatGPT, Copilot e Cursor <strong className="text-white">não conhecem
+              a arquitetura do seu projeto</strong>. Sem esse contexto, o código gerado funciona
+            sintaticamente, mas viola seus padrões — e você precisa refatorar.
           </p>
         </div>
 
@@ -20,21 +21,21 @@ export const Problem: React.FC = () => {
           {[
             {
               icon: AlertTriangle,
-              title: 'O Caos Arquitetural',
+              title: 'Sem Contexto Arquitetural',
               description:
-                'IAs padrão escrevem código que funciona isoladamente, mas viola seus padrões de design, criando espaguete que ignora sua Clean Architecture.',
+                'A IA não sabe que você usa Repository Pattern, Clean Architecture ou Hexagonal. Ela gera código acoplado que passa no lint, mas quebra suas regras de design.',
             },
             {
-              icon: BrainCircuit,
-              title: 'Alucinação de Contexto',
+              icon: Clock,
+              title: 'Tempo Gasto Explicando',
               description:
-                'Desenvolvedores perdem horas preciosas explicando a estrutura do projeto para o chat ou corrigindo imports de bibliotecas que nem existem no projeto.',
+                'Você perde tempo colando arquivos, descrevendo pastas e explicando "não coloque lógica no controller". Isso acontece em toda conversa nova com o chat.',
             },
             {
-              icon: GitPullRequest,
-              title: 'Dívida Técnica Instantânea',
+              icon: MessageSquare,
+              title: 'Contexto se Perde Entre Sessões',
               description:
-                'Cada PR gerado por IA sem supervisão de contexto adiciona micro-dívidas técnicas que se acumulam em um monstro de manutenção.',
+                'Mesmo que explique uma vez, o contexto desaparece na próxima sessão. Não existe memória persistente sobre como seu repositório funciona.',
             },
           ].map((item, idx) => (
             <motion.div
@@ -54,7 +55,7 @@ export const Problem: React.FC = () => {
           ))}
         </div>
 
-        {/* Visual Metaphor */}
+        {/* Real code example showing the problem */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -66,25 +67,31 @@ export const Problem: React.FC = () => {
             <span className="text-red-500">●</span>
             <span className="text-yellow-500">●</span>
             <span className="text-cyan-500">●</span>
+            <span className="ml-4 text-gray-600 text-xs">prompt: "Crie um service de usuário"</span>
           </div>
           <div className="space-y-2">
-            <p className="text-gray-500">// IA Padrão (Sem Code-in)</p>
+            <p className="text-gray-500">// ❌ Resposta sem Code-in — IA não conhece a arquitetura</p>
             <p className="text-purple-400">
-              const <span className="text-blue-300">userService</span> ={' '}
-              <span className="text-yellow-300">new</span>{' '}
-              <span className="text-cyan-300">UserService</span>();
+              <span className="text-yellow-300">class</span>{' '}
+              <span className="text-cyan-300">UserService</span> {'{'}
             </p>
-            <p className="text-gray-400">
-              <span className="text-red-400">Error:</span> Direct instantiation
-              violates Dependency Injection pattern defined in /core/container.ts
+            <p className="text-gray-400 pl-4">
+              <span className="text-blue-300">constructor</span>() {'{'}
             </p>
-            <p className="text-gray-400">
-              <span className="text-red-400">Error:</span> 'UserService' is part
-              of the Domain layer and should not be accessed directly by
-              Controllers.
+            <p className="text-gray-400 pl-8">
+              <span className="text-red-400">this.db = new Database();</span>
+              <span className="text-gray-600"> // Instanciação direta, ignora DI</span>
             </p>
+            <p className="text-gray-400 pl-4">{'}'}</p>
+            <p className="text-gray-400 pl-4">
+              <span className="text-red-400">async getUser(id) {'{'} return this.db.query(`SELECT * FROM users WHERE id=${'${id}'}`) {'}'}</span>
+            </p>
+            <p className="text-gray-600 pl-4">
+              // ^ SQL direto no Service — viola Repository Pattern
+            </p>
+            <p className="text-purple-400">{'}'}</p>
             <p className="mt-4 text-red-400 animate-pulse">
-              {'>>>'} Architecture Violation Detected
+              {'>>>'} Código funciona, mas viola 3 regras da sua arquitetura
             </p>
           </div>
         </motion.div>

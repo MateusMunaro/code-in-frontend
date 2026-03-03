@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Terminal, Twitter, Github, Linkedin } from 'lucide-react';
+import { Terminal, Github, Linkedin } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -13,24 +13,19 @@ export const Footer: React.FC = () => {
               <span className="text-xl font-bold text-white">Code-in</span>
             </Link>
             <p className="text-gray-400 max-w-sm mb-6">
-              Inteligência de arquitetura para equipes que não aceitam código
-              ruim. O padrão de Tech Lead para suas ferramentas de IA.
+              Análise arquitetural de repositórios para gerar contexto
+              inteligente para IAs de código. CLI em C + Agente Python +
+              MCP Server.
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
-                className="text-gray-500 hover:text-white transition-colors"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
+                href="https://github.com"
                 className="text-gray-500 hover:text-white transition-colors"
               >
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://linkedin.com"
                 className="text-gray-500 hover:text-white transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
@@ -42,57 +37,44 @@ export const Footer: React.FC = () => {
             <h4 className="font-bold text-white mb-6">Produto</h4>
             <ul className="space-y-4 text-sm text-gray-400">
               <li>
+                <a href="#how-it-works" className="hover:text-brand-primary">
+                  Como Funciona
+                </a>
+              </li>
+              <li>
                 <a href="#features" className="hover:text-brand-primary">
-                  Features
+                  Funcionalidades
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Integrações
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Changelog
+                <a href="#roi" className="hover:text-brand-primary">
+                  Por Que Usar
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-white mb-6">Empresa</h4>
+            <h4 className="font-bold text-white mb-6">Tecnologia</h4>
             <ul className="space-y-4 text-sm text-gray-400">
               <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Sobre
-                </a>
+                <span className="text-gray-500">CLI em C (Multiplataforma)</span>
               </li>
               <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Blog
-                </a>
+                <span className="text-gray-500">Python + LangGraph</span>
               </li>
               <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Carreiras
-                </a>
+                <span className="text-gray-500">MCP Server (stdio/HTTP)</span>
               </li>
               <li>
-                <a href="#" className="hover:text-brand-primary">
-                  Contato
-                </a>
+                <span className="text-gray-500">Bun + Elysia API</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Code-in Intelligence Inc.</p>
+          <p>&copy; {new Date().getFullYear()} Code-in</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white">
               Privacidade
