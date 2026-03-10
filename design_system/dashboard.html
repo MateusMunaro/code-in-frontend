@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Code-in Dashboard | Management</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00ff41", // Matrix green
+                        secondary: "#d65d0e",
+                        "background-dark": "#050505", // Deeper obsidian
+                        "panel-dark": "#0a0a0a",
+                        "border-dark": "#1a1a1a",
+                        "card-dark": "#111111",
+                        "text-muted": "#666666",
+                    },
+                    fontFamily: {
+                        display: ["'VT323'", "monospace"],
+                        mono: ["'JetBrains Mono'", "monospace"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0px",
+                    },
+                    boxShadow: {
+                        'terminal': '0 0 15px rgba(0, 255, 65, 0.15)',
+                        'neon': '0 0 5px rgba(0, 255, 65, 0.5), 0 0 10px rgba(0, 255, 65, 0.2)',
+                        'double': '2px 2px 0px 0px rgba(0, 255, 65, 1), 4px 4px 0px 0px rgba(0, 0, 0, 1)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-dark text-gray-400 font-mono overflow-hidden;
+            }
+        }
+        .grid-background {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+        }
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+            z-index: 50;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ff41; }
+        .checkbox-custom {
+            @apply appearance-none w-4 h-4 border border-gray-700 bg-transparent cursor-pointer relative checked:bg-primary/20 checked:border-primary;
+        }
+        .checkbox-custom:checked::after {
+            content: '✔';
+            @apply absolute inset-0 text-[10px] text-primary flex items-center justify-center font-bold;
+        }
+    </style>
+</head>
+
+<body class="dark h-screen flex flex-col selection:bg-primary selection:text-black">
+    <header class="h-14 border-b border-border-dark flex items-center px-6 justify-between bg-panel-dark shrink-0 z-20">
+        <div class="flex items-center space-x-8">
+            <div class="flex items-center space-x-2 text-2xl font-bold tracking-tighter text-white font-display">
+                <span class="text-primary">&gt;_</span>
+                <span>CODE-IN</span>
+                <span
+                    class="text-[10px] font-mono text-gray-600 ml-2 pt-1 uppercase tracking-widest">v.2.0.4-beta</span>
+            </div>
+            <div class="hidden md:flex items-center text-xs space-x-4 border-l border-border-dark pl-8">
+                <span class="text-primary font-bold">DASHBOARD</span>
+                <span class="text-gray-700">/</span>
+                <span class="hover:text-primary cursor-pointer transition-colors uppercase">Analyses</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-6">
+            <div class="relative">
+                <input
+                    class="w-80 bg-black border border-gray-800 text-white text-xs focus:ring-1 focus:ring-primary focus:border-primary pl-10 py-2 placeholder-gray-600 font-mono transition-all"
+                    placeholder="Search analyses..." type="text" />
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 text-sm">search</span>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center space-x-1 opacity-40">
+                    <span class="text-[10px] border border-gray-700 px-1 rounded-sm">⌘</span>
+                    <span class="text-[10px] border border-gray-700 px-1 rounded-sm">K</span>
+                </div>
+            </div>
+            <button
+                class="bg-primary text-black font-bold text-xs px-5 py-2 hover:bg-green-400 transition-all flex items-center space-x-2 shadow-double border border-black">
+                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                <span>NOVA ANÁLISE</span>
+            </button>
+            <div class="flex items-center space-x-3 border-l border-border-dark pl-6">
+                <div class="text-right">
+                    <div class="text-[11px] font-bold text-white leading-none">dev@codein</div>
+                    <div class="text-[9px] text-primary uppercase mt-0.5 tracking-tighter">Tier: Enterprise</div>
+                </div>
+                <div
+                    class="h-9 w-9 bg-primary text-black flex items-center justify-center font-bold text-sm border-2 border-black">
+                    DC</div>
+            </div>
+        </div>
+    </header>
+    <main class="flex-1 flex overflow-hidden relative">
+        <aside class="w-64 border-r border-border-dark bg-panel-dark flex flex-col shrink-0 z-10">
+            <div class="p-4 flex flex-col space-y-6">
+                <div>
+                    <span
+                        class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 mb-4 block">Navigation</span>
+                    <nav class="space-y-1">
+                        <a class="flex items-center space-x-3 px-3 py-2 bg-primary/10 border-l-2 border-primary text-primary text-xs font-bold"
+                            href="#">
+                            <span class="material-symbols-outlined text-lg">dashboard</span>
+                            <span>Dashboard</span>
+                        </a>
+                        <a class="flex items-center space-x-3 px-3 py-2 hover:bg-white/5 text-gray-500 hover:text-white transition-colors text-xs"
+                            href="#">
+                            <span class="material-symbols-outlined text-lg">analytics</span>
+                            <span>Nova Análise</span>
+                        </a>
+                        <a class="flex items-center space-x-3 px-3 py-2 hover:bg-white/5 text-gray-500 hover:text-white transition-colors text-xs"
+                            href="#">
+                            <span class="material-symbols-outlined text-lg">settings</span>
+                            <span>Configurações</span>
+                        </a>
+                    </nav>
+                </div>
+                <div class="pt-6 border-t border-border-dark">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600">MCP Agent</span>
+                        <span class="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+                    </div>
+                    <div class="bg-black/40 border border-border-dark p-3 text-[10px] space-y-2">
+                        <div class="text-gray-500">Uptime: <span class="text-white">14d 02h</span></div>
+                        <div class="text-gray-500">Load: <span class="text-primary">Normal</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-auto p-4 border-t border-border-dark bg-black/20">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    <span class="text-[10px] font-bold text-gray-500 uppercase">System Online</span>
+                </div>
+                <button
+                    class="w-full border border-gray-800 text-[10px] py-2 text-gray-500 hover:text-red-500 hover:border-red-500 transition-all flex items-center justify-center space-x-2">
+                    <span class="material-symbols-outlined text-sm">logout</span>
+                    <span>SAIR DO SISTEMA</span>
+                </button>
+            </div>
+        </aside>
+        <section class="flex-1 flex flex-col min-w-0 bg-background-dark grid-background relative overflow-hidden">
+            <div class="crt pointer-events-none absolute inset-0 z-0"></div>
+            <div class="p-8 grid grid-cols-4 gap-6 z-10">
+                <div class="bg-card-dark border border-border-dark p-5 relative group overflow-hidden">
+                    <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <span class="material-symbols-outlined text-3xl">terminal</span>
+                    </div>
+                    <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Total de Análises
+                    </div>
+                    <div class="text-3xl font-display text-white">28</div>
+                    <div class="mt-2 text-[10px] text-primary">SCANNING COMPLETE</div>
+                </div>
+                <div class="bg-card-dark border border-border-dark p-5 relative">
+                    <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Em Progresso</div>
+                    <div class="text-3xl font-display text-white">0</div>
+                    <div class="mt-2 text-[10px] text-gray-700">STANDBY</div>
+                </div>
+                <div class="bg-card-dark border border-border-dark p-5 relative">
+                    <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Concluídas</div>
+                    <div class="text-3xl font-display text-primary">21</div>
+                    <div class="mt-2 text-[10px] text-primary/60">ACTIVE CACHE</div>
+                </div>
+                <div class="bg-card-dark border border-border-dark p-5 relative">
+                    <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Falharam</div>
+                    <div class="text-3xl font-display text-red-900">7</div>
+                    <div class="mt-2 text-[10px] text-red-900/50">LOGS ARCHIVED</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 pb-8 z-10 space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center space-x-4">
+                        <input class="checkbox-custom" id="bulk-select-all" type="checkbox" />
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Análises
+                            Recentes</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button
+                            class="text-[10px] text-gray-600 hover:text-primary transition-colors flex items-center space-x-1">
+                            <span class="material-symbols-outlined text-sm">refresh</span>
+                            <span>ATUALIZAR</span>
+                        </button>
+                        <button class="text-[10px] text-red-900 hover:text-red-500 transition-colors hidden"
+                            id="bulk-delete">
+                            [ DELETE SELECTED ]
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-card-dark border border-border-dark p-5 flex items-center space-x-6 relative hover:border-gray-700 transition-all group">
+                    <div class="flex items-center space-x-4">
+                        <input class="checkbox-custom" type="checkbox" />
+                        <div class="w-10 h-10 border border-primary/20 bg-primary/5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">alt_route</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-3 mb-1">
+                            <h3 class="text-white text-sm font-bold tracking-tight">local://hyperion-core-api</h3>
+                            <span
+                                class="text-[9px] bg-primary/10 text-primary border border-primary/30 px-1.5 py-0.5 font-bold">[DONE]</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-[10px]">
+                            <span class="text-gray-600 font-mono">/mnt/data/projects/core/hyperion/src/</span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600">Model: <span
+                                    class="text-gray-400">gemini-2.5-flash</span></span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600 flex items-center space-x-1">
+                                <span class="material-symbols-outlined text-[12px]">schedule</span>
+                                <span>12h atrás</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button
+                            class="text-[10px] font-bold text-gray-500 hover:text-primary border border-transparent hover:border-primary px-3 py-1 transition-all uppercase">
+                            Ver Relatório
+                        </button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-primary text-primary hover:border-red-500 hover:text-red-500 transition-all">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-card-dark border border-border-dark p-5 flex items-center space-x-6 relative hover:border-gray-700 transition-all group">
+                    <div class="flex items-center space-x-4">
+                        <input class="checkbox-custom" type="checkbox" />
+                        <div class="w-10 h-10 border border-primary/20 bg-primary/5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">data_object</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-3 mb-1">
+                            <h3 class="text-white text-sm font-bold tracking-tight">local://legacy-system-v3</h3>
+                            <span
+                                class="text-[9px] bg-primary/10 text-primary border border-primary/30 px-1.5 py-0.5 font-bold">[DONE]</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-[10px]">
+                            <span class="text-gray-600 font-mono">/home/user/workspace/legacy-node/</span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600">Model: <span
+                                    class="text-gray-400">gemini-2.5-flash</span></span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600 flex items-center space-x-1">
+                                <span class="material-symbols-outlined text-[12px]">schedule</span>
+                                <span>1d atrás</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button
+                            class="text-[10px] font-bold text-gray-500 hover:text-primary border border-transparent hover:border-primary px-3 py-1 transition-all uppercase">
+                            Ver Relatório
+                        </button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-primary text-primary hover:border-red-500 hover:text-red-500 transition-all">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-card-dark border border-border-dark p-5 flex items-center space-x-6 relative hover:border-gray-700 transition-all group opacity-80">
+                    <div class="flex items-center space-x-4">
+                        <input class="checkbox-custom" type="checkbox" />
+                        <div class="w-10 h-10 border border-primary/20 bg-primary/5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">terminal</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-3 mb-1">
+                            <h3 class="text-white text-sm font-bold tracking-tight">local://rust-wasm-engine</h3>
+                            <span
+                                class="text-[9px] bg-primary/10 text-primary border border-primary/30 px-1.5 py-0.5 font-bold">[DONE]</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-[10px]">
+                            <span class="text-gray-600 font-mono">/opt/dev/rust/engine/core/</span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600">Model: <span
+                                    class="text-gray-400">gemini-2.5-flash</span></span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600 flex items-center space-x-1">
+                                <span class="material-symbols-outlined text-[12px]">schedule</span>
+                                <span>5d atrás</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button
+                            class="text-[10px] font-bold text-gray-500 hover:text-primary border border-transparent hover:border-primary px-3 py-1 transition-all uppercase">
+                            Ver Relatório
+                        </button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-primary text-primary hover:border-red-500 hover:text-red-500 transition-all">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-card-dark border border-border-dark p-5 flex items-center space-x-6 relative hover:border-gray-700 transition-all group opacity-60">
+                    <div class="flex items-center space-x-4">
+                        <input class="checkbox-custom" type="checkbox" />
+                        <div class="w-10 h-10 border border-primary/20 bg-primary/5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">memory</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-3 mb-1">
+                            <h3 class="text-white text-sm font-bold tracking-tight">local://ai-model-orchestrator</h3>
+                            <span
+                                class="text-[9px] bg-primary/10 text-primary border border-primary/30 px-1.5 py-0.5 font-bold">[DONE]</span>
+                        </div>
+                        <div class="flex items-center space-x-4 text-[10px]">
+                            <span class="text-gray-600 font-mono">/Users/admin/projects/orchestrator/v1/</span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600">Model: <span
+                                    class="text-gray-400">gemini-2.5-flash</span></span>
+                            <span class="text-gray-700">|</span>
+                            <span class="text-gray-600 flex items-center space-x-1">
+                                <span class="material-symbols-outlined text-[12px]">schedule</span>
+                                <span>1 sem atrás</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button
+                            class="text-[10px] font-bold text-gray-500 hover:text-primary border border-transparent hover:border-primary px-3 py-1 transition-all uppercase">
+                            Ver Relatório
+                        </button>
+                        <button
+                            class="w-8 h-8 flex items-center justify-center border border-primary text-primary hover:border-red-500 hover:text-red-500 transition-all">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer
+        class="h-8 bg-primary text-black flex items-center justify-between px-4 text-[11px] font-bold font-mono shrink-0 select-none z-20">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2">
+                <span class="material-symbols-outlined text-[14px]">terminal</span>
+                <span>SYSTEM STATUS: OPERATIONAL</span>
+            </div>
+            <div class="hidden md:block">
+                <span>TERMINAL ENCODING: UTF-8</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-2 cursor-pointer hover:bg-black/10 px-2 h-full">
+                <span class="material-symbols-outlined text-[14px]">wifi</span>
+                <span>SECURE LINK ESTABLISHED</span>
+            </div>
+            <div class="flex items-center space-x-1">
+                <span class="text-black/60">NODE_VERSION:</span>
+                <span>v2.4.0-BETA</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

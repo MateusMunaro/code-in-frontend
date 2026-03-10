@@ -1,0 +1,13 @@
+{
+  "project_name": ".",
+  "jobs": [
+    {
+      "job_id": "f0fd5d82-2085-4e57-b2c9-7446416a4597",
+      "status": "processing",
+      "created_at": "2026-03-08T15:31:04Z",
+      "updated_at": "2026-03-08T15:31:04Z",
+      "model": "",
+      "repo_url": "."
+    }
+  ]
+}

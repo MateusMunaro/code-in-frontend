@@ -1,15 +1,17 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, TrendingUp, Clock, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
-import { Card, CardTitle, Button } from '@shared/components/ui';
+import { Plus, Terminal, BarChart3, CheckCircle2, XCircle, RefreshCw } from 'lucide-react';
+import { Button } from '@shared/components/ui';
 import { JobList } from '@components/jobs';
 import { useJobs, useRetryJob, useCancelJob, useJobUpdates } from '@config/hooks';
+import { useTheme } from '@shared/contexts';
 
 export const Dashboard: React.FC = () => {
   const { jobs, isLoading, error, refresh } = useJobs();
   const { retryJob } = useRetryJob();
   const { cancelJob } = useCancelJob();
+  const { colors } = useTheme();
 
   // Real-time updates for active jobs
   const activeJobIds = jobs
@@ -41,82 +43,124 @@ export const Dashboard: React.FC = () => {
     failed: jobs.filter((j) => j.status === 'failed').length,
   };
 
-  return (
-    <div className="space-y-8 max-w-full overflow-x-hidden">
-      {/* Welcome Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white mb-1">
-            Bem-vindo ao Code-in
-          </h1>
-          <p className="text-gray-400">
-            Gerencie suas análises de repositórios e contextos de IA
-          </p>
-        </div>
-        <Link to="/app/new">
-          <Button icon={Plus} iconPosition="left">
-            Nova Análise
-          </Button>
-        </Link>
-      </div>
+  // Terminal-style stat card definitions matching the design system
+  const statCards = [
+    {
+      label: 'Total de Análises',
+      value: stats.total,
+      subtext: 'SCANNING COMPLETE',
+      subtextColor: colors.brand.primary,
+      valueColor: colors.text.primary,
+      icon: Terminal,
+      showBgIcon: true,
+    },
+    {
+      label: 'Em Progresso',
+      value: stats.processing,
+      subtext: stats.processing > 0 ? 'PROCESSING' : 'STANDBY',
+      subtextColor: stats.processing > 0 ? colors.brand.primary : colors.text.muted,
+      valueColor: colors.text.primary,
+      icon: BarChart3,
+      showBgIcon: false,
+    },
+    {
+      label: 'Concluídas',
+      value: stats.completed,
+      subtext: 'ACTIVE CACHE',
+      subtextColor: `${colors.brand.primary}99`,
+      valueColor: colors.brand.primary,
+      icon: CheckCircle2,
+      showBgIcon: false,
+    },
+    {
+      label: 'Falharam',
+      value: stats.failed,
+      subtext: 'LOGS ARCHIVED',
+      subtextColor: `${colors.status.error}80`,
+      valueColor: colors.status.error,
+      icon: XCircle,
+      showBgIcon: false,
+    },
+  ];
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          {
-            label: 'Total de Análises',
-            value: stats.total,
-            icon: TrendingUp,
-            color: 'text-brand-primary',
-          },
-          {
-            label: 'Em Progresso',
-            value: stats.processing,
-            icon: Clock,
-            color: 'text-blue-400',
-          },
-          {
-            label: 'Concluídas',
-            value: stats.completed,
-            icon: CheckCircle,
-            color: 'text-cyan-400',
-          },
-          {
-            label: 'Falharam',
-            value: stats.failed,
-            icon: AlertCircle,
-            color: 'text-red-400',
-          },
-        ].map((stat, idx) => (
+  return (
+    <div className="space-y-6 max-w-full overflow-x-hidden">
+      {/* ===== Stat Cards Grid ===== */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {statCards.map((stat, idx) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
+            transition={{ delay: idx * 0.08, duration: 0.3 }}
+            className="group relative overflow-hidden border p-5"
+            style={{
+              backgroundColor: colors.background.surface,
+              borderColor: colors.border.default,
+            }}
           >
-            <Card variant="default" padding="md">
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-xl bg-white/5 ${stat.color}`}>
-                  <stat.icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
-                  <p className="text-sm text-gray-400">{stat.label}</p>
-                </div>
+            {/* Background Icon (first card only) */}
+            {stat.showBgIcon && (
+              <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity duration-300">
+                <stat.icon className="w-8 h-8" style={{ color: colors.text.secondary }} />
               </div>
-            </Card>
+            )}
+
+            {/* Label */}
+            <div
+              className="text-[10px] font-bold uppercase tracking-widest mb-1 font-mono"
+              style={{ color: colors.text.muted }}
+            >
+              {stat.label}
+            </div>
+
+            {/* Value — VT323 display font */}
+            <div
+              className="text-3xl font-display leading-none"
+              style={{ color: stat.valueColor }}
+            >
+              {stat.value}
+            </div>
+
+            {/* Terminal Subtext */}
+            <div
+              className="mt-2 text-[10px] font-mono tracking-wide"
+              style={{ color: stat.subtextColor }}
+            >
+              {stat.subtext}
+            </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Jobs List */}
+      {/* ===== Análises Recentes ===== */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <CardTitle as="h2">Análises Recentes</CardTitle>
-          <Button variant="ghost" size="sm" icon={RefreshCw} onClick={refresh}>
-            Atualizar
-          </Button>
+          {/* Section Label — terminal style */}
+          <span
+            className="text-[10px] font-bold uppercase tracking-widest font-mono"
+            style={{ color: colors.text.muted }}
+          >
+            Análises Recentes
+          </span>
+
+          {/* Refresh Button — minimal terminal style */}
+          <button
+            onClick={refresh}
+            className="text-[10px] font-mono flex items-center gap-1.5 transition-colors duration-150"
+            style={{ color: colors.text.muted }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = colors.brand.primary;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = colors.text.muted;
+            }}
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>ATUALIZAR</span>
+          </button>
         </div>
+
         <JobList
           jobs={jobs}
           isLoading={isLoading}
@@ -126,25 +170,38 @@ export const Dashboard: React.FC = () => {
         />
       </div>
 
-      {/* Quick Actions */}
+      {/* ===== Quick Actions ===== */}
       {jobs.length > 0 && (
-        <Card variant="bordered" padding="lg">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <h3 className="font-semibold text-white mb-1">
-                Pronto para mais?
-              </h3>
-              <p className="text-sm text-gray-400">
-                Adicione mais repositórios para melhorar o contexto das suas IAs
-              </p>
-            </div>
-            <Link to="/app/new">
-              <Button variant="outline" icon={Plus} iconPosition="left">
-                Adicionar Repositório
-              </Button>
-            </Link>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="border p-6 flex flex-col md:flex-row items-center justify-between gap-4"
+          style={{
+            backgroundColor: 'transparent',
+            borderColor: colors.border.default,
+          }}
+        >
+          <div>
+            <h3
+              className="font-bold font-mono text-sm mb-1"
+              style={{ color: colors.text.primary }}
+            >
+              &gt; Pronto para mais?
+            </h3>
+            <p
+              className="text-xs font-mono"
+              style={{ color: colors.text.muted }}
+            >
+              // Adicione mais repositórios para melhorar o contexto das suas IAs
+            </p>
           </div>
-        </Card>
+          <Link to="/app/new">
+            <Button variant="outline" icon={Plus} iconPosition="left" size="sm">
+              Adicionar Repositório
+            </Button>
+          </Link>
+        </motion.div>
       )}
     </div>
   );

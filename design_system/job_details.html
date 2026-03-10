@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Code-In | Job Details</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#22c55e", // Matrix Green
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0a0a0a",
+                        "panel-dark": "#0e1111",
+                        "border-dark": "#1a1a1a",
+                        "matrix-dim": "rgba(34, 197, 94, 0.2)",
+                    },
+                    fontFamily: {
+                        display: ["JetBrains Mono", "monospace"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "2px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            background-image:
+                linear-gradient(rgba(34, 197, 94, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #22c55e;
+            border-radius: 2px;
+        }
+
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+        }
+
+        .gauge-ring {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 60;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-300 font-sans min-h-screen flex flex-col overflow-hidden">
+    <header
+        class="h-14 border-b border-slate-200 dark:border-matrix-dim flex items-center justify-between px-4 bg-background-light dark:bg-panel-dark z-20">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary font-bold">terminal</span>
+                <span
+                    class="font-display font-bold text-lg tracking-tighter text-slate-900 dark:text-primary terminal-glow">CODE-IN</span>
+                <span
+                    class="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded border border-primary/20">v.2.0.4-beta</span>
+            </div>
+            <nav
+                class="hidden md:flex items-center gap-4 text-xs font-display uppercase tracking-widest text-slate-500">
+                <a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+                <span class="text-slate-700">/</span>
+                <a class="text-primary" href="#">Detalhes do Job</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-3">
+            <div
+                class="relative flex items-center bg-slate-100 dark:bg-background-dark border border-slate-200 dark:border-matrix-dim px-2 py-1.5 rounded w-64">
+                <span class="material-symbols-outlined text-sm text-slate-400">search</span>
+                <input class="bg-transparent border-none focus:ring-0 text-xs w-full ml-1" placeholder="Buscar jobs..."
+                    type="text" />
+                <span
+                    class="text-[10px] text-slate-500 border border-slate-300 dark:border-matrix-dim px-1 rounded">⌘K</span>
+            </div>
+            <button class="p-1.5 hover:bg-slate-200 dark:hover:bg-matrix-dim rounded transition-colors">
+                <span class="material-symbols-outlined text-lg">settings</span>
+            </button>
+            <button
+                class="bg-primary text-black font-display font-bold text-xs px-4 py-2 flex items-center gap-2 hover:bg-green-400 transition-colors uppercase">
+                <span class="material-symbols-outlined text-sm">add</span> Nova Análise
+            </button>
+        </div>
+    </header>
+    <main class="flex-1 flex overflow-hidden">
+        <aside
+            class="w-64 border-r border-slate-200 dark:border-matrix-dim bg-background-light dark:bg-panel-dark flex flex-col">
+            <div class="p-3 border-b border-slate-200 dark:border-matrix-dim flex items-center justify-between">
+                <span class="text-[10px] font-display font-bold uppercase text-slate-500">Code Explorer</span>
+                <div class="flex gap-2">
+                    <span
+                        class="material-symbols-outlined text-sm cursor-pointer hover:text-primary">create_new_folder</span>
+                    <span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary">refresh</span>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar py-2">
+                <div
+                    class="px-2 py-1 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors">
+                    <span
+                        class="material-symbols-outlined text-sm text-slate-400 group-hover:text-primary">expand_more</span>
+                    <span class="material-symbols-outlined text-sm text-yellow-500">folder</span>
+                    <span class="font-display">components</span>
+                </div>
+                <div
+                    class="px-2 py-1 pl-6 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors">
+                    <span class="material-symbols-outlined text-sm text-blue-400">javascript</span>
+                    <span class="font-display">Header.jsx</span>
+                </div>
+                <div
+                    class="px-2 py-1 pl-6 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors">
+                    <span class="material-symbols-outlined text-sm text-blue-400">javascript</span>
+                    <span class="font-display">Footer.jsx</span>
+                </div>
+                <div
+                    class="px-2 py-1 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors mt-1">
+                    <span
+                        class="material-symbols-outlined text-sm text-slate-400 group-hover:text-primary">expand_more</span>
+                    <span class="material-symbols-outlined text-sm text-yellow-500">folder</span>
+                    <span class="font-display">services</span>
+                </div>
+                <div
+                    class="px-2 py-1 flex items-center gap-2 text-xs cursor-pointer bg-primary/20 border-l-2 border-primary group transition-colors">
+                    <span class="material-symbols-outlined text-sm text-primary">description</span>
+                    <span class="font-display text-primary">AGENTS.md</span>
+                    <span class="ml-auto text-[10px] text-slate-500">4.8 KB</span>
+                </div>
+                <div
+                    class="px-2 py-1 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors">
+                    <span class="material-symbols-outlined text-sm text-slate-400">description</span>
+                    <span class="font-display">llms.txt</span>
+                    <span class="ml-auto text-[10px] text-slate-500">2.1 KB</span>
+                </div>
+                <div
+                    class="px-2 py-1 flex items-center gap-2 text-xs cursor-pointer hover:bg-primary/10 group transition-colors">
+                    <span class="material-symbols-outlined text-sm text-slate-400">description</span>
+                    <span class="font-display">repomap.txt</span>
+                    <span class="ml-auto text-[10px] text-slate-500">2.5 KB</span>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-200 dark:border-matrix-dim">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 bg-primary/20 border border-primary/40 rounded flex items-center justify-center text-primary font-bold text-xs">
+                        MA</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p class="text-[10px] font-bold truncate">Mateus Augusto</p>
+                        <p class="text-[9px] text-slate-500 truncate">mateusmunaro@email.com</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="flex-1 flex flex-col bg-slate-50 dark:bg-background-dark/50">
+            <div class="p-6 pb-2">
+                <a class="text-[10px] font-display text-slate-500 flex items-center gap-1 hover:text-primary mb-2"
+                    href="#">
+                    <span class="material-symbols-outlined text-xs">arrow_back</span> Voltar ao Dashboard
+                </a>
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">terminal</span>
+                            <h1 class="text-xl font-display font-bold text-slate-900 dark:text-white">
+                                MateusMunaro/escala-justa.git</h1>
+                            <span
+                                class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 border border-primary/30 uppercase font-bold">DONE</span>
+                        </div>
+                        <p class="text-xs text-slate-500 font-display mt-1">
+                            https://github.com/MateusMunaro/escala-justa.git <span
+                                class="material-symbols-outlined text-[10px] align-middle">open_in_new</span></p>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 border border-slate-200 dark:border-matrix-dim px-3 py-1.5 text-xs font-display hover:bg-matrix-dim transition-colors">
+                        <span class="material-symbols-outlined text-sm">refresh</span> ATUALIZAR
+                    </button>
+                </div>
+                <div
+                    class="mt-4 bg-slate-200/50 dark:bg-panel-dark/50 border border-slate-200 dark:border-matrix-dim p-2 flex items-center justify-between text-[10px] font-display text-slate-500">
+                    <div class="flex gap-6">
+                        <span><span class="material-symbols-outlined text-[10px] align-middle mr-1">schedule</span>
+                            Criado em 16 de fev. de 2026, 23:07</span>
+                        <span><span
+                                class="material-symbols-outlined text-[10px] align-middle mr-1">model_training</span>
+                            Modelo: <span class="text-primary">gemini-2.0-flash</span></span>
+                    </div>
+                    <span>ID: <span
+                            class="bg-background-dark text-slate-400 px-1 py-0.5">b7757e6c-d27f-44a2-aee3-fc5e4f686a50</span></span>
+                </div>
+            </div>
+            <div class="flex-1 p-6 pt-2 flex flex-col overflow-hidden">
+                <div
+                    class="flex-1 border border-slate-200 dark:border-matrix-dim bg-white dark:bg-panel-dark flex flex-col overflow-hidden">
+                    <div
+                        class="h-10 border-b border-slate-200 dark:border-matrix-dim flex items-center px-4 justify-between bg-slate-50 dark:bg-background-dark/30">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm text-primary">article</span>
+                            <span class="text-xs font-display font-bold">AGENTS.md</span>
+                            <span
+                                class="text-[10px] text-slate-500 uppercase tracking-tighter border border-slate-300 dark:border-matrix-dim px-1 ml-2">MULTI-ARQUIVO</span>
+                        </div>
+                        <span
+                            class="material-symbols-outlined text-sm text-slate-500 cursor-pointer hover:text-primary">fullscreen</span>
+                    </div>
+                    <div class="flex-1 overflow-y-auto custom-scrollbar p-6 font-display text-sm leading-relaxed">
+                        <div class="space-y-4">
+                            <div>
+                                <h2 class="text-primary text-lg font-bold border-b border-matrix-dim pb-1 mb-2">#
+                                    Arquitetura de Agentes</h2>
+                                <p class="text-slate-400">Este documento descreve a implementação dos agentes
+                                    inteligentes no sistema Escala Justa.</p>
+                                <div
+                                    class="mt-2 inline-flex items-center gap-2 bg-primary/5 border border-primary/20 px-2 py-1 rounded">
+                                    <span class="material-symbols-outlined text-[12px] text-primary">auto_awesome</span>
+                                    <span class="text-[10px] text-primary/80 italic">AI sugeriu atualização para o
+                                        módulo de escalonamento heurístico.</span>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <h3 class="text-slate-200 font-bold mb-2">## 1. Agente de Otimização</h3>
+                                <div class="bg-background-dark p-4 rounded border border-matrix-dim/30">
+                                    <pre class="text-xs text-green-700"><code><span class="text-purple-400">class</span> <span class="text-yellow-400">OptimizerAgent</span>:
+    <span class="text-purple-400">def</span> <span class="text-blue-400">__init__</span>(self, constraints):
+        self.constraints = constraints
+        <span class="text-slate-500"># TODO: Implementar lógica de backtracking</span>
+        self.strategy = <span class="text-orange-400">'heuristic'</span></code></pre>
+                                </div>
+                                <div class="mt-3 flex gap-2">
+                                    <span
+                                        class="bg-primary/20 text-primary text-[10px] px-2 py-0.5 rounded-full border border-primary/30">Lógica
+                                        Complexa</span>
+                                    <span
+                                        class="bg-blue-500/20 text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/30">Padrão:
+                                        Singleton</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-slate-400">O `OptimizerAgent` é responsável por processar todas as
+                                    restrições de escala e gerar a solução ótima em tempo real.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aside
+            class="w-80 border-l border-slate-200 dark:border-matrix-dim bg-background-light dark:bg-panel-dark flex flex-col">
+            <div class="p-4 border-b border-slate-200 dark:border-matrix-dim">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-primary text-sm">psychology</span>
+                    <span class="text-xs font-display font-bold uppercase tracking-widest">Intelligence Hub</span>
+                </div>
+                <div class="bg-background-dark/50 border border-matrix-dim/30 p-4 rounded-lg mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-display text-slate-500 uppercase">Confiança da Análise</span>
+                        <span class="text-primary font-display font-bold">94.2%</span>
+                    </div>
+                    <div class="flex justify-center py-2 relative">
+                        <svg class="w-32 h-32 transform -rotate-90">
+                            <circle class="text-slate-800" cx="64" cy="64" fill="transparent" r="50"
+                                stroke="currentColor" stroke-width="4"></circle>
+                            <circle class="text-primary gauge-ring" cx="64" cy="64" fill="transparent" r="50"
+                                stroke="currentColor" stroke-dasharray="314.15" stroke-dashoffset="18" stroke-width="4">
+                            </circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-xl font-display font-bold text-white">HIGH</span>
+                            <span class="text-[9px] text-slate-500">STABLE</span>
+                        </div>
+                    </div>
+                    <p class="text-[9px] text-center text-slate-500 mt-2 font-display">Análise baseada em 142 tokens de
+                        contexto.</p>
+                </div>
+                <div class="space-y-2">
+                    <span class="text-[10px] font-display text-slate-500 uppercase">Padrões Identificados</span>
+                    <div class="flex flex-wrap gap-2">
+                        <div
+                            class="flex items-center gap-1.5 bg-slate-200 dark:bg-background-dark border border-slate-300 dark:border-matrix-dim px-2 py-1 rounded">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span class="text-[10px] font-display">Clean Code</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-1.5 bg-slate-200 dark:bg-background-dark border border-slate-300 dark:border-matrix-dim px-2 py-1 rounded">
+                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                            <span class="text-[10px] font-display">Observer</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-1.5 bg-slate-200 dark:bg-background-dark border border-slate-300 dark:border-matrix-dim px-2 py-1 rounded">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                            <span class="text-[10px] font-display">Async Patterns</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-4">
+                <div class="flex items-center gap-2 mb-2 text-xs font-display text-slate-400">
+                    <span class="material-symbols-outlined text-sm">history</span> Atividades Recentes
+                </div>
+                <div class="space-y-4">
+                    <div class="border-l border-matrix-dim pl-3 relative">
+                        <div
+                            class="absolute -left-[4.5px] top-1 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#22c55e]">
+                        </div>
+                        <p class="text-[11px] font-bold">Relatório Gerado</p>
+                        <p class="text-[10px] text-slate-500">O sistema gerou a documentação AGENTS.md baseada no
+                            código-fonte.</p>
+                        <p class="text-[9px] text-primary/60 mt-1">HÁ 2 MINUTOS</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-3 relative">
+                        <div class="absolute -left-[4.5px] top-1 w-2 h-2 rounded-full bg-slate-800"></div>
+                        <p class="text-[11px] font-bold">Scan de Segurança</p>
+                        <p class="text-[10px] text-slate-500">Nenhuma vulnerabilidade crítica encontrada nos novos
+                            módulos.</p>
+                        <p class="text-[9px] text-slate-600 mt-1">HÁ 15 MINUTOS</p>
+                    </div>
+                </div>
+            </div>
+            <div class="h-32 bg-black border-t border-matrix-dim flex flex-col font-display">
+                <div class="bg-matrix-dim/20 px-3 py-1 text-[10px] flex items-center justify-between text-primary/80">
+                    <span>ACTION TERMINAL</span>
+                    <span class="material-symbols-outlined text-[10px]">close</span>
+                </div>
+                <div class="flex-1 p-2 text-[11px] text-primary/80 overflow-y-auto custom-scrollbar leading-tight">
+                    <div>&gt; code-in scan --deep</div>
+                    <div class="text-white">&gt; Scan initiated. Mapping repository...</div>
+                    <div class="text-white">&gt; 42 files found. Analysing...</div>
+                    <div class="flex mt-1">
+                        <span class="mr-2 text-primary font-bold">➜</span>
+                        <input
+                            class="bg-transparent border-none p-0 focus:ring-0 text-[11px] text-white w-full placeholder-primary/30"
+                            placeholder="/index-new | /export-docs | /help" type="text" />
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+    <footer
+        class="h-7 bg-primary text-black flex items-center justify-between px-3 text-[10px] font-display font-medium z-30">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1.5 uppercase">
+                <span class="material-symbols-outlined text-[12px] font-bold">sensors</span>
+                <span>AGENT STATUS: <span class="font-bold">ONLINE</span></span>
+            </div>
+            <div class="h-3 w-[1px] bg-black/20"></div>
+            <div class="flex items-center gap-1.5 uppercase">
+                <span class="material-symbols-outlined text-[12px]">speed</span>
+                <span>SPEED: <span class="font-bold">12.4 FILE/S</span></span>
+            </div>
+            <div class="h-3 w-[1px] bg-black/20"></div>
+            <div class="flex items-center gap-1.5 uppercase">
+                <span class="material-symbols-outlined text-[12px]">database</span>
+                <span>USAGE: <span class="font-bold">1.2K TOKENS</span></span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">branch</span>
+                <span>main</span>
+            </div>
+            <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px]">sync</span>
+                <span>UTF-8</span>
+            </div>
+            <div class="flex items-center gap-1 bg-black text-primary px-2 h-7 font-bold">
+                <span class="material-symbols-outlined text-[12px]">notifications</span>
+                <span>2 ALERTS</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

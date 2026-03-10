@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Code-in Design System Guide</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00FF41", // Matrix Green
+                        "primary-dim": "#008F11",
+                        "background-light": "#F3F4F6", // Fallback for light mode logic, though design is dark-heavy
+                        "background-dark": "#0D0D0D", // Deep Obsidian Black
+                        "surface-dark": "#1A1A1A",
+                        "border-dark": "#333333",
+                        "text-light": "#F2F2F2", // Off-white
+                        "text-dim": "#A0A0A0",
+                        "error": "#FF3333",
+                        "warning": "#FFCC00",
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        display: ['"VT323"', 'monospace'],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0px", // Sharp edges as requested
+                        sm: "2px",
+                    },
+                    boxShadow: {
+                        'retro': '4px 4px 0px 0px #00FF41',
+                        'retro-dim': '4px 4px 0px 0px #333333',
+                        'retro-sm': '2px 2px 0px 0px #00FF41',
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        .scanlines {
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0),
+                    rgba(255, 255, 255, 0) 50%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .blink {
+            animation: blinker 1s step-end infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        ::selection {
+            background: #00FF41;
+            color: #000;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+            background: #0D0D0D;
+            border-left: 1px solid #333;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border: 1px solid #00FF41;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FF41;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-mono antialiased min-h-screen text-gray-900 dark:text-text-light selection:bg-primary selection:text-black">
+    <div class="scanlines opacity-10"></div>
+    <div class="flex flex-col lg:flex-row h-screen overflow-hidden">
+        <aside
+            class="w-full lg:w-64 border-r border-gray-300 dark:border-primary/30 flex flex-col bg-gray-100 dark:bg-background-dark z-10 shrink-0">
+            <div class="p-6 border-b border-gray-300 dark:border-primary/30">
+                <h1 class="text-3xl font-display uppercase tracking-widest text-primary leading-none">
+                    CODE-IN
+                    <span
+                        class="block text-xs font-mono text-text-dim mt-1 tracking-normal opacity-70">v.2.0.4-beta</span>
+                </h1>
+            </div>
+            <nav class="flex-1 overflow-y-auto p-4 space-y-6">
+                <div>
+                    <h3
+                        class="text-xs uppercase tracking-widest text-gray-500 dark:text-text-dim mb-3 pl-2 border-l-2 border-transparent">
+                        Core</h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a class="block px-3 py-2 text-sm hover:bg-primary hover:text-black dark:text-primary font-bold border border-primary bg-primary/10 shadow-[2px_2px_0px_0px_rgba(0,255,65,0.4)]"
+                                href="#">
+                                &gt; Introduction
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-surface-dark transition-colors group"
+                                href="#">
+                                <span class="opacity-0 group-hover:opacity-100 mr-1 text-primary">&gt;</span> Colors
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-surface-dark transition-colors group"
+                                href="#">
+                                <span class="opacity-0 group-hover:opacity-100 mr-1 text-primary">&gt;</span> Typography
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3
+                        class="text-xs uppercase tracking-widest text-gray-500 dark:text-text-dim mb-3 pl-2 border-l-2 border-transparent">
+                        Components</h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a class="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-surface-dark transition-colors group"
+                                href="#">
+                                <span class="opacity-0 group-hover:opacity-100 mr-1 text-primary">&gt;</span> Buttons
+                                &amp; Inputs
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-surface-dark transition-colors group"
+                                href="#">
+                                <span class="opacity-0 group-hover:opacity-100 mr-1 text-primary">&gt;</span> Status
+                                Indicators
+                            </a>
+                        </li>
+                        <li>
+                            <a class="block px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-surface-dark transition-colors group"
+                                href="#">
+                                <span class="opacity-0 group-hover:opacity-100 mr-1 text-primary">&gt;</span> CLI
+                                Widgets
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="p-4 border-t border-gray-300 dark:border-primary/30">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 bg-surface-dark border border-primary flex items-center justify-center">
+                        <span class="material-icons-outlined text-primary text-sm">terminal</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-text-dim">System Status</span>
+                        <span class="text-xs text-primary flex items-center gap-1">
+                            <span class="w-2 h-2 bg-primary rounded-none inline-block animate-pulse"></span> ONLINE
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 overflow-y-auto bg-white dark:bg-background-dark relative">
+            <div class="absolute inset-0 pointer-events-none opacity-5 dark:opacity-10"
+                style="background-image: linear-gradient(#00FF41 1px, transparent 1px), linear-gradient(90deg, #00FF41 1px, transparent 1px); background-size: 40px 40px;">
+            </div>
+            <div class="relative z-10 max-w-6xl mx-auto p-8 lg:p-12 space-y-16">
+                <header class="border-b border-gray-300 dark:border-primary/30 pb-8 mb-12">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2
+                                class="text-4xl lg:text-6xl font-display uppercase text-gray-900 dark:text-text-light mb-4">
+                                Design System <span class="text-primary blink">_</span>
+                            </h2>
+                            <p class="text-gray-600 dark:text-text-dim max-w-2xl text-lg font-mono">
+                                // Establishing visual protocols for the Code-in interface.
+                                <br />
+                                // Focus: Legibility, Contrast, Efficiency.
+                            </p>
+                        </div>
+                        <div
+                            class="hidden md:block text-right font-mono text-xs text-primary border border-primary p-2 bg-black/50">
+                            ID: SYS-092<br />
+                            UPTIME: 99.9%<br />
+                            SECURE: TRUE
+                        </div>
+                    </div>
+                </header>
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="text-primary font-bold text-xl">01.</span>
+                        <h3
+                            class="text-2xl font-bold uppercase text-gray-900 dark:text-text-light border-b-2 border-primary/50 pb-1 pr-12 inline-block">
+                            Chromatic Scale</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div
+                            class="group border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-surface-dark p-4 hover:border-primary transition-colors">
+                            <div class="h-24 w-full bg-primary mb-4 border border-black/10"></div>
+                            <div class="flex justify-between items-end font-mono">
+                                <div>
+                                    <p class="text-sm font-bold dark:text-white">Matrix Green</p>
+                                    <p class="text-xs text-gray-500">Primary Action</p>
+                                </div>
+                                <code class="text-xs text-primary bg-black/20 px-1">#00FF41</code>
+                            </div>
+                        </div>
+                        <div
+                            class="group border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-surface-dark p-4 hover:border-primary transition-colors">
+                            <div class="h-24 w-full bg-background-dark mb-4 border border-gray-600"></div>
+                            <div class="flex justify-between items-end font-mono">
+                                <div>
+                                    <p class="text-sm font-bold dark:text-white">Obsidian</p>
+                                    <p class="text-xs text-gray-500">Background</p>
+                                </div>
+                                <code class="text-xs text-gray-500 dark:text-gray-400 bg-black/20 px-1">#0D0D0D</code>
+                            </div>
+                        </div>
+                        <div
+                            class="group border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-surface-dark p-4 hover:border-primary transition-colors">
+                            <div class="h-24 w-full bg-text-light mb-4 border border-gray-300"></div>
+                            <div class="flex justify-between items-end font-mono">
+                                <div>
+                                    <p class="text-sm font-bold dark:text-white">Phosphor Wht</p>
+                                    <p class="text-xs text-gray-500">Secondary Text</p>
+                                </div>
+                                <code class="text-xs text-gray-500 dark:text-gray-400 bg-black/20 px-1">#F2F2F2</code>
+                            </div>
+                        </div>
+                        <div
+                            class="group border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-surface-dark p-4 hover:border-primary transition-colors">
+                            <div class="h-24 w-full bg-error mb-4 border border-black/10"></div>
+                            <div class="flex justify-between items-end font-mono">
+                                <div>
+                                    <p class="text-sm font-bold dark:text-white">Kernel Panic</p>
+                                    <p class="text-xs text-gray-500">Error State</p>
+                                </div>
+                                <code class="text-xs text-error bg-black/20 px-1">#FF3333</code>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="border-t border-dashed border-gray-600 my-8"></div>
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="text-primary font-bold text-xl">02.</span>
+                        <h3
+                            class="text-2xl font-bold uppercase text-gray-900 dark:text-text-light border-b-2 border-primary/50 pb-1 pr-12 inline-block">
+                            Typography</h3>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-primary pl-4">
+                                <h4 class="text-sm text-gray-500 dark:text-text-dim uppercase tracking-widest mb-2">
+                                    Display Typeface</h4>
+                                <p class="text-3xl font-display text-gray-900 dark:text-white">VT323 (Google Fonts)</p>
+                            </div>
+                            <div
+                                class="bg-surface-dark border border-gray-700 p-6 text-white font-display text-2xl leading-none">
+                                ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
+                                abcdefghijklmnopqrstuvwxyz<br />
+                                0123456789 (!@#$%^&amp;*)
+                            </div>
+                            <div class="space-y-2">
+                                <p class="font-display text-6xl dark:text-white">H1. Headlines</p>
+                                <p class="font-display text-4xl text-primary">H2. Subheaders</p>
+                                <p class="font-display text-2xl dark:text-text-dim">H3. Labels</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-gray-500 pl-4">
+                                <h4 class="text-sm text-gray-500 dark:text-text-dim uppercase tracking-widest mb-2">Code
+                                    / Body Typeface</h4>
+                                <p class="text-3xl font-mono text-gray-900 dark:text-white">JetBrains Mono</p>
+                            </div>
+                            <div class="bg-surface-dark border border-gray-700 p-6 text-white font-mono text-sm">
+                                const styles = {<br />
+                                  fontFamily: 'JetBrains Mono',<br />
+                                  weight: 'Regular / Bold'<br />
+                                };
+                            </div>
+                            <div class="space-y-2 font-mono">
+                                <p class="text-base dark:text-white">Body Regular (16px) - The quick brown fox jumps
+                                    over the lazy dog.</p>
+                                <p class="text-sm text-text-dim">Caption (14px) - System diagnostics running...</p>
+                                <p class="text-xs text-primary uppercase tracking-widest">Small Caps (12px) - Label</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="border-t border-dashed border-gray-600 my-8"></div>
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="text-primary font-bold text-xl">03.</span>
+                        <h3
+                            class="text-2xl font-bold uppercase text-gray-900 dark:text-text-light border-b-2 border-primary/50 pb-1 pr-12 inline-block">
+                            Interface Components</h3>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div
+                            class="border border-gray-300 dark:border-border-dark bg-white dark:bg-surface-dark p-8 relative overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 bg-primary/20 text-primary text-[10px] px-2 py-0.5 font-mono">
+                                BTN_MODULE</div>
+                            <h4 class="text-sm text-gray-500 dark:text-text-dim uppercase tracking-widest mb-6">
+                                Interactive Elements</h4>
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-dim w-24">Primary</span>
+                                    <button
+                                        class="bg-primary hover:bg-white text-black font-bold uppercase tracking-wider px-6 py-3 border-2 border-transparent hover:border-primary shadow-retro hover:shadow-none transition-all duration-100">
+                                        Execute Command
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-dim w-24">Outline</span>
+                                    <button
+                                        class="bg-transparent text-primary hover:text-black hover:bg-primary font-bold uppercase tracking-wider px-6 py-3 border-2 border-primary hover:shadow-retro transition-all duration-100">
+                                        View Logs
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-dim w-24">Disabled</span>
+                                    <button
+                                        class="bg-gray-800 text-gray-600 font-bold uppercase tracking-wider px-6 py-3 border-2 border-gray-600 cursor-not-allowed opacity-50"
+                                        disabled="">
+                                        Offline
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-dim w-24">Icon Only</span>
+                                    <div class="flex gap-4">
+                                        <button
+                                            class="w-12 h-12 flex items-center justify-center border-2 border-primary bg-surface-dark text-primary hover:bg-primary hover:text-black transition-colors">
+                                            <span class="material-icons-outlined">search</span>
+                                        </button>
+                                        <button
+                                            class="w-12 h-12 flex items-center justify-center border-2 border-gray-600 bg-surface-dark text-gray-400 hover:border-primary hover:text-primary transition-colors">
+                                            <span class="material-icons-outlined">settings</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-8">
+                            <div
+                                class="border border-gray-300 dark:border-border-dark bg-white dark:bg-surface-dark p-6">
+                                <h4 class="text-sm text-gray-500 dark:text-text-dim uppercase tracking-widest mb-4">
+                                    Input Fields</h4>
+                                <div class="space-y-4">
+                                    <div class="relative group">
+                                        <label class="block text-xs uppercase text-primary mb-2">&gt; Enter
+                                            Query</label>
+                                        <input
+                                            class="w-full bg-background-dark border-b-2 border-gray-700 text-white px-4 py-3 focus:outline-none focus:border-primary font-mono placeholder-gray-600 transition-colors"
+                                            placeholder="Search documentation..." type="text" />
+                                        <div
+                                            class="absolute right-3 bottom-3 text-primary opacity-0 group-focus-within:opacity-100 animate-pulse">
+                                            _
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 pt-2">
+                                        <input
+                                            class="appearance-none h-5 w-5 border-2 border-primary bg-transparent checked:bg-primary checked:border-primary focus:ring-0 focus:ring-offset-0 text-black cursor-pointer"
+                                            id="chk1" type="checkbox" />
+                                        <label class="text-sm dark:text-text-light cursor-pointer select-none"
+                                            for="chk1">Enable verbose mode</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="border border-gray-300 dark:border-border-dark bg-black p-4 font-mono text-sm shadow-retro-dim relative">
+                                <div class="flex justify-between items-center border-b border-gray-800 pb-2 mb-2">
+                                    <span class="text-xs text-gray-500">TERMINAL_PREVIEW</span>
+                                    <div class="flex gap-1">
+                                        <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+                                        <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+                                        <div class="w-2 h-2 rounded-full bg-gray-600"></div>
+                                    </div>
+                                </div>
+                                <div class="text-gray-400">
+                                    <span class="text-primary">user@code-in:~$</span> run indexer --force<br />
+                                    <span class="text-blue-400">INFO</span> Initializing scan...<br />
+                                    <span class="text-blue-400">INFO</span> Found 1,024 files<br />
+                                    <span class="text-warning">WARN</span> Skipping node_modules/<br />
+                                    <span class="text-primary">SUCCESS</span> Index updated in 2.4s<br />
+                                    <span class="text-primary">user@code-in:~$</span> <span
+                                        class="animate-pulse bg-primary text-black px-0.5"> </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="border-t border-dashed border-gray-600 my-8"></div>
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span class="text-primary font-bold text-xl">04.</span>
+                        <h3
+                            class="text-2xl font-bold uppercase text-gray-900 dark:text-text-light border-b-2 border-primary/50 pb-1 pr-12 inline-block">
+                            Status &amp; Iconography</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div
+                            class="bg-surface-dark border border-gray-700 p-6 flex flex-col items-center text-center hover:border-primary transition-colors group">
+                            <div
+                                class="w-16 h-16 mb-4 border border-primary/30 flex items-center justify-center relative overflow-hidden group-hover:bg-primary/10">
+                                <div class="grid grid-cols-3 gap-1 w-8 h-8">
+                                    <div class="bg-primary w-full h-full"></div>
+                                    <div class="bg-primary/50 w-full h-full"></div>
+                                    <div class="bg-primary w-full h-full"></div>
+                                    <div class="bg-transparent w-full h-full"></div>
+                                    <div class="bg-primary w-full h-full"></div>
+                                    <div class="bg-transparent w-full h-full"></div>
+                                    <div class="bg-primary w-full h-full"></div>
+                                    <div class="bg-primary/50 w-full h-full"></div>
+                                    <div class="bg-primary w-full h-full"></div>
+                                </div>
+                            </div>
+                            <h4 class="text-white font-bold mb-1">Indexing</h4>
+                            <p class="text-xs text-text-dim">Active scanning of codebase structure.</p>
+                        </div>
+                        <div
+                            class="bg-surface-dark border border-gray-700 p-6 flex flex-col items-center text-center hover:border-primary transition-colors group">
+                            <div
+                                class="w-16 h-16 mb-4 border border-primary/30 flex items-center justify-center group-hover:bg-primary/10">
+                                <div class="w-8 h-10 border-2 border-primary relative">
+                                    <div class="absolute top-1 left-1 right-1 h-0.5 bg-primary/50"></div>
+                                    <div class="absolute top-3 left-1 right-1 h-0.5 bg-primary/50"></div>
+                                    <div class="absolute top-5 left-1 right-3 h-0.5 bg-primary/50"></div>
+                                </div>
+                            </div>
+                            <h4 class="text-white font-bold mb-1">Doc Gen</h4>
+                            <p class="text-xs text-text-dim">LLM-powered documentation synthesis.</p>
+                        </div>
+                        <div
+                            class="bg-surface-dark border border-gray-700 p-6 flex flex-col items-center text-center hover:border-primary transition-colors group">
+                            <div
+                                class="w-16 h-16 mb-4 border border-primary/30 flex items-center justify-center group-hover:bg-primary/10">
+                                <div class="w-10 h-6 border-2 border-primary relative mt-2">
+                                    <div class="absolute -top-3 left-2 w-1 h-3 bg-primary"></div>
+                                    <div class="absolute -top-3 right-2 w-1 h-3 bg-primary"></div>
+                                    <div class="absolute top-1.5 left-1.5 w-1.5 h-1.5 bg-primary"></div>
+                                    <div class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="text-white font-bold mb-1">Agent Status</h4>
+                            <p class="text-xs text-text-dim">Autonomous worker availability.</p>
+                        </div>
+                    </div>
+                </section>
+                <footer
+                    class="border-t border-gray-300 dark:border-primary/30 pt-8 flex justify-between items-end text-xs font-mono text-gray-500 dark:text-gray-600 uppercase">
+                    <div>
+                        <p>Code-in Design System</p>
+                        <p>© 2024 All Rights Reserved</p>
+                    </div>
+                    <div class="text-right">
+                        <p>Memory Usage: 14MB</p>
+                        <p>Render Time: 12ms</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

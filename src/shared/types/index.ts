@@ -54,6 +54,20 @@ export interface DocumentationFileContent {
   url: string;
 }
 
+export interface DependencyGraphStats {
+  total_nodes: number;
+  total_edges: number;
+  file_count: number;
+  function_count: number;
+  class_count: number;
+}
+
+export interface DependencyGraph {
+  nodes?: Array<Record<string, unknown>>;
+  edges?: Array<Record<string, unknown>>;
+  stats?: Partial<DependencyGraphStats>;
+}
+
 // ===== Analysis Types =====
 export interface AnalysisResult {
   id: string;
@@ -61,11 +75,12 @@ export interface AnalysisResult {
   documentation: string;
   documentation_files?: DocumentationFile[];
   storage_path?: string | null;
-  patterns: string[];
+  patterns: string[]; 
   architecture_type: string | null;
   confidence_score: number;
-  agent_reasoning: AgentReasoning[];
-  dependencies_graph: Record<string, unknown>;
+  agent_reasoning?: AgentReasoning[];
+  reasoning_steps?: AnalysisReasoningStep[];
+  dependencies_graph: DependencyGraph;
   suggested_improvements: SuggestedImprovement[];
   // Pull Request information
   pr_url?: string | null;
@@ -77,10 +92,18 @@ export interface AnalysisResult {
 }
 
 export interface AgentReasoning {
-  step: number;
-  thought: string;
+  step?: number;
+  thought?: string;
   action: string;
   observation: string;
+}
+
+export interface AnalysisReasoningStep {
+  iteration?: number;
+  node?: string;
+  action: string;
+  observation: string;
+  confidence_delta?: number;
 }
 
 export interface SuggestedImprovement {
