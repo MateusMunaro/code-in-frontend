@@ -11,6 +11,7 @@ import type {
   DocumentationFilesResponse,
   DocumentationFileContent,
 } from '@shared/types';
+import { supabase } from '@shared/lib/supabase';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
 
@@ -23,11 +24,22 @@ async function fetchApi<T>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    const headers = new Headers(options.headers);
+
+    if (!headers.has('Content-Type') && options.body) {
+      headers.set('Content-Type', 'application/json');
+    }
+
+    if (session?.access_token) {
+      headers.set('Authorization', `Bearer ${session.access_token}`);
+    }
+
     const response = await fetch(`${API_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers,
       ...options,
     });
 
