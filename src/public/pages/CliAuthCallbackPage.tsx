@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+
 type CallbackState =
   | { status: 'loading'; message: string }
   | { status: 'success'; message: string }
@@ -22,12 +24,13 @@ export const CliAuthCallbackPage: React.FC = () => {
     const forwardTokenToCli = async () => {
       const query = new URLSearchParams(window.location.search);
       const fragment = parseParams(window.location.hash);
+      const cliSession = query.get('cli_session');
       const cliPort = query.get('cli_port');
       const accessToken = fragment.get('access_token') ?? query.get('access_token');
 
-      if (!cliPort) {
+      if (!cliSession && !cliPort) {
         if (!cancelled) {
-          setState({ status: 'error', message: 'Porta do CLI não informada no callback.' });
+          setState({ status: 'error', message: 'Sessão do CLI não informada no callback.' });
         }
         return;
       }
@@ -44,7 +47,11 @@ export const CliAuthCallbackPage: React.FC = () => {
       const tokenType = fragment.get('token_type') ?? query.get('token_type') ?? 'bearer';
 
       try {
-        const response = await fetch(`http://127.0.0.1:${cliPort}/token`, {
+        const endpoint = cliSession
+          ? `${API_URL}/auth/cli/session/${cliSession}/complete`
+          : `http://127.0.0.1:${cliPort}/token`;
+
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
