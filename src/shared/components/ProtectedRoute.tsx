@@ -29,12 +29,14 @@ interface PublicOnlyRouteProps {
 export const PublicOnlyRoute: React.FC<PublicOnlyRouteProps> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuthStore();
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const isCliLoginFlow = location.pathname === '/login' && params.has('cli_session');
 
   if (isLoading) {
     return <LoadingScreen message="Carregando..." />;
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && !isCliLoginFlow) {
     const from = (location.state as { from?: Location })?.from?.pathname || '/app';
     return <Navigate to={from} replace />;
   }

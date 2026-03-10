@@ -1,17 +1,52 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Terminal, Mail, Lock, ArrowRight, Github } from 'lucide-react';
 import { Button, Input, Alert } from '@shared/components/ui';
 import { useAuthStore } from '@shared/stores';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, loginWithGitHub, isLoading } = useAuthStore();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const cliSession = useMemo(() => new URLSearchParams(location.search).get('cli_session'), [location.search]);
+  const cliCallbackUrl = useMemo(() => {
+    if (!cliSession) {
+      return undefined;
+    }
+
+    return `${window.location.origin}/auth/cli/callback?cli_session=${encodeURIComponent(cliSession)}`;
+  }, [cliSession]);
+
+  const completeCliLogin = async (accessToken: string, refreshToken: string, expiresIn?: number) => {
+    if (!cliSession) {
+      return;
+    }
+
+    const response = await fetch(`${API_URL}/auth/cli/session/${cliSession}/complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+        expires_in: String(expiresIn ?? 3600),
+        token_type: 'bearer',
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Falha ao confirmar login do CLI: ${response.status}`);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +62,19 @@ export const LoginPage: React.FC = () => {
     if (result.error) {
       setError(result.error);
     } else {
+      if (cliSession && result.session?.access_token) {
+        try {
+          await completeCliLogin(
+            result.session.access_token,
+            result.session.refresh_token,
+            result.session.expires_in
+          );
+        } catch (cliError) {
+          setError(cliError instanceof Error ? cliError.message : 'Falha ao confirmar login do CLI.');
+          return;
+        }
+      }
+
       navigate('/app');
     }
   };
@@ -54,7 +102,11 @@ export const LoginPage: React.FC = () => {
         <div className="bg-brand-dark border border-white/10 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-white mb-2">Bem-vindo de volta</h1>
-            <p className="text-gray-400">Entre na sua conta para continuar</p>
+            <p className="text-gray-400">
+              {cliSession
+                ? 'Entre para concluir a autenticação iniciada pelo CLI'
+                : 'Entre na sua conta para continuar'}
+            </p>
           </div>
 
           {error && (
@@ -123,12 +175,12 @@ export const LoginPage: React.FC = () => {
             variant="outline"
             fullWidth
             size="lg"
-            onClick={() => loginWithGitHub()}
+            onClick={() => loginWithGitHub(cliCallbackUrl)}
             disabled={isLoading}
             className="flex items-center justify-center gap-3"
           >
             <Github className="w-5 h-5" />
-            Continuar com GitHub
+            {cliSession ? 'Continuar com GitHub para autorizar o CLI' : 'Continuar com GitHub'}
           </Button>
 
           <div className="mt-8 pt-6 border-t border-white/5 text-center">

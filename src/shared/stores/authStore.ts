@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@shared/lib/supabase';
 import type { User, AuthState } from '@shared/types';
 
@@ -25,8 +26,8 @@ const clearGitHubToken = () => {
 };
 
 interface AuthStore extends AuthState {
-  login: (email: string, password: string) => Promise<{ error?: string }>;
-  loginWithGitHub: () => Promise<{ error?: string }>;
+  login: (email: string, password: string) => Promise<{ error?: string; session?: Session | null }>;
+  loginWithGitHub: (redirectTo?: string) => Promise<{ error?: string }>;
   signup: (email: string, password: string, fullName?: string) => Promise<{ error?: string }>;
   logout: () => Promise<void>;
   checkSession: () => Promise<void>;
@@ -71,19 +72,19 @@ export const useAuthStore = create<AuthStore>()(
             set({ user, isAuthenticated: true, isLoading: false });
           }
 
-          return {};
+          return { session: data.session };
         } catch (err) {
           set({ isLoading: false });
           return { error: 'Erro ao fazer login. Tente novamente.' };
         }
       },
 
-      loginWithGitHub: async () => {
+      loginWithGitHub: async (redirectTo) => {
         try {
           const { error } = await supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
-              redirectTo: `${window.location.origin}/app`,
+              redirectTo: redirectTo ?? `${window.location.origin}/app`,
               scopes: 'read:user user:email repo',
             },
           });
