@@ -5,6 +5,7 @@ import { ProtectedRoute, PublicOnlyRoute } from '@shared/components/ProtectedRou
 
 // Public Pages
 import { LandingPage, LoginPage, SignupPage } from '@public/pages';
+import { CliAuthCallbackPage } from '@public/pages/CliAuthCallbackPage';
 
 // Auth Pages
 import AuthLayout from '@/(auth)/layout';
@@ -39,6 +40,8 @@ const App: React.FC = () => {
           </PublicOnlyRoute>
         }
       />
+
+      <Route path="/auth/cli/callback" element={<CliAuthCallbackPage />} />
 
       {/* Protected Routes (App) */}
       <Route
