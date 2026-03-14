@@ -1,0 +1,71 @@
+# 5f4e785e-956b-4487-bb82-969a3aa1a73f
+
+> llms.txt — Machine-readable documentation index
+> Generated: 2026-03-14
+
+## Project Summary
+
+- Architecture: Component-Based Architecture with File-Based Routing. The repository appears to be a monorepo containing at least two separate frontend applications built with Vite and React: a main application (`src/`) and a standalone `landingpage/`.
+- Language: TypeScript + Vite
+- Type: web, cli, library
+- Files: 87 | Functions: 193 | Classes: 1
+- Stack: See repomap.txt
+
+## Documentation Map
+
+| Artifact | Path | Purpose |
+|----------|------|---------|
+| Behavioral Contract | [AGENTS.md](AGENTS.md) | Rules, commands, boundaries for AI agents |
+| Repository Map | [repomap.txt](repomap.txt) | AST-compressed symbol map of entire repo |
+| Module Doc | [landingpage/ReadMe.LLM](landingpage/ReadMe.LLM) | Signatures + I/O for `landingpage/` |
+| Module Rules | [landingpage/AGENTS.md](landingpage/AGENTS.md) | Module-specific overrides |
+| Module Doc | [landingpage/components/ReadMe.LLM](landingpage/components/ReadMe.LLM) | Signatures + I/O for `landingpage/components/` |
+| Module Rules | [landingpage/components/AGENTS.md](landingpage/components/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/ReadMe.LLM](src/ReadMe.LLM) | Signatures + I/O for `src/` |
+| Module Rules | [src/AGENTS.md](src/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/(auth)/ReadMe.LLM](src/(auth)/ReadMe.LLM) | Signatures + I/O for `src/(auth)/` |
+| Module Rules | [src/(auth)/AGENTS.md](src/(auth)/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/components/ReadMe.LLM](src/components/ReadMe.LLM) | Signatures + I/O for `src/components/` |
+| Module Rules | [src/components/AGENTS.md](src/components/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/config/ReadMe.LLM](src/config/ReadMe.LLM) | Signatures + I/O for `src/config/` |
+| Module Rules | [src/config/AGENTS.md](src/config/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/context/ReadMe.LLM](src/context/ReadMe.LLM) | Signatures + I/O for `src/context/` |
+| Module Rules | [src/context/AGENTS.md](src/context/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/public/ReadMe.LLM](src/public/ReadMe.LLM) | Signatures + I/O for `src/public/` |
+| Module Rules | [src/public/AGENTS.md](src/public/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/shared/ReadMe.LLM](src/shared/ReadMe.LLM) | Signatures + I/O for `src/shared/` |
+| Module Rules | [src/shared/AGENTS.md](src/shared/AGENTS.md) | Module-specific overrides |
+| Module Doc | [src/styles/ReadMe.LLM](src/styles/ReadMe.LLM) | Signatures + I/O for `src/styles/` |
+| Module Rules | [src/styles/AGENTS.md](src/styles/AGENTS.md) | Module-specific overrides |
+| SCIP Index | [_codein/scip_index.scip](_codein/scip_index.scip) | Compiler-precision symbol navigation |
+| TreeFrag | [_codein/treefrag.txt](_codein/treefrag.txt) | Hierarchical LOD representation |
+| Knowledge Graph | [_codein/knowledge_graph.json](_codein/knowledge_graph.json) | Enriched dependency graph |
+
+## Key Modules
+
+- `postcss.config.js/`
+- `src/`
+- `vite.config.ts/`
+- `vite.config.d.ts/`
+- `landingpage/`
+- `tailwind.config.js/`
+
+## Quick Reference
+
+### Entry Points
+- `vite.config.d.ts`
+- `tailwind.config.js`
+- `postcss.config.js`
+- `vite.config.ts`
+- `landingpage/types.ts`
+- `landingpage/index.tsx`
+- `landingpage/vite.config.ts`
+- `landingpage/App.tsx`
+
+### Build Commands
+```
+npm run dev  # dev
+npm run build  # build
+npm run preview  # preview
+npm run lint  # lint
+```
