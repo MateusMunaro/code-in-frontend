@@ -1,0 +1,517 @@
+# repomap.txt — 5f4e785e-956b-4487-bb82-969a3aa1a73f
+# AST-compressed repository map (symbols only, no bodies)
+# Generated: 2026-03-14
+# Language: TypeScript
+#
+
+# Stats: 87 files, 191 functions, 1 classes
+#
+
+├── postcss.config.js  (7L)
+├── tailwind.config.js  (59L)
+├── vite.config.d.ts  (3L)
+│   exports: _default
+├── vite.config.ts  (39L)
+
+landingpage/
+  ├── App.tsx  (28L)
+  │   def App()
+  │   exports: App
+  ├── index.tsx  (15L)
+  ├── types.ts  (18L)
+  ├── vite.config.ts  (24L)
+
+landingpage/components/
+  ├── Features.tsx  (62L)
+  │   def Features()
+  ├── Footer.tsx  (55L)
+  │   def Footer()
+  ├── Hero.tsx  (76L)
+  │   def Hero()
+  ├── Navbar.tsx  (81L)
+  │   def Navbar()
+  │   def handleScroll()
+  ├── Problem.tsx  (77L)
+  │   def Problem()
+  ├── ROI.tsx  (106L)
+  │   def ROI()
+  ├── Solution.tsx  (95L)
+  │   def Solution()
+  ├── Trust.tsx  (30L)
+  │   def Trust()
+
+landingpage/components/ui/
+  ├── Button.tsx  (42L)
+  │   def Button({ 
+  children, 
+  variant = 'primary', 
+  size = 'md', 
+  icon: Icon,
+  className = '',
+  ...props 
+})
+
+src/
+  ├── App.tsx  (86L)
+  │   def App()
+  │   def NotFound()
+  │   exports: p;
+
+  ├── main.tsx  (20L)
+  ├── vite-env.d.ts  (13L)
+
+src/(auth)/
+  ├── index.ts  (5L)
+  ├── layout.tsx  (48L)
+  │   def AuthLayoutContent()
+  │   def AuthLayout()
+
+src/(auth)/dashboard/
+  ├── Dashboard.tsx  (209L)
+  │   def Dashboard()
+  │   async def handleRetry(jobId: string)
+  │   async def handleCancel(jobId: string)
+
+src/(auth)/jobDetails/
+  ├── JobDetail.tsx  (1091L)
+  │   def ConfidenceGauge({ score })
+  │   def getLabel()
+  │   def getStability()
+  │   def vityTimeline: Re(ents }) =>)
+  │   def ghtStatCard: Re(on: Icon, label, value, detail }) =>)
+  │   def alizeReasoningSteps(ana() -> rmalizedReasoningStep[] {
+  │   def actDependencyStats(ana() -> pendencyGraphStats {
+  │   def atConfidenceDelta(del() -> ring | null {
+  │   def cateMiddle(val(e: string, st, t = 26, en, = 12): s) -> ring {
+  │   def etail: Re()
+  │   async def leRetry = a()
+  │   def leCopyDocumentation = (()
+  │   def leDownloadDocumentation = (()
+
+src/(auth)/newAnalysis/
+  ├── NewAnalysis.tsx  (179L)
+  │   def NewAnalysis()
+  │   def isValidGitUrl(url: string)
+  │   async def handleSubmit()
+
+src/(auth)/settings/
+  ├── Settings.tsx  (202L)
+  │   def Settings()
+  │   async def handleSaveKeys()
+  │   def toggleShowKey(provider: keyof typeof showKeys)
+
+src/components/docs/
+  ├── DocumentationViewer.tsx  (506L)
+  │   def buildFileTree(files: DocumentationFile[]) -> TreeNode[]
+  │   def n()
+  │   def sortNodes(nodes: TreeNode[]) -> TreeNode[]
+  │   def node()
+  │   def formatSize(bytes: number) -> string
+  │   def TreeNodeItem({
+  node,
+  level,
+  selectedPath,
+  expandedPaths,
+  onSelect,
+  onToggle,
+  searchQuery,
+})
+  │   def hasMatchingChild(n: TreeNode) -> boolean
+  │   def child()
+  │   def MarkdownViewer({ content, fileName })
+  │   async def handleCopy()
+  │   def renderMarkdown(md: string) -> string
+  │   def DocumentationViewer({
+  jobId,
+  files: initialFiles,
+  className,
+})
+  │   async def loadFiles()
+  │   async def loadContent()
+  │   def prev()
+  │   def node()
+  │   exports: DocumentationViewer
+  ├── index.ts  (2L)
+
+src/components/jobs/
+  ├── JobCard.tsx  (101L)
+  │   def JobCard({
+  job,
+  onRetry,
+  onCancel,
+  isRetrying,
+  isCanceling,
+})
+  ├── JobList.tsx  (88L)
+  │   def JobList({
+  jobs,
+  isLoading,
+  error,
+  onRetry,
+  onCancel,
+})
+  ├── JobProgress.tsx  (114L)
+  │   def JobProgress({
+  status,
+  progress = 0,
+  message,
+})
+  │   def etStepStatus (tepId: string))
+  ├── index.ts  (4L)
+
+src/components/layout/
+  ├── AppLayout.tsx  (34L)
+  │   def AppLayout()
+  ├── Header.tsx  (94L)
+  │   def der: R()
+  │   def Title = ()
+  ├── Sidebar.tsx  (231L)
+  │   def ebar: R()
+  │   def ctive = (f: string) =)
+  │   async def dleLogout = ()
+  │   def ebarContent = ()
+  ├── index.ts  (4L)
+
+src/components/models/
+  ├── ModelCard.tsx  (101L)
+  │   def ModelCard({
+  model,
+  isSelected,
+  onSelect,
+})
+  ├── ModelSelector.tsx  (96L)
+  │   def ModelSelector({
+  models,
+  selectedModel,
+  onSelect,
+  isLoading,
+})
+  ├── index.ts  (3L)
+
+src/config/
+  ├── index.ts  (3L)
+
+src/config/apis/
+  ├── api.ts  (192L)
+  │   async def fetchApi(endpoint: string, options: RequestInit = {}) -> Promise<ApiResponse<T>>
+  │   async def checkHealth()
+  │   async def getJobs()
+  │   async def getJob(jobId: string)
+  │   async def getJobWithAnalysis(jobId: string) -> Promise<ApiResponse<JobWithAnalysis>>
+  │   async def updateJob(jobId: string, data: UpdateJobForm)
+  │   async def cancelJob(jobId: string)
+  │   async def createJob(data: CreateJobForm)
+  │   async def yJob(job(d: string) {
+)
+  │   async def odels() {()
+  │   async def odelsByProvider() {()
+  │   async def ocalModels() {()
+  │   async def loudModels() {()
+  │   async def odel(mod(lId: string) {
+)
+  │   async def kModelAvailability(mod(lId: string) {
+)
+  │   async def ocumentationFiles(job(d: string) {
+)
+  │   async def ocumentationFile(job(d: string, fi, Path: string) {
+)
+  ├── index.ts  (2L)
+
+src/config/hooks/
+  ├── index.ts  (4L)
+  ├── useJobs.ts  (127L)
+  │   def useJobs()
+  │   def refresh()
+  │   def useJob(jobId: string)
+  │   def refresh()
+  │   def useCreateJob()
+  │   async def createJob(repoUrl: string, selectedModel: string)
+  │   def useCancelJob()
+  │   async def cancelJob(jobId: string)
+  │   def useRetryJob()
+  │   async def retryJob(jobId: string)
+  ├── useModels.ts  (101L)
+  │   def useModels()
+  │   def useModelsByProvider()
+  │   def models([, models])
+  │   def useModel(modelId: string)
+  ├── useWebSocket.ts  (117L)
+  │   def useWebSocket()
+  │   def useJobUpdates(jobIds: string[], onUpdate: (jobId: string, update: JobUpdate) => void)
+  │   def handleMessage(message: WSMessage)
+
+src/context/
+  ├── ThemeContext.tsx  (136L)
+  │   def applyThemeCSSVariables(colors: ThemeColors)
+  │   def applyTypographyCSSVariables(typo: ThemeTypography)
+  │   def ThemeProvider({
+    children,
+    defaultTheme = 'dark',
+})
+  │   def useTheme() -> ThemeContextType
+  ├── index.ts  (2L)
+
+src/public/components/
+  ├── Features.tsx  (88L)
+  │   def Features()
+  ├── Footer.tsx  (91L)
+  │   def Footer()
+  ├── Hero.tsx  (95L)
+  │   def Hero()
+  ├── Navbar.tsx  (94L)
+  │   def Navbar()
+  │   def handleScroll()
+  ├── Problem.tsx  (102L)
+  │   def Problem()
+  ├── ROI.tsx  (156L)
+  │   def ROI()
+  ├── Solution.tsx  (157L)
+  │   def Solution()
+  ├── Trust.tsx  (80L)
+  │   def Trust()
+  ├── index.ts  (9L)
+
+src/public/pages/
+  ├── CliAuthCallbackPage.tsx  (109L)
+  │   def parseParams(raw: string) -> URLSearchParams
+  │   def CliAuthCallbackPage()
+  │   async def forwardTokenToCli()
+  ├── LandingPage.tsx  (29L)
+  │   def LandingPage()
+  ├── LoginPage.tsx  (206L)
+  │   def LoginPage()
+  │   async def completeCliLogin(accessToken: string, refreshToken: string)
+  │   async def handleSubmit(e: React.FormEvent)
+  ├── SignupPage.tsx  (214L)
+  │   def SignupPage()
+  │   async def handleSubmit(e: React.FormEvent)
+  ├── index.ts  (4L)
+
+src/shared/components/
+  ├── ProtectedRoute.tsx  (46L)
+  │   def ProtectedRoute({ children })
+  │   def blicOnlyRoute: (children }) )
+
+src/shared/components/ui/
+  ├── Alert.tsx  (71L)
+  │   def Alert({
+  children,
+  variant = 'info',
+  title,
+  icon,
+  onClose,
+  className,
+  ...props
+})
+  ├── Badge.tsx  (99L)
+  │   def Badge({
+  children,
+  variant = 'default',
+  size = 'md',
+  icon: Icon,
+  dot = false,
+  className,
+  ...props
+})
+  │   def StatusBadge({ status, ...props })
+  ├── Button.tsx  (94L)
+  │   def Button({
+  children,
+  variant = 'primary',
+  size = 'md',
+  icon: Icon,
+  iconPosition = 'right',
+  isLoading = false,
+  fullWidth = false,
+  className = '',
+  disabled,
+  ...props
+})
+  ├── Card.tsx  (124L)
+  │   def Card({
+  children,
+  variant = 'default',
+  padding = 'md',
+  className,
+  ...props
+})
+  │   def CardHeader({
+  children,
+  className,
+  ...props
+})
+  │   def CardTitle({
+  children,
+  as: Component = 'h3',
+  className,
+  ...props
+})
+  │   def CardDescription({
+  children,
+  className,
+  ...props
+})
+  │   def CardContent({
+  children,
+  className,
+  ...props
+})
+  │   def CardFooter({
+  children,
+  className,
+  ...props
+})
+  ├── EmptyState.tsx  (42L)
+  │   def EmptyState({
+  icon,
+  title,
+  description,
+  action,
+  className,
+  ...props
+})
+  ├── Input.tsx  (130L)
+  ├── Modal.tsx  (178L)
+  │   def Modal({
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+  size = 'md',
+  closeOnOverlayClick = true,
+  closeOnEscape = true,
+  showCloseButton = true,
+})
+  │   def ConfirmModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText = 'Confirmar',
+  cancelText = 'Cancelar',
+  variant = 'default',
+  isLoading = false,
+})
+  ├── Progress.tsx  (114L)
+  │   def Progress({
+  value,
+  max = 100,
+  size = 'md',
+  variant = 'primary',
+  showLabel = false,
+  animated = true,
+  className,
+  ...props
+})
+  │   def LoadingProgress({
+  size = 'md',
+  variant = 'primary',
+  className,
+  ...props
+})
+  ├── Select.tsx  (128L)
+  ├── Spinner.tsx  (108L)
+  │   def Spinner({
+  size = 'md',
+  variant = 'primary',
+  className,
+  ...props
+})
+  │   def LoadingScreen({
+  message = 'LOADING...',
+})
+  │   def InlineLoading({
+  text = 'Loading',
+})
+  │   def Skeleton({
+  variant = 'text',
+  width,
+  height,
+  className,
+  ...props
+})
+  ├── index.ts  (30L)
+
+src/shared/contexts/
+  ├── SidebarContext.tsx  (41L)
+  │   def useSidebar()
+  │   def SidebarProvider({ children })
+  ├── ThemeContext.tsx  (136L)
+  │   def applyThemeCSSVariables(colors: ThemeColors)
+  │   def applyTypographyCSSVariables(typo: ThemeTypography)
+  │   def ThemeProvider({
+    children,
+    defaultTheme = 'dark',
+})
+  │   def useTheme() -> ThemeContextType
+  ├── index.ts  (3L)
+
+src/shared/lib/
+  ├── api.ts  (204L)
+  │   async def fetchApi(endpoint: string, options: RequestInit = {}) -> Promise<ApiResponse<T>>
+  │   async def checkHealth()
+  │   async def getJobs()
+  │   async def getJob(jobId: string)
+  │   async def getJobWithAnalysis(jobId: string) -> Promise<ApiResponse<JobWithAnalysis>>
+  │   async def updateJob(jobId: string, data: UpdateJobForm)
+  │   async def cancelJob(jobId: string)
+  │   async def createJob(data: CreateJobForm)
+  │   async def yJob(job(d: string) {
+)
+  │   async def odels() {()
+  │   async def odelsByProvider() {()
+  │   async def ocalModels() {()
+  │   async def loudModels() {()
+  │   async def odel(mod(lId: string) {
+)
+  │   async def kModelAvailability(mod(lId: string) {
+)
+  │   async def ocumentationFiles(job(d: string) {
+)
+  │   async def ocumentationFile(job(d: string, fi, Path: string) {
+)
+  ├── index.ts  (5L)
+  ├── supabase.ts  (21L)
+  ├── utils.ts  (119L)
+  │   def cn(...inputs: ClassValue[])
+  │   def formatDate(date: string | Date | undefined | null, locale = 'pt-BR') -> string
+  │   def formatRelativeTime(date: string | Date | undefined | null) -> string
+  │   def ncate(te(t: string, m, Length: number): ) -> tring {
+  │   def ractRepoName(ur(: string): ) -> tring {
+  │   def StatusColor(st(tus: string): ) -> tring {
+  │   def ProviderColor(pr(vider: string): ) -> tring {
+  │   def matNumber(nu(: number): ) -> tring {
+  │   def ay(ms( number): ) -> romise<void> {
+  │   def eJsonParse<T>(n: string, f, lback: T): ) -> {
+  ├── websocket.ts  (155L)
+  │   class WebSocketClient
+  │     def constructor(options: WebSocketClientOptions)
+  │     def connect() -> void
+  │     def disconnect() -> void
+  │     def attemptReconnect() -> void
+  │     def startPing() -> void
+  │     def stopPing() -> void
+  │     def send(data: unknown) -> void
+  │     def subscribe(jobId: string) -> void
+  │     def unsubscribe(jobId: string) -> void
+  │     def onMessage(handler: MessageHandler) -> () => void
+  │     def onConnect(handler: ConnectionHandler) -> () => void
+  │     def onDisconnect(handler: ConnectionHandler) -> () => void
+  │     def isConnected() -> boolean
+  │   def getWebSocketClient() -> WebSocketClient
+
+src/shared/stores/
+  ├── authStore.ts  (216L)
+  │   def saveGitHubToken(token: string | undefined)
+  │   def getStoredGitHubToken() -> string | undefined
+  │   def clearGitHubToken()
+  ├── index.ts  (2L)
+
+src/shared/types/
+  ├── index.ts  (216L)
+
+src/styles/
+  ├── colors.ts  (134L)
+  ├── typography.ts  (60L)
