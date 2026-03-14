@@ -1,0 +1,362 @@
+# ReadMe.LLM — src/shared/
+
+> Machine-readable module documentation for `5f4e785e-956b-4487-bb82-969a3aa1a73f`
+> Generated: 2026-03-14
+
+---
+
+## Module Summary
+
+- **Files:** 23
+- **Functions:** 71
+- **Classes:** 1
+- **Language:** TypeScript
+
+### Files
+
+- `Alert.tsx`
+- `Badge.tsx`
+- `Button.tsx`
+- `Card.tsx`
+- `EmptyState.tsx`
+- `Input.tsx`
+- `Modal.tsx`
+- `Progress.tsx`
+- `ProtectedRoute.tsx`
+- `Select.tsx`
+- `SidebarContext.tsx`
+- `Spinner.tsx`
+- `ThemeContext.tsx`
+- `api.ts`
+- `authStore.ts`
+- `index.ts`
+- `index.ts`
+- `index.ts`
+- `index.ts`
+- `index.ts`
+- `supabase.ts`
+- `utils.ts`
+- `websocket.ts`
+
+---
+
+## Signatures
+
+### `ProtectedRoute.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `ProtectedRoute` | `{ children }` | `None` |  |
+| `blicOnlyRoute: ` | `children }) ` | `None` |  |
+
+### `Alert.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Alert` | `{
+  children,
+  variant = 'info',
+  title,
+  icon,
+  onClose,
+  className,
+  ...props
+}` | `None` |  |
+
+### `Badge.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Badge` | `{
+  children,
+  variant = 'default',
+  size = 'md',
+  icon: Icon,
+  dot = false,
+  className,
+  ...props
+}` | `None` |  |
+| `StatusBadge` | `{ status, ...props }` | `None` |  |
+
+### `Button.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Button` | `{
+  children,
+  variant = 'primary',
+  size = 'md',
+  icon: Icon,
+  iconPosition = 'right',
+  isLoading = false,
+  fullWidth = false,
+  className = '',
+  disabled,
+  ...props
+}` | `None` |  |
+
+### `Card.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Card` | `{
+  children,
+  variant = 'default',
+  padding = 'md',
+  className,
+  ...props
+}` | `None` |  |
+| `CardHeader` | `{
+  children,
+  className,
+  ...props
+}` | `None` |  |
+| `CardTitle` | `{
+  children,
+  as: Component = 'h3',
+  className,
+  ...props
+}` | `None` |  |
+| `CardDescription` | `{
+  children,
+  className,
+  ...props
+}` | `None` |  |
+| `CardContent` | `{
+  children,
+  className,
+  ...props
+}` | `None` |  |
+| `CardFooter` | `{
+  children,
+  className,
+  ...props
+}` | `None` |  |
+
+### `EmptyState.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `EmptyState` | `{
+  icon,
+  title,
+  description,
+  action,
+  className,
+  ...props
+}` | `None` |  |
+
+### `Modal.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Modal` | `{
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+  size = 'md',
+  closeOnOverlayClick = true,
+  closeOnEscape = true,
+  showCloseButton = true,
+}` | `None` |  |
+| `ConfirmModal` | `{
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText = 'Confirmar',
+  cancelText = 'Cancelar',
+  variant = 'default',
+  isLoading = false,
+}` | `None` |  |
+
+### `Progress.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Progress` | `{
+  value,
+  max = 100,
+  size = 'md',
+  variant = 'primary',
+  showLabel = false,
+  animated = true,
+  className,
+  ...props
+}` | `None` |  |
+| `LoadingProgress` | `{
+  size = 'md',
+  variant = 'primary',
+  className,
+  ...props
+}` | `None` |  |
+
+### `Spinner.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `Spinner` | `{
+  size = 'md',
+  variant = 'primary',
+  className,
+  ...props
+}` | `None` |  |
+| `LoadingScreen` | `{
+  message = 'LOADING...',
+}` | `None` |  |
+| `InlineLoading` | `{
+  text = 'Loading',
+}` | `None` |  |
+| `Skeleton` | `{
+  variant = 'text',
+  width,
+  height,
+  className,
+  ...props
+}` | `None` |  |
+
+### `SidebarContext.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `useSidebar` | `` | `None` |  |
+| `SidebarProvider` | `{ children }` | `None` |  |
+
+### `ThemeContext.tsx`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `applyThemeCSSVariables` | `colors: ThemeColors` | `None` |  |
+| `applyTypographyCSSVariables` | `typo: ThemeTypography` | `None` |  |
+| `ThemeProvider` | `{
+    children,
+    defaultTheme = 'dark',
+}` | `None` |  |
+| `useTheme` | `` | `ThemeContextType` |  |
+
+### `api.ts`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `fetchApi` | `endpoint: string, options: RequestInit = {}` | `Promise<ApiResponse<T>>` | ✓ |
+| `checkHealth` | `` | `None` | ✓ |
+| `getJobs` | `` | `None` | ✓ |
+| `getJob` | `jobId: string` | `None` | ✓ |
+| `getJobWithAnalysis` | `jobId: string` | `Promise<ApiResponse<JobWithAnalysis>>` | ✓ |
+| `updateJob` | `jobId: string, data: UpdateJobForm` | `None` | ✓ |
+| `cancelJob` | `jobId: string` | `None` | ✓ |
+| `createJob` | `data: CreateJobForm` | `None` | ✓ |
+| `yJob(job` | `d: string) {
+` | `None` | ✓ |
+| `odels() {` | `` | `None` | ✓ |
+| `odelsByProvider() {` | `` | `None` | ✓ |
+| `ocalModels() {` | `` | `None` | ✓ |
+| `loudModels() {` | `` | `None` | ✓ |
+| `odel(mod` | `lId: string) {
+` | `None` | ✓ |
+| `kModelAvailability(mod` | `lId: string) {
+` | `None` | ✓ |
+| `ocumentationFiles(job` | `d: string) {
+` | `None` | ✓ |
+| `ocumentationFile(job` | `d: string, fi, Path: string) {
+` | `None` | ✓ |
+
+### `utils.ts`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `cn` | `...inputs: ClassValue[]` | `None` |  |
+| `formatDate` | `date: string | Date | undefined | null, locale = 'pt-BR'` | `string` |  |
+| `formatRelativeTime` | `date: string | Date | undefined | null` | `string` |  |
+| `ncate(te` | `t: string, m, Length: number): ` | `tring {` |  |
+| `ractRepoName(ur` | `: string): ` | `tring {` |  |
+| `StatusColor(st` | `tus: string): ` | `tring {` |  |
+| `ProviderColor(pr` | `vider: string): ` | `tring {` |  |
+| `matNumber(nu` | `: number): ` | `tring {` |  |
+| `ay(ms` | ` number): ` | `romise<void> {` |  |
+| `eJsonParse<T>` | `n: string, f, lback: T): ` | `{` |  |
+
+### `websocket.ts`
+
+**class `WebSocketClient`**
+
+| Method | Params | Returns | Async |
+|--------|--------|---------|-------|
+| `constructor` | `options: WebSocketClientOptions` | `None` |  |
+| `connect` | `` | `void` |  |
+| `disconnect` | `` | `void` |  |
+| `attemptReconnect` | `` | `void` |  |
+| `startPing` | `` | `void` |  |
+| `stopPing` | `` | `void` |  |
+| `send` | `data: unknown` | `void` |  |
+| `subscribe` | `jobId: string` | `void` |  |
+| `unsubscribe` | `jobId: string` | `void` |  |
+| `onMessage` | `handler: MessageHandler` | `() => void` |  |
+| `onConnect` | `handler: ConnectionHandler` | `() => void` |  |
+| `onDisconnect` | `handler: ConnectionHandler` | `() => void` |  |
+| `isConnected` | `` | `boolean` |  |
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `getWebSocketClient` | `` | `WebSocketClient` |  |
+
+### `authStore.ts`
+
+| Function | Params | Returns | Async |
+|----------|--------|---------|-------|
+| `saveGitHubToken` | `token: string | undefined` | `None` |  |
+| `getStoredGitHubToken` | `` | `string | undefined` |  |
+| `clearGitHubToken` | `` | `None` |  |
+
+---
+
+## Dependencies
+
+### This module imports from:
+- `ThemeContext.tsx` → `src/styles/colors.ts`
+- `ThemeContext.tsx` → `src/styles/typography.ts`
+
+### Imported by:
+- `src/components/docs/DocumentationViewer.tsx` → `api.ts`
+- `src/config/hooks/useJobs.ts` → `api.ts`
+- `src/config/hooks/useModels.ts` → `api.ts`
+- `src/config/hooks/useJobs.ts` → `authStore.ts`
+- `src/(auth)/jobDetails/JobDetail.tsx` → `utils.ts`
+- `src/components/docs/DocumentationViewer.tsx` → `utils.ts`
+- `src/components/jobs/JobCard.tsx` → `utils.ts`
+- `src/components/jobs/JobProgress.tsx` → `utils.ts`
+- `src/components/layout/Sidebar.tsx` → `utils.ts`
+- `src/components/models/ModelCard.tsx` → `utils.ts`
+- `src/config/hooks/useWebSocket.ts` → `websocket.ts`
+
+---
+
+## Module Structure
+
+```mermaid
+flowchart TB
+    subgraph src_shared["src/shared/"]
+        src_shared_ProtectedRoute_tsx["ProtectedRoute.tsx (2F)"]
+        src_shared_index_ts["index.ts"]
+        src_shared_authStore_ts["authStore.ts (3F)"]
+        src_shared_index_ts["index.ts"]
+        src_shared_SidebarContext_tsx["SidebarContext.tsx (2F)"]
+        src_shared_ThemeContext_tsx["ThemeContext.tsx (4F)"]
+        src_shared_index_ts["index.ts"]
+        src_shared_websocket_ts["websocket.ts (14F, 1C)"]
+        src_shared_utils_ts["utils.ts (10F)"]
+        src_shared_supabase_ts["supabase.ts"]
+        src_shared_api_ts["api.ts (17F)"]
+        src_shared_index_ts["index.ts"]
+        src_shared_authStore_ts --> src_shared_supabase_ts
+        src_shared_api_ts --> src_shared_supabase_ts
+    end
+```
+
+---
+
+
+*Generated by Code-In Agent — 2026-03-14*
