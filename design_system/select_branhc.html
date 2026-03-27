@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;700&amp;family=VT323&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00FF41",
+                        "background": "#0D0D0D",
+                        "surface": "#1A1A1A",
+                        "surface-container": "#131313",
+                        "on-surface": "#F2F2F2",
+                        "on-surface-variant": "#A0A0A0",
+                        "outline-variant": "#333333",
+                        "error": "#FF3333",
+                    },
+                    fontFamily: {
+                        "headline": ["VT323", "monospace"],
+                        "body": ["JetBrains Mono", "monospace"],
+                        "label": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'retro': '4px 4px 0px 0px #00FF41',
+                        'retro-dim': '4px 4px 0px 0px #333333',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 12px;
+            background: #0D0D0D;
+            border-left: 1px solid #333;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #333;
+            border: 1px solid #00FF41;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #00FF41;
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(#00FF41 1px, transparent 1px), linear-gradient(90deg, #00FF41 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.05;
+        }
+
+        .blink {
+            animation: blinker 1s step-start infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .scanlines {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background text-on-surface font-body overflow-hidden h-screen flex flex-col selection:bg-primary selection:text-black">
+    <div class="scanlines"></div>
+    <div class="fixed inset-0 grid-bg pointer-events-none"></div>
+    <!-- TopNavBar -->
+    <header
+        class="bg-[#131313] text-[#00FF41] font-['Space_Grotesk'] uppercase tracking-tighter text-sm flex items-center w-full px-4 h-12 justify-between z-50">
+        <div class="flex items-center h-full">
+            <div class="text-[#00FF41] font-bold tracking-widest px-2 border-r border-[#3B4B37]/20 mr-4">
+                CODE-IN
+            </div>
+            <nav class="flex gap-4">
+                <a class="text-[#A0A0A0] hover:bg-[#00FF41] hover:text-[#003907] transition-none px-2" href="#">root</a>
+                <a class="text-[#A0A0A0] hover:bg-[#00FF41] hover:text-[#003907] transition-none px-2"
+                    href="#">projects</a>
+                <a class="text-[#00FF41] before:content-['&gt;'] before:mr-1 px-2" href="#">repo-name</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="material-symbols-outlined hover:bg-[#00FF41] hover:text-[#003907] cursor-pointer p-1">terminal
+            </div>
+            <div class="material-symbols-outlined hover:bg-[#00FF41] hover:text-[#003907] cursor-pointer p-1">settings
+            </div>
+        </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- SideNavBar -->
+        <aside
+            class="bg-[#131313] fixed left-0 top-12 h-[calc(100vh-48px)] w-64 flex flex-col border-r border-outline-variant/30 z-40">
+            <div class="p-6 border-b border-outline-variant/30">
+                <div class="text-[#00FF41] font-black font-['JetBrains_Mono'] text-xs uppercase">TERMINAL_v1.0</div>
+                <div class="text-[#00FF41] opacity-60 text-[10px] tracking-widest">[ SYSTEM READY ]</div>
+            </div>
+            <nav class="flex-1 py-4">
+                <a class="text-[#00FF41] flex items-center px-4 py-2 opacity-70 hover:bg-[#2A2A2A] hover:opacity-100 transition-none font-['JetBrains_Mono'] text-xs uppercase"
+                    href="#">
+                    <span class="material-symbols-outlined mr-3">dashboard</span>
+                    Dashboard
+                </a>
+                <a class="bg-[#00FF41] text-[#003907] font-bold flex items-center px-4 py-2 font-['JetBrains_Mono'] text-xs uppercase"
+                    href="#">
+                    <span class="material-symbols-outlined mr-3">analytics</span>
+                    Novas Análises
+                </a>
+                <a class="text-[#00FF41] flex items-center px-4 py-2 opacity-70 hover:bg-[#2A2A2A] hover:opacity-100 transition-none font-['JetBrains_Mono'] text-xs uppercase"
+                    href="#">
+                    <span class="material-symbols-outlined mr-3">settings</span>
+                    Configurações
+                </a>
+            </nav>
+        </aside>
+        <!-- Main Content Canvas -->
+        <main class="flex-1 ml-64 p-8 overflow-y-auto custom-scrollbar flex flex-col gap-8 pb-24">
+            <!-- Breadcrumb / Step Indicator -->
+            <div
+                class="flex items-center gap-2 text-[12px] font-mono tracking-widest text-on-surface-variant uppercase">
+                <span>Step 01: Connect</span>
+                <span class="text-primary">&gt;&gt;</span>
+                <span class="text-primary font-bold">Step 02: Conflict Config</span>
+                <span class="text-outline-variant">&gt;&gt;</span>
+                <span class="text-outline-variant">Step 03: Analysis</span>
+            </div>
+            <!-- Header Section -->
+            <section class="max-w-4xl">
+                <h1 class="font-headline text-6xl font-normal tracking-wider text-on-surface uppercase mb-4">
+                    Configuração de Conflitos <span class="text-primary blink">_</span>
+                </h1>
+                <p class="text-on-surface-variant font-body text-sm max-w-2xl leading-relaxed">
+                    // Defina os parâmetros de entrada para a análise semântica. Selecione as ramificações de destino
+                    para identificação de divergências estruturais e lógica de merge.
+                </p>
+            </section>
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-12 gap-8 max-w-6xl">
+                <!-- Repo URL Block (Full Width) -->
+                <div class="col-span-12 bg-background border border-primary/30 p-6 relative group">
+                    <label class="block text-[10px] uppercase tracking-widest text-primary mb-3 font-bold">&gt;
+                        repo_url</label>
+                    <div class="flex items-center gap-4 bg-surface border border-outline-variant p-4 font-mono text-sm">
+                        <span class="text-primary">$ git remote get-url origin</span>
+                        <input class="bg-transparent border-none text-on-surface w-full focus:ring-0 p-0 cursor-default"
+                            readonly="" type="text" value="https://github.com/vortex-labs/core-engine-v3.git" />
+                        <span class="w-2 h-5 bg-primary blink"></span>
+                    </div>
+                </div>
+                <!-- Branch Selection Panel -->
+                <div class="col-span-12 lg:col-span-7 bg-surface border border-outline-variant p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xs font-bold tracking-widest uppercase flex items-center gap-2 text-on-surface">
+                            <span class="material-symbols-outlined text-primary">service_directory</span>
+                            Select Branches to Compare
+                        </h2>
+                        <span class="text-[10px] text-on-surface-variant font-mono">TOTAL: 03 DETECTED</span>
+                    </div>
+                    <div class="space-y-4">
+                        <!-- Branch Item -->
+                        <div
+                            class="flex items-center p-4 bg-background border border-outline-variant hover:border-primary transition-colors group cursor-pointer">
+                            <input checked=""
+                                class="w-5 h-5 bg-transparent border-2 border-primary text-black focus:ring-0 rounded-none cursor-pointer"
+                                type="checkbox" />
+                            <div class="ml-4 flex-1">
+                                <div class="text-sm font-bold uppercase tracking-tight text-on-surface">main</div>
+                                <div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last commit:
+                                    2h ago by @sys_admin</div>
+                            </div>
+                            <div class="text-[10px] px-2 py-0.5 border border-primary text-primary font-bold">STABLE
+                            </div>
+                        </div>
+                        <!-- Branch Item -->
+                        <div
+                            class="flex items-center p-4 bg-background border border-outline-variant hover:border-primary transition-colors group cursor-pointer">
+                            <input
+                                class="w-5 h-5 bg-transparent border-2 border-primary text-black focus:ring-0 rounded-none cursor-pointer"
+                                type="checkbox" />
+                            <div class="ml-4 flex-1">
+                                <div class="text-sm font-bold uppercase tracking-tight text-on-surface">feat-auth</div>
+                                <div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last commit:
+                                    14h ago by @dev_01</div>
+                            </div>
+                            <div class="text-[10px] px-2 py-0.5 border border-outline-variant text-on-surface-variant">
+                                PENDING</div>
+                        </div>
+                        <!-- Branch Item -->
+                        <div
+                            class="flex items-center p-4 bg-background border border-outline-variant hover:border-primary transition-colors group cursor-pointer">
+                            <input
+                                class="w-5 h-5 bg-transparent border-2 border-primary text-black focus:ring-0 rounded-none cursor-pointer"
+                                type="checkbox" />
+                            <div class="ml-4 flex-1">
+                                <div class="text-sm font-bold uppercase tracking-tight text-on-surface">feat-pay</div>
+                                <div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last commit:
+                                    1d ago by @dev_02</div>
+                            </div>
+                            <div class="text-[10px] px-2 py-0.5 border border-outline-variant text-on-surface-variant">
+                                PENDING</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Model & Settings Panel -->
+                <div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+                    <!-- LLM Selector -->
+                    <div class="bg-surface border border-outline-variant p-6">
+                        <h2
+                            class="text-xs font-bold tracking-widest uppercase mb-4 flex items-center gap-2 text-on-surface">
+                            <span class="material-symbols-outlined text-primary">psychology</span>
+                            LLM Engine
+                        </h2>
+                        <div class="space-y-3">
+                            <div
+                                class="p-4 bg-background border-l-4 border-primary flex justify-between items-center cursor-pointer shadow-retro">
+                                <div>
+                                    <div class="text-xs font-bold text-on-surface">gemini-2.5-flash</div>
+                                    <div class="text-[10px] text-primary opacity-80 uppercase tracking-tighter">High
+                                        Speed / Optimized</div>
+                                </div>
+                                <span class="material-symbols-outlined text-primary">check_circle</span>
+                            </div>
+                            <div
+                                class="p-4 bg-background border border-outline-variant opacity-50 flex justify-between items-center cursor-not-allowed">
+                                <div>
+                                    <div class="text-xs font-bold text-on-surface">gpt-4-turbo-stable</div>
+                                    <div class="text-[10px] text-on-surface-variant uppercase tracking-tighter">High
+                                        Reasoning / Legacy</div>
+                                </div>
+                                <span class="material-symbols-outlined text-on-surface-variant">lock</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- System Status Info -->
+                    <div
+                        class="bg-background border border-primary/20 p-6 font-mono text-[10px] leading-relaxed shadow-retro-dim">
+                        <div class="text-primary mb-3 font-bold">[ SYSTEM STATUS ]</div>
+                        <div class="grid grid-cols-2 gap-y-2">
+                            <span class="text-on-surface-variant uppercase">Connection:</span>
+                            <span class="text-on-surface">ENCRYPTED_TLS</span>
+                            <span class="text-on-surface-variant uppercase">Latency:</span>
+                            <span class="text-on-surface">12ms</span>
+                            <span class="text-on-surface-variant uppercase">Token Est:</span>
+                            <span class="text-on-surface">~4.2k</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-outline-variant">
+                            <div class="flex justify-between items-center text-primary font-bold">
+                                <span>READY TO COMPILE</span>
+                                <span class="blink">●</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Execute Action Button -->
+            <div class="max-w-6xl w-full">
+                <button
+                    class="w-full bg-primary hover:bg-white text-black font-headline font-bold py-6 text-3xl tracking-widest transition-all duration-100 uppercase flex items-center justify-center gap-4 group shadow-retro active:shadow-none active:translate-x-1 active:translate-y-1">
+                    EXECUTAR ANÁLISE SEMÂNTICA
+                    <span
+                        class="material-symbols-outlined text-4xl group-hover:translate-x-2 transition-transform">chevron_right</span>
+                </button>
+            </div>
+        </main>
+    </div>
+    <!-- Footer -->
+    <footer
+        class="bg-[#0E0E0E] text-[#00FF41] font-['JetBrains_Mono'] text-[10px] uppercase tracking-widest fixed bottom-0 w-full z-50 flex justify-between items-center px-6 h-8 border-t border-outline-variant/30">
+        <div>v1.2.4-stable</div>
+        <div class="flex gap-6">
+            <span class="hover:text-white cursor-pointer transition-none">MCP: CONNECTED</span>
+            <span class="hover:text-white cursor-pointer transition-none">BRANCH: MAIN</span>
+            <span class="hover:text-white cursor-pointer transition-none">MEM: 420MB</span>
+            <span class="hover:text-white cursor-pointer flex items-center gap-1 transition-none">
+                TOKENS: 12.4K SAVED
+                <span class="inline-block w-1.5 h-1.5 bg-[#00FF41] rounded-none blink"></span>
+            </span>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -8,6 +8,7 @@ import {
   LogOut,
   ChevronLeft,
   Menu,
+  Download,
 } from 'lucide-react';
 import { cn } from '@shared/lib/utils';
 import { useAuthStore } from '@shared/stores';
@@ -22,6 +23,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/app', icon: LayoutDashboard },
   { label: 'Nova Análise', href: '/app/new', icon: Plus },
+  { label: 'CLI Download', href: '/app/cli', icon: Download },
   { label: 'Configurações', href: '/app/settings', icon: Settings },
 ];
 

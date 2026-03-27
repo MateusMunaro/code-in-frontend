@@ -9,7 +9,7 @@ import { CliAuthCallbackPage } from '@public/pages/CliAuthCallbackPage';
 
 // Auth Pages
 import AuthLayout from '@/(auth)/layout';
-import { Dashboard, NewAnalysis, JobDetail, Settings } from '@/(auth)';
+import { Dashboard, NewAnalysis, JobDetail, Settings, CliDownload } from '@/(auth)';
 
 const App: React.FC = () => {
   const { checkSession } = useAuthStore();
@@ -56,6 +56,7 @@ const App: React.FC = () => {
         <Route path="new" element={<NewAnalysis />} />
         <Route path="jobs/:jobId" element={<JobDetail />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="cli" element={<CliDownload />} />
       </Route>
 
       {/* 404 */}

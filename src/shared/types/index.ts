@@ -1,11 +1,15 @@
 // ===== Job Types =====
 export type JobStatus = 'pending' | 'processing' | 'completed' | 'failed';
+export type JobType = 'analysis' | 'conflict_analysis';
+export type ServiceSelection = 'codebase' | 'conflict' | 'both';
 
 export interface Job {
   id: string;
   repo_url: string;
   status: JobStatus;
   selected_model: string;
+  job_type?: JobType;
+  branches?: string[];
   result: Record<string, unknown> | null;
   error_message: string | null;
   created_at: string;
@@ -88,7 +92,28 @@ export interface AnalysisResult {
   pr_branch?: string | null;
   pr_status?: 'none' | 'created' | 'merged' | 'closed' | 'failed';
   pr_created_at?: string | null;
+  // Conflict analysis (for conflict_analysis jobs)
+  conflict_analysis?: ConflictAnalysisData | null;
   created_at: string;
+}
+
+// ===== Conflict Analysis Types =====
+export interface ConflictRisk {
+  file_path: string;
+  risk_level: 'high' | 'medium' | 'low';
+  conflicting_branches: string[];
+  description: string;
+  recommendation: string;
+}
+
+export interface ConflictAnalysisData {
+  branches: string[];
+  conflict_risks: ConflictRisk[];
+  general_recommendations: string[];
+  merge_order_suggestion: string[];
+  overlapping_files: Record<string, string[]>;
+  semantic_context: Record<string, string>;
+  confidence: number;
 }
 
 export interface AgentReasoning {
@@ -115,7 +140,7 @@ export interface SuggestedImprovement {
 }
 
 // ===== Model Types =====
-export type ModelProvider = 'google';
+export type ModelProvider = 'google' | 'openai' | 'anthropic';
 
 export interface LLMModel {
   id: string;
@@ -195,6 +220,12 @@ export interface CreateJobForm {
   github_token?: string; // Token for creating PR with docs
 }
 
+export interface CreateConflictAnalysisForm {
+  repo_url: string;
+  branches: string[];
+  model_id?: string;
+}
+
 export interface UpdateJobForm {
   selected_model: string;
 }
@@ -209,7 +240,67 @@ export interface CreateJobResponse {
   message: string;
 }
 
+export interface CreateConflictAnalysisResponse {
+  job_id: string;
+  branches: string[];
+  status: JobStatus;
+  message: string;
+}
+
 // ===== Settings Types =====
 export interface ApiKeySettings {
   google?: string;
 }
+
+// ===== User API Keys Types =====
+export interface UserApiKey {
+  id: string;
+  provider: string;
+  label: string;
+  key_hint: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ApiKeyStatus {
+  provider: string;
+  configured: boolean;
+}
+
+export interface StoreApiKeyRequest {
+  provider: string;
+  api_key: string;
+  label?: string;
+}
+
+export interface StoreApiKeyResponse {
+  id: string;
+  provider: string;
+  label: string;
+  key_hint: string;
+  message: string;
+}
+
+export const PROVIDER_INFO: Record<string, { name: string; badge: string; color: string; keyPrefix: string; keyUrl: string }> = {
+  google: {
+    name: 'Google AI',
+    badge: 'Gemini',
+    color: 'text-blue-400',
+    keyPrefix: 'AIza...',
+    keyUrl: 'https://aistudio.google.com/apikey',
+  },
+  openai: {
+    name: 'OpenAI',
+    badge: 'GPT',
+    color: 'text-cyan-400',
+    keyPrefix: 'sk-...',
+    keyUrl: 'https://platform.openai.com/api-keys',
+  },
+  anthropic: {
+    name: 'Anthropic',
+    badge: 'Claude',
+    color: 'text-orange-400',
+    keyPrefix: 'sk-ant-...',
+    keyUrl: 'https://console.anthropic.com/settings/keys',
+  },
+};

@@ -6,10 +6,16 @@ import type {
   ModelsByProvider, 
   CreateJobForm,
   CreateJobResponse,
+  CreateConflictAnalysisForm,
+  CreateConflictAnalysisResponse,
   UpdateJobForm,
   ApiResponse,
   DocumentationFilesResponse,
   DocumentationFileContent,
+  UserApiKey,
+  ApiKeyStatus,
+  StoreApiKeyRequest,
+  StoreApiKeyResponse,
 } from '@shared/types';
 import { supabase } from '@shared/lib/supabase';
 
@@ -142,6 +148,17 @@ export async function retryJob(jobId: string) {
   });
 }
 
+export async function createConflictAnalysis(data: CreateConflictAnalysisForm) {
+  return fetchApi<CreateConflictAnalysisResponse>('/repos/conflict-analysis', {
+    method: 'POST',
+    body: JSON.stringify({
+      repo_url: data.repo_url,
+      branches: data.branches,
+      model_id: data.model_id,
+    }),
+  });
+}
+
 // ===== Models =====
 export async function getModels() {
   return fetchApi<LLMModel[]>('/models');
@@ -176,6 +193,28 @@ export async function getDocumentationFile(jobId: string, filePath: string) {
   return fetchApi<DocumentationFileContent>(`/jobs/${jobId}/files/${filePath}`);
 }
 
+// ===== API Keys (BYOK) =====
+export async function listApiKeys() {
+  return fetchApi<UserApiKey[]>('/api-keys');
+}
+
+export async function storeApiKey(data: StoreApiKeyRequest) {
+  return fetchApi<StoreApiKeyResponse>('/api-keys', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteApiKey(keyId: string) {
+  return fetchApi<{ message: string }>(`/api-keys/${keyId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function getApiKeysStatus() {
+  return fetchApi<ApiKeyStatus[]>('/api-keys/status');
+}
+
 // ===== API Client Export =====
 export const api = {
   health: checkHealth,
@@ -188,6 +227,9 @@ export const api = {
     create: createJob,
     retry: retryJob,
   },
+  repos: {
+    conflictAnalysis: createConflictAnalysis,
+  },
   docs: {
     list: getDocumentationFiles,
     get: getDocumentationFile,
@@ -199,5 +241,11 @@ export const api = {
     cloud: getCloudModels,
     get: getModel,
     checkAvailable: checkModelAvailability,
+  },
+  apiKeys: {
+    list: listApiKeys,
+    store: storeApiKey,
+    delete: deleteApiKey,
+    status: getApiKeysStatus,
   },
 };

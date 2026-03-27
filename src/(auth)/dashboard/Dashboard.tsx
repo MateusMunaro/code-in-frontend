@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, Terminal, BarChart3, CheckCircle2, XCircle, RefreshCw } from 'lucide-react';
-import { Button } from '@shared/components/ui';
+import { Terminal, BarChart3, CheckCircle2, XCircle, RefreshCw } from 'lucide-react';
 import { JobList } from '@components/jobs';
 import { useJobs, useRetryJob, useCancelJob, useJobUpdates } from '@config/hooks';
 import { useTheme } from '@shared/contexts';
@@ -84,7 +82,7 @@ export const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6 max-w-full overflow-x-hidden">
+    <div className="h-full flex flex-col gap-6 max-w-full overflow-hidden">
       {/* ===== Stat Cards Grid ===== */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {statCards.map((stat, idx) => (
@@ -134,11 +132,11 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* ===== Análises Recentes ===== */}
-      <div>
+      <div className="flex-1 min-h-0 flex flex-col">
         <div className="flex items-center justify-between mb-4">
           {/* Section Label — terminal style */}
           <span
-            className="text-[10px] font-bold uppercase tracking-widest font-mono"
+            className="text-[15px] font-bold uppercase tracking-widest font-mono"
             style={{ color: colors.text.muted }}
           >
             Análises Recentes
@@ -147,7 +145,7 @@ export const Dashboard: React.FC = () => {
           {/* Refresh Button — minimal terminal style */}
           <button
             onClick={refresh}
-            className="text-[10px] font-mono flex items-center gap-1.5 transition-colors duration-150"
+            className="text-[15px] font-mono flex items-center gap-1.5 transition-colors duration-150"
             style={{ color: colors.text.muted }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = colors.brand.primary;
@@ -161,48 +159,17 @@ export const Dashboard: React.FC = () => {
           </button>
         </div>
 
-        <JobList
-          jobs={jobs}
-          isLoading={isLoading}
-          error={error}
-          onRetry={handleRetry}
-          onCancel={handleCancel}
-        />
+        <div className="flex-1 min-h-0 overflow-y-auto pr-1 p-2">
+          <JobList
+            jobs={jobs}
+            isLoading={isLoading}
+            error={error}
+            onRetry={handleRetry}
+            onCancel={handleCancel}
+          />
+        </div>
       </div>
 
-      {/* ===== Quick Actions ===== */}
-      {jobs.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="border p-6 flex flex-col md:flex-row items-center justify-between gap-4"
-          style={{
-            backgroundColor: 'transparent',
-            borderColor: colors.border.default,
-          }}
-        >
-          <div>
-            <h3
-              className="font-bold font-mono text-sm mb-1"
-              style={{ color: colors.text.primary }}
-            >
-              &gt; Pronto para mais?
-            </h3>
-            <p
-              className="text-xs font-mono"
-              style={{ color: colors.text.muted }}
-            >
-              // Adicione mais repositórios para melhorar o contexto das suas IAs
-            </p>
-          </div>
-          <Link to="/app/new">
-            <Button variant="outline" icon={Plus} iconPosition="left" size="sm">
-              Adicionar Repositório
-            </Button>
-          </Link>
-        </motion.div>
-      )}
     </div>
   );
 };

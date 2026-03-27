@@ -124,3 +124,75 @@ export function useRetryJob() {
 
   return { retryJob, isLoading };
 }
+
+export function useCreateConflictAnalysis() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const createConflictAnalysis = async (repoUrl: string, branches: string[], modelId?: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    const result = await api.repos.conflictAnalysis({
+      repo_url: repoUrl,
+      branches,
+      model_id: modelId,
+    });
+
+    setIsLoading(false);
+
+    if (result.success && result.data) {
+      return { jobId: result.data.job_id, error: null };
+    }
+
+    setError(result.error || 'Erro ao criar análise de conflitos');
+    return { jobId: null, error: result.error };
+  };
+
+  return { createConflictAnalysis, isLoading, error };
+}
+
+export function useFetchBranches() {
+  const [branches, setBranches] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchBranches = useCallback(async (repoUrl: string) => {
+    setIsLoading(true);
+    setError(null);
+    setBranches([]);
+
+    try {
+      // Extract owner/repo from GitHub URL
+      const match = repoUrl.match(/github\.com\/([^/]+)\/([^/.]+)/);
+      if (!match) {
+        setError('URL inválida. Apenas repositórios GitHub são suportados para seleção de branches.');
+        setIsLoading(false);
+        return;
+      }
+
+      const [, owner, repo] = match;
+      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/branches?per_page=100`);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          setError('Repositório não encontrado. Verifique se o repositório é público.');
+        } else {
+          setError('Erro ao buscar branches do repositório.');
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      const branchNames = data.map((b: { name: string }) => b.name) as string[];
+      setBranches(branchNames);
+    } catch {
+      setError('Erro de rede ao buscar branches.');
+    }
+
+    setIsLoading(false);
+  }, []);
+
+  return { branches, fetchBranches, isLoading, error };
+}

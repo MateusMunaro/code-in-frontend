@@ -6,6 +6,8 @@ import type {
   ModelsByProvider, 
   CreateJobForm,
   CreateJobResponse,
+  CreateConflictAnalysisForm,
+  CreateConflictAnalysisResponse,
   UpdateJobForm,
   ApiResponse,
   DocumentationFilesResponse,
@@ -130,6 +132,17 @@ export async function retryJob(jobId: string) {
   });
 }
 
+export async function createConflictAnalysis(data: CreateConflictAnalysisForm) {
+  return fetchApi<CreateConflictAnalysisResponse>('/repos/conflict-analysis', {
+    method: 'POST',
+    body: JSON.stringify({
+      repo_url: data.repo_url,
+      branches: data.branches,
+      model_id: data.model_id,
+    }),
+  });
+}
+
 // ===== Models =====
 export async function getModels() {
   return fetchApi<LLMModel[]>('/models');
@@ -175,6 +188,9 @@ export const api = {
     cancel: cancelJob,
     create: createJob,
     retry: retryJob,
+  },
+  repos: {
+    conflictAnalysis: createConflictAnalysis,
   },
   docs: {
     list: getDocumentationFiles,
