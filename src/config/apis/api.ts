@@ -33,19 +33,33 @@ async function fetchApi<T>(
       ...options,
     });
 
-    const json = await response.json();
+    // Some backend/framework errors may return plain text (e.g. "NOT_FOUND").
+    // Parse JSON only when possible and gracefully fallback to text messages.
+    const raw = await response.text();
+    let json: Record<string, unknown> | null = null;
 
-    if (!response.ok || json.success === false) {
+    if (raw) {
+      try {
+        json = JSON.parse(raw) as Record<string, unknown>;
+      } catch {
+        json = null;
+      }
+    }
+
+    if (!response.ok || json?.success === false) {
+      const jsonError = typeof json?.error === 'string' ? json.error : null;
+      const jsonMessage = typeof json?.message === 'string' ? json.message : null;
+      const fallback = raw || `Request failed (${response.status})`;
       return {
         success: false,
-        error: json.error || json.message || 'Request failed',
+        error: jsonError || jsonMessage || fallback,
       };
     }
 
     // Backend wraps response in { success, data }, extract the inner data
     return {
       success: true,
-      data: json.data as T,
+      data: ((json?.data ?? json) as T),
     };
   } catch (error) {
     return {

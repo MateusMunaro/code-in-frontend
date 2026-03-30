@@ -9,7 +9,6 @@ import {
   ExternalLink,
   Brain,
   History,
-  Cpu,
   Lightbulb,
   GitPullRequest,
   Copy,
@@ -401,9 +400,49 @@ const ConflictAnalysisView: React.FC<{
   const highRisks = conflictData.conflict_risks.filter((r) => r.risk_level === 'high');
   const medRisks = conflictData.conflict_risks.filter((r) => r.risk_level === 'medium');
   const overlappingCount = Object.keys(conflictData.overlapping_files).length;
+  const hasDetailedContent =
+    conflictData.conflict_risks.length > 0 ||
+    conflictData.merge_order_suggestion.length > 0 ||
+    conflictData.general_recommendations.length > 0 ||
+    Object.keys(conflictData.semantic_context).length > 0 ||
+    overlappingCount > 0;
 
   return (
     <div className="flex-1 p-6 pt-4 flex flex-col overflow-auto gap-6">
+      <div
+        className="border p-4"
+        style={{
+          backgroundColor: `${colors.brand.primary}0a`,
+          borderColor: `${colors.brand.primary}40`,
+        }}
+      >
+        <div className="flex flex-wrap items-center gap-3 mb-3">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: colors.brand.primary }}>
+            Diagnostico de Conflitos
+          </span>
+          <span className="text-[10px] font-mono" style={{ color: colors.text.muted }}>
+            Confianca: {Math.round((conflictData.confidence || 0) * 100)}%
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {conflictData.branches.length > 0 ? (
+            conflictData.branches.map((branch) => (
+              <span
+                key={branch}
+                className="text-[10px] px-2 py-1 font-mono border"
+                style={{ borderColor: colors.border.default, backgroundColor: colors.background.content, color: colors.text.secondary }}
+              >
+                {branch}
+              </span>
+            ))
+          ) : (
+            <span className="text-[10px] font-mono" style={{ color: colors.text.muted }}>
+              Nenhuma branch informada no payload do job.
+            </span>
+          )}
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 shrink-0">
         <InsightStatCard icon={AlertTriangle} label="Riscos Altos" value={highRisks.length} detail="Conflitos de alta severidade que requerem atenção imediata." />
         <InsightStatCard icon={Shield} label="Riscos Médios" value={medRisks.length} detail="Conflitos moderados que merecem revisão antes do merge." />
@@ -440,6 +479,24 @@ const ConflictAnalysisView: React.FC<{
               <ConflictRiskCard key={idx} risk={risk} colors={colors} />
             ))}
           </div>
+        </div>
+      )}
+
+      {!hasDetailedContent && (
+        <div
+          className="border p-4"
+          style={{
+            backgroundColor: `${colors.status.info}10`,
+            borderColor: `${colors.status.info}40`,
+            color: colors.text.secondary,
+          }}
+        >
+          <p className="text-xs font-mono font-bold mb-1" style={{ color: colors.status.info }}>
+            Resultado resumido de conflitos
+          </p>
+          <p className="text-[11px] font-mono leading-relaxed">
+            Este job foi processado como analise de conflitos, mas os detalhes estruturados (riscos, sobreposicoes e recomendacoes) nao vieram completos.
+          </p>
         </div>
       )}
 
@@ -697,6 +754,46 @@ export const JobDetail: React.FC = () => {
   const [activeView, setActiveView] = useState<AnalysisView>('codebase');
   const [showDocumentation, setShowDocumentation] = useState(false);
 
+  const analysis = job?.analysis;
+  const conflictData = analysis?.conflict_analysis;
+  const hasDependencyGraphData =
+    !!analysis?.dependencies_graph &&
+    (
+      Object.keys(analysis.dependencies_graph).length > 0 ||
+      (analysis.dependencies_graph.nodes?.length || 0) > 0 ||
+      (analysis.dependencies_graph.edges?.length || 0) > 0
+    );
+  const hasStructuredSuggestions =
+    Array.isArray(analysis?.suggested_improvements) &&
+    analysis.suggested_improvements.some((item) => typeof item === 'object' && item !== null && 'title' in item);
+  const hasCodebaseSignals =
+    !!analysis &&
+    (
+      (analysis.documentation_files?.length || 0) > 0 ||
+      (analysis.patterns?.length || 0) > 0 ||
+      hasStructuredSuggestions ||
+      hasDependencyGraphData ||
+      !!analysis.pr_url
+    );
+  const isConflictOnlyAnalysis = analysis?.architecture_type === 'conflict_analysis' && !hasCodebaseSignals;
+  const hasConflictAnalysis = !!conflictData || isConflictOnlyAnalysis || job?.job_type === 'conflict_analysis';
+  const conflictDataForView: ConflictAnalysisData | null = useMemo(() => {
+    if (conflictData) return conflictData;
+    if (!hasConflictAnalysis) return null;
+
+    return {
+      branches: job?.branches || [],
+      conflict_risks: [],
+      general_recommendations: [],
+      merge_order_suggestion: [],
+      overlapping_files: {},
+      semantic_context: {},
+      confidence: analysis?.confidence_score ?? 0,
+    };
+  }, [conflictData, isConflictOnlyAnalysis, job?.branches, analysis?.confidence_score]);
+  const hasCodebaseAnalysis = hasCodebaseSignals;
+  const isCompleted = job?.status === 'completed' && !!analysis;
+
   useEffect(() => {
     if (lastUpdate && job) {
       if (lastUpdate.status !== job.status) {
@@ -706,16 +803,14 @@ export const JobDetail: React.FC = () => {
   }, [lastUpdate, job, refresh]);
 
   useEffect(() => {
-    if (job?.status === 'completed' && job.analysis) {
-      const hasCodebase = !!job.analysis.documentation;
-      const hasConflicts = !!job.analysis.conflict_analysis;
-      if (!hasCodebase && hasConflicts) {
-        setActiveView('conflicts');
-      } else {
-        setActiveView('codebase');
-      }
-    }
-  }, [job]);
+    if (!isCompleted) return;
+
+    setActiveView((prev) => {
+      if (!hasCodebaseAnalysis && hasConflictAnalysis) return 'conflicts';
+      if (hasCodebaseAnalysis && !hasConflictAnalysis) return 'codebase';
+      return prev;
+    });
+  }, [isCompleted, hasCodebaseAnalysis, hasConflictAnalysis]);
 
   const handleRetry = async () => {
     const result = await retryJob(jobId!);
@@ -756,8 +851,6 @@ export const JobDetail: React.FC = () => {
     return events;
   }, [job]);
 
-  const analysis = job?.analysis;
-  const conflictData = analysis?.conflict_analysis;
   const reasoningSteps = useMemo(() => normalizeReasoningSteps(analysis), [analysis]);
   const dependencyStats = useMemo(() => extractDependencyStats(analysis), [analysis]);
 
@@ -794,11 +887,9 @@ export const JobDetail: React.FC = () => {
   }
 
   const repoName = extractRepoName(job.repo_url);
-  const isCompleted = job.status === 'completed' && job.analysis;
+  const isCompletedState = job.status === 'completed' && job.analysis;
   const hasMultiFile = !!job.analysis?.storage_path;
-  const hasCodebaseAnalysis = !!analysis?.documentation;
-  const hasConflictAnalysis = !!conflictData;
-  const showSwitcher = isCompleted && (hasCodebaseAnalysis || hasConflictAnalysis);
+  const showSwitcher = isCompletedState && hasCodebaseAnalysis && hasConflictAnalysis;
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] -m-6 lg:-m-8">
@@ -852,7 +943,7 @@ export const JobDetail: React.FC = () => {
 
           <div className="flex items-center gap-2">
             {/* Documentation Button */}
-            {isCompleted && hasCodebaseAnalysis && (
+            {isCompletedState && hasCodebaseAnalysis && (
               <button
                 onClick={() => setShowDocumentation(true)}
                 className="flex items-center gap-2 border px-4 py-1.5 text-xs font-mono font-bold transition-colors"
@@ -946,7 +1037,7 @@ export const JobDetail: React.FC = () => {
         )}
 
         {/* ===== Completed: Codebase Analysis (full-width insights) ===== */}
-        {isCompleted && activeView === 'codebase' && hasCodebaseAnalysis && (
+        {isCompletedState && activeView === 'codebase' && hasCodebaseAnalysis && (
           <div className="flex-1 h-full overflow-auto p-6 space-y-6">
 
             {/* ── Row 1: Confidence + Architecture + Snapshot ── */}
@@ -1158,12 +1249,12 @@ export const JobDetail: React.FC = () => {
         )}
 
         {/* ===== Completed: Conflict View ===== */}
-        {isCompleted && activeView === 'conflicts' && hasConflictAnalysis && conflictData && (
-          <ConflictAnalysisView conflictData={conflictData} colors={colors} />
+        {isCompletedState && activeView === 'conflicts' && hasConflictAnalysis && conflictDataForView && (
+          <ConflictAnalysisView conflictData={conflictDataForView} colors={colors} />
         )}
 
         {/* ===== Codebase selected but no data ===== */}
-        {isCompleted && activeView === 'codebase' && !hasCodebaseAnalysis && (
+        {isCompletedState && activeView === 'codebase' && !hasCodebaseAnalysis && (
           <div className="flex-1 flex items-center justify-center h-full">
             <div className="text-center">
               <Terminal className="w-12 h-12 mx-auto mb-4 opacity-30" style={{ color: colors.text.muted }} />
@@ -1184,7 +1275,7 @@ export const JobDetail: React.FC = () => {
         )}
 
         {/* Empty state */}
-        {!isCompleted && job.status !== 'pending' && job.status !== 'processing' && job.status !== 'failed' && (
+        {!isCompletedState && job.status !== 'pending' && job.status !== 'processing' && job.status !== 'failed' && (
           <div className="flex-1 flex items-center justify-center h-full">
             <div className="text-center">
               <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-30" style={{ color: colors.text.muted }} />
@@ -1198,7 +1289,7 @@ export const JobDetail: React.FC = () => {
 
       {/* ===== Documentation Overlay (slide-in panel) ===== */}
       <AnimatePresence>
-        {showDocumentation && isCompleted && (
+        {showDocumentation && isCompletedState && (
           <DocumentationOverlay
             jobId={jobId!}
             documentation={job.analysis!.documentation}
