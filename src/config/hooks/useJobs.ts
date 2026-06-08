@@ -72,9 +72,6 @@ export function useCreateJob() {
     setIsLoading(true);
     setError(null);
 
-    // Debug log
-    console.log('[useCreateJob] GitHub token available:', !!user?.github_token);
-
     const result = await api.jobs.create({
       repo_url: repoUrl,
       selected_model: selectedModel,

@@ -8,14 +8,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          black: '#0D0D0D',          // Deep Obsidian
-          dark: '#1A1A1A',           // Surface Dark
-          gray: '#252525',           // Elevated
-          primary: '#00FF41',        // Matrix Green
-          primaryHover: '#33FF6A',   // Matrix Green lighter
-          secondary: '#A0A0A0',      // Text Dim
-          secondaryHover: '#F2F2F2', // Phosphor White
-          accent: '#008F11',         // Primary Dim
+          black: 'rgb(var(--color-bg-content-rgb) / <alpha-value>)',
+          dark: 'rgb(var(--color-bg-surface-rgb) / <alpha-value>)',
+          gray: 'rgb(var(--color-bg-elevated-rgb) / <alpha-value>)',
+          primary: 'rgb(var(--color-brand-primary-rgb) / <alpha-value>)',
+          primaryHover: 'rgb(var(--color-brand-primaryHover-rgb) / <alpha-value>)',
+          secondary: 'rgb(var(--color-brand-secondary-rgb) / <alpha-value>)',
+          secondaryHover: 'rgb(var(--color-brand-secondaryHover-rgb) / <alpha-value>)',
+          accent: 'rgb(var(--color-brand-accent-rgb) / <alpha-value>)',
+        },
+        // Semantic tokens para text/status sem depender do namespace brand
+        theme: {
+          text: 'rgb(var(--color-text-primary-rgb) / <alpha-value>)',
+          'text-secondary': 'rgb(var(--color-text-secondary-rgb) / <alpha-value>)',
+          'text-muted': 'rgb(var(--color-text-muted-rgb) / <alpha-value>)',
+          surface: 'rgb(var(--color-bg-surface-rgb) / <alpha-value>)',
+          error: 'rgb(var(--color-status-error-rgb) / <alpha-value>)',
+          success: 'rgb(var(--color-status-success-rgb) / <alpha-value>)',
+          warning: 'rgb(var(--color-status-warning-rgb) / <alpha-value>)',
+          info: 'rgb(var(--color-status-info-rgb) / <alpha-value>)',
         },
       },
       fontFamily: {
@@ -33,11 +44,11 @@ export default {
         full: '0px',
       },
       boxShadow: {
-        'retro': '4px 4px 0px 0px #00FF41',
-        'retro-dim': '4px 4px 0px 0px #333333',
-        'retro-sm': '2px 2px 0px 0px #00FF41',
-        'glow': '0 0 15px rgba(0, 255, 65, 0.25)',
-        'glow-lg': '0 0 25px rgba(0, 255, 65, 0.45)',
+        'retro': '4px 4px 0px 0px var(--color-brand-primary)',
+        'retro-dim': '4px 4px 0px 0px var(--color-border-default)',
+        'retro-sm': '2px 2px 0px 0px var(--color-brand-primary)',
+        'glow': '0 0 15px var(--color-glow-primary)',
+        'glow-lg': '0 0 25px var(--color-glow-primary-lg)',
       },
       animation: {
         'blink': 'blinker 1s step-end infinite',

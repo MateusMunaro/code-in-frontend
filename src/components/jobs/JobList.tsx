@@ -11,6 +11,7 @@ interface JobListProps {
   error: string | null;
   onRetry?: (jobId: string) => void;
   onCancel?: (jobId: string) => void;
+  emptyMessage?: { title: string; description: string };
 }
 
 export const JobList: React.FC<JobListProps> = ({
@@ -19,6 +20,7 @@ export const JobList: React.FC<JobListProps> = ({
   error,
   onRetry,
   onCancel,
+  emptyMessage,
 }) => {
   if (isLoading) {
     return (
@@ -61,12 +63,14 @@ export const JobList: React.FC<JobListProps> = ({
     return (
       <EmptyState
         icon={<FolderGit2 className="w-12 h-12" />}
-        title="Nenhuma análise ainda"
-        description="Comece analisando seu primeiro repositório para gerar contexto arquitetural para suas IAs."
+        title={emptyMessage?.title ?? 'Nenhuma análise ainda'}
+        description={emptyMessage?.description ?? 'Comece analisando seu primeiro repositório para gerar contexto arquitetural para suas IAs.'}
         action={
-          <Link to="/app/new">
-            <Button>Criar primeira análise</Button>
-          </Link>
+          !emptyMessage ? (
+            <Link to="/app/new">
+              <Button>Criar primeira análise</Button>
+            </Link>
+          ) : undefined
         }
       />
     );

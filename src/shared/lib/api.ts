@@ -144,8 +144,6 @@ export async function cancelJob(jobId: string) {
 
 // ===== Repos =====
 export async function createJob(data: CreateJobForm) {
-  console.log('[API] createJob - github_token:', data.github_token ? '✓ provided' : '✗ missing');
-  
   return fetchApi<CreateJobResponse>('/repos', {
     method: 'POST',
     body: JSON.stringify({

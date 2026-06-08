@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Terminal, BarChart3, CheckCircle2, XCircle, RefreshCw } from 'lucide-react';
 import { JobList } from '@components/jobs';
@@ -10,6 +11,19 @@ export const Dashboard: React.FC = () => {
   const { retryJob } = useRetryJob();
   const { cancelJob } = useCancelJob();
   const { colors } = useTheme();
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q')?.toLowerCase() ?? '';
+
+  const filteredJobs = searchQuery
+    ? jobs.filter((job) => {
+        const repoName = job.repo_url.split('/').slice(-2).join('/').toLowerCase();
+        return (
+          repoName.includes(searchQuery) ||
+          job.status.toLowerCase().includes(searchQuery) ||
+          job.selected_model.toLowerCase().includes(searchQuery)
+        );
+      })
+    : jobs;
 
   // Real-time updates for active jobs
   const activeJobIds = jobs
@@ -139,7 +153,9 @@ export const Dashboard: React.FC = () => {
             className="text-[15px] font-bold uppercase tracking-widest font-mono"
             style={{ color: colors.text.muted }}
           >
-            Análises Recentes
+            {searchQuery
+              ? `> ${filteredJobs.length} resultado${filteredJobs.length !== 1 ? 's' : ''} para "${searchQuery}"`
+              : 'Análises Recentes'}
           </span>
 
           {/* Refresh Button — minimal terminal style */}
@@ -161,11 +177,15 @@ export const Dashboard: React.FC = () => {
 
         <div className="flex-1 min-h-0 overflow-y-auto pr-1 p-2">
           <JobList
-            jobs={jobs}
+            jobs={filteredJobs}
             isLoading={isLoading}
             error={error}
             onRetry={handleRetry}
             onCancel={handleCancel}
+            emptyMessage={searchQuery ? {
+              title: 'Nenhum resultado',
+              description: `Nenhum job encontrado para "${searchQuery}". Tente buscar por repositório, status ou modelo.`,
+            } : undefined}
           />
         </div>
       </div>

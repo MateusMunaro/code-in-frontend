@@ -89,26 +89,26 @@ export const dark: ThemeColors = {
 
 export const light: ThemeColors = {
     background: {
-        content: '#F3F4F6',   // Light gray background
+        content: '#F0F2F5',   // Light blue-gray background
         surface: '#FFFFFF',   // White surfaces
-        elevated: '#E5E7EB',  // Elevated elements
+        elevated: '#E8EAED',  // Slightly darker elevated
     },
     text: {
         primary: '#0D0D0D',   // Deep Obsidian — max contrast
-        secondary: '#4B5563', // Gray 600
-        muted: '#9CA3AF',     // Gray 400
+        secondary: '#374151', // Gray 700 — stronger secondary
+        muted: '#6B7280',     // Gray 500 — stronger muted
     },
     brand: {
-        primary: '#008F11',          // Primary Dim — legible on light bg
-        primaryHover: '#006B0D',     // Darker green hover
-        secondary: '#6B7280',        // Gray 500
-        secondaryHover: '#374151',   // Gray 700
+        primary: '#007A0F',          // Darker green — legible on light bg
+        primaryHover: '#005C0B',     // Even darker on hover
+        secondary: '#374151',        // Gray 700
+        secondaryHover: '#111827',   // Gray 900
         accent: '#00FF41',           // Matrix Green accent
     },
     border: {
-        default: 'rgba(0, 0, 0, 0.12)',       // Subtle dark border
-        subtle: 'rgba(0, 143, 17, 0.1)',       // Green tint subtle
-        emphasis: 'rgba(0, 143, 17, 0.35)',    // Green tint emphasis
+        default: 'rgba(0, 0, 0, 0.18)',       // More visible border
+        subtle: 'rgba(0, 122, 15, 0.15)',      // Green tint subtle
+        emphasis: 'rgba(0, 122, 15, 0.45)',    // Green tint emphasis
     },
     status: {
         success: '#059669',   // Emerald 600
@@ -117,8 +117,8 @@ export const light: ThemeColors = {
         info: '#0284C7',      // Sky 600
     },
     glow: {
-        primary: 'rgba(0, 143, 17, 0.15)',
-        primaryLg: 'rgba(0, 143, 17, 0.3)',
+        primary: 'rgba(0, 122, 15, 0.15)',
+        primaryLg: 'rgba(0, 122, 15, 0.3)',
         secondary: 'rgba(107, 114, 128, 0.15)',
     },
 };

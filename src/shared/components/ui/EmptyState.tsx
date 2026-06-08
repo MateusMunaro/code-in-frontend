@@ -19,9 +19,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center py-16 px-6 text-center border border-[#333] bg-brand-dark font-mono',
+        'flex flex-col items-center justify-center py-16 px-6 text-center border bg-brand-dark font-mono',
         className
       )}
+      style={{ borderColor: 'var(--color-border-default)' }}
       {...props}
     >
       {icon && (
@@ -29,9 +30,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-display uppercase tracking-widest text-white mb-2">{title}</h3>
+      <h3 className="text-lg font-display uppercase tracking-widest text-theme-text mb-2">{title}</h3>
       {description && (
-        <p className="text-gray-400 max-w-sm mb-6 text-sm">// {description}</p>
+        <p className="text-theme-text-secondary max-w-sm mb-6 text-sm">// {description}</p>
       )}
       {action && (
         <div>{action}</div>

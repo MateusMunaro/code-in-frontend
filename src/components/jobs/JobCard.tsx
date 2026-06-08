@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GitBranch, Clock, ArrowRight, RefreshCw, Trash2 } from 'lucide-react';
@@ -22,6 +22,7 @@ export const JobCard: React.FC<JobCardProps> = ({
   isCanceling,
 }) => {
   const repoName = extractRepoName(job.repo_url);
+  const [errorExpanded, setErrorExpanded] = useState(false);
 
   return (
     <motion.div
@@ -38,8 +39,8 @@ export const JobCard: React.FC<JobCardProps> = ({
                 <GitBranch className="w-4 h-4 text-brand-primary" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="font-bold text-white truncate font-mono">{repoName}</h3>
-                <p className="text-xs text-gray-500 truncate font-mono">{job.repo_url}</p>
+                <h3 className="font-bold text-theme-text truncate font-mono">{repoName}</h3>
+                <p className="text-xs text-theme-text-muted truncate font-mono">{job.repo_url}</p>
               </div>
             </div>
 
@@ -48,16 +49,26 @@ export const JobCard: React.FC<JobCardProps> = ({
               <span className={`text-xs font-mono truncate ${getProviderColor(job.selected_model?.split('-')[0] || '')}`}>
                 {job.selected_model || 'N/A'}
               </span>
-              <span className="flex items-center gap-1 text-xs text-gray-500 whitespace-nowrap font-mono">
+              <span className="flex items-center gap-1 text-xs text-theme-text-muted whitespace-nowrap font-mono">
                 <Clock className="w-3 h-3" />
                 {formatRelativeTime(job.created_at)}
               </span>
             </div>
 
             {job.error_message && (
-              <p className="mt-3 text-xs text-red-400 truncate font-mono">
-                &gt; ERROR: {job.error_message}
-              </p>
+              <div className="mt-3">
+                <p className={`text-xs text-theme-error font-mono break-all ${errorExpanded ? '' : 'line-clamp-2'}`}>
+                  &gt; ERROR: {job.error_message}
+                </p>
+                {job.error_message.length > 80 && (
+                  <button
+                    onClick={(e) => { e.preventDefault(); setErrorExpanded((v) => !v); }}
+                    className="text-[10px] font-mono mt-1 text-theme-error opacity-60 hover:opacity-100 transition-opacity"
+                  >
+                    {errorExpanded ? '[VER MENOS]' : '[VER MAIS]'}
+                  </button>
+                )}
+              </div>
             )}
           </div>
 

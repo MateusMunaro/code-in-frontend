@@ -24,13 +24,13 @@ export const Badge: React.FC<BadgeProps> = ({
   );
 
   const variants = {
-    default: 'bg-brand-gray/50 border-[#333] text-gray-300',
+    default: 'bg-brand-gray/50 border-brand-secondary/30 text-theme-text-secondary',
     primary: 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary',
-    secondary: 'bg-brand-gray/50 border-[#333] text-brand-secondary',
+    secondary: 'bg-brand-gray/50 border-brand-secondary/30 text-brand-secondary',
     success: 'bg-brand-primary/10 border-brand-primary/30 text-brand-primary',
-    warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
-    error: 'bg-red-500/10 border-red-500/30 text-red-400',
-    outline: 'bg-transparent border-[#333] text-gray-300',
+    warning: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-600',
+    error: 'bg-theme-error/10 border-theme-error/30 text-theme-error',
+    outline: 'bg-transparent border-brand-secondary/30 text-theme-text-secondary',
   };
 
   const sizes = {

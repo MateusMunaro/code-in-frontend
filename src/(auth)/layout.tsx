@@ -4,10 +4,12 @@ import { Header } from '@/components/layout/Header';
 import { StatusBar } from '@/components/layout/StatusBar';
 import { SidebarProvider, StatusBarProvider, useSidebar, ThemeProvider } from '@shared/contexts';
 import { useTheme } from '@shared/contexts';
+import { useBrowserNotifications } from '@config/hooks';
 
 function AuthLayoutContent() {
   const { isCollapsed } = useSidebar();
   const { colors } = useTheme();
+  useBrowserNotifications();
 
   return (
     <div className="h-screen flex w-full overflow-hidden" style={{ backgroundColor: colors.background.content }}>

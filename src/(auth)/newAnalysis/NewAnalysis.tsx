@@ -247,8 +247,9 @@ export const NewAnalysis: React.FC = () => {
   const [repoUrl, setRepoUrl] = useState('');
   const [selectedServices, setSelectedServices] = useState<ServiceSelection | null>(null);
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
+  const [selectedModel, setSelectedModel] = useState('');
   const [step, setStep] = useState(1);
+  const [dismissedError, setDismissedError] = useState(false);
 
   // Determine total steps based on services selected
   const needsBranchStep = selectedServices === 'conflict' || selectedServices === 'both';
@@ -261,8 +262,20 @@ export const NewAnalysis: React.FC = () => {
 
   // ─── Validation ─────────────────────────────────────────────────────────
   const isValidGitUrl = (url: string) => {
-    return /^https?:\/\/(github|gitlab|bitbucket)\.(com|org)\/[\w.-]+\/[\w.-]+/.test(url);
+    return /^https?:\/\/(github|gitlab|bitbucket)\.(com|org)\/[\w.-]+\/[\w.-]+(\.git)?$/.test(url);
   };
+
+  const rawError = jobError || conflictError;
+
+  // Reset error dismissal whenever a new error arrives
+  useEffect(() => { setDismissedError(false); }, [rawError]);
+
+  // Auto-select first available model once models load
+  useEffect(() => {
+    if (!selectedModel && models.length > 0) {
+      setSelectedModel(models[0].id);
+    }
+  }, [models, selectedModel]);
 
   // Fetch branches when entering the branch step
   useEffect(() => {
@@ -310,28 +323,31 @@ export const NewAnalysis: React.FC = () => {
   const handleSubmit = async () => {
     if (!repoUrl || !selectedServices || !selectedModel) return;
 
-    const results: { jobId: string | null }[] = [];
+    let codebaseJobId: string | null = null;
+    let conflictJobId: string | null = null;
 
     if (selectedServices === 'codebase' || selectedServices === 'both') {
       const result = await createJob(repoUrl, selectedModel);
-      results.push(result);
+      codebaseJobId = result.jobId;
     }
 
     if (selectedServices === 'conflict' || selectedServices === 'both') {
       if (selectedBranches.length < 2) return;
       const result = await createConflictAnalysis(repoUrl, selectedBranches, selectedModel);
-      results.push(result);
+      conflictJobId = result.jobId;
     }
 
-    const successResult = results.find((r) => r.jobId);
-    if (successResult?.jobId) {
-      navigate(`/app/jobs/${successResult.jobId}`);
+    // Navigate to the most relevant job: prefer codebase, fall back to conflict
+    const targetJobId = codebaseJobId ?? conflictJobId;
+    if (targetJobId) {
+      navigate(`/app/jobs/${targetJobId}`);
     }
   };
 
   // ─── Computed ───────────────────────────────────────────────────────────
   const isCreating = isCreatingJob || isCreatingConflict;
-  const error = jobError || conflictError;
+  const isGitHubUrl = /github\.com/.test(repoUrl);
+  const error = dismissedError ? null : rawError;
   const isModelStep = needsBranchStep ? step === 4 : step === 3;
   const isBranchStep = needsBranchStep && step === 3;
 
@@ -396,7 +412,7 @@ export const NewAnalysis: React.FC = () => {
 
       {/* Error Alert */}
       {error && (
-        <Alert variant="error" onClose={() => {}}>
+        <Alert variant="error" onClose={() => setDismissedError(true)}>
           {error}
         </Alert>
       )}
@@ -522,6 +538,21 @@ export const NewAnalysis: React.FC = () => {
                 colors={colors}
               />
             </div>
+
+            {/* GitLab/Bitbucket branch warning */}
+            {(selectedServices === 'conflict' || selectedServices === 'both') && !isGitHubUrl && (
+              <div
+                className="max-w-2xl mx-auto mb-4 p-4 font-mono text-xs"
+                style={{
+                  backgroundColor: `${colors.status.warning}15`,
+                  border: `1px solid ${colors.status.warning}50`,
+                  color: colors.status.warning,
+                }}
+              >
+                &gt; WARNING: A seleção automática de branches só funciona com repositórios GitHub.
+                Para GitLab/Bitbucket, as branches precisarão ser inseridas manualmente no backend.
+              </div>
+            )}
 
             {/* Terminal Status */}
             <div className="max-w-2xl mx-auto mb-8">
@@ -865,9 +896,9 @@ export const NewAnalysis: React.FC = () => {
                     isLoading={isCreating}
                     size="lg"
                     fullWidth={false}
+                    icon={ArrowRight}
                   >
                     EXECUTAR ANÁLISE
-                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
