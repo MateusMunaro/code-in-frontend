@@ -31,8 +31,6 @@ export const StatusBar: React.FC = () => {
   const jobId = jobMatch?.params.jobId;
   const { job } = useJob(jobId || '');
 
-  if (!jobId || !job) return null;
-
   return (
     <footer
       className="h-8 shrink-0 border-t px-3 text-[10px] font-display uppercase tracking-wide flex items-center justify-between gap-3"
@@ -44,45 +42,46 @@ export const StatusBar: React.FC = () => {
     >
       {/* ===== Left Section ===== */}
       <div className="min-w-0 flex items-center gap-3 md:gap-4 overflow-hidden">
-        {/* Network Status */}
+        {/* Network Status — always visible */}
         <div className="flex items-center gap-1.5 whitespace-nowrap">
           {isNetworkOnline ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
           <span>NET: <strong>{isNetworkOnline ? 'ONLINE' : 'OFFLINE'}</strong></span>
         </div>
 
-        <Sep />
-
-        {/* Model */}
-        <div className="hidden md:flex items-center gap-1.5 whitespace-nowrap">
-          <Cpu className="w-3 h-3" />
-          <span>MODEL: <strong>{job.selected_model}</strong></span>
-        </div>
-
-        <Sep />
-
-        {/* Created At */}
-        <div className="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
-          <Clock className="w-3 h-3" />
-          <span>CREATED: <strong>{formatDate(job.created_at)}</strong></span>
-        </div>
-
-        {/* Branches (conflict analysis only) */}
-        {job.branches && job.branches.length > 0 && (
+        {/* Job context — only on job detail pages */}
+        {job && (
           <>
             <Sep />
+
+            <div className="hidden md:flex items-center gap-1.5 whitespace-nowrap">
+              <Cpu className="w-3 h-3" />
+              <span>MODEL: <strong>{job.selected_model}</strong></span>
+            </div>
+
+            <Sep />
+
+            <div className="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
+              <Clock className="w-3 h-3" />
+              <span>CREATED: <strong>{formatDate(job.created_at)}</strong></span>
+            </div>
+
+            {job.branches && job.branches.length > 0 && (
+              <>
+                <Sep />
+                <div className="hidden xl:flex items-center gap-1.5 whitespace-nowrap">
+                  <GitBranch className="w-3 h-3" />
+                  <span>BRANCHES: <strong>{job.branches.join(', ')}</strong></span>
+                </div>
+              </>
+            )}
+
+            <Sep />
+
             <div className="hidden xl:flex items-center gap-1.5 whitespace-nowrap">
-              <GitBranch className="w-3 h-3" />
-              <span>BRANCHES: <strong>{job.branches.join(', ')}</strong></span>
+              <span>ID: <strong className="font-mono">{job.id.slice(0, 8)}</strong></span>
             </div>
           </>
         )}
-
-        <Sep />
-
-        {/* Job ID */}
-        <div className="hidden xl:flex items-center gap-1.5 whitespace-nowrap">
-          <span>ID: <strong className="font-mono">{job.id.slice(0, 8)}</strong></span>
-        </div>
       </div>
 
       {/* ===== Right Section ===== */}

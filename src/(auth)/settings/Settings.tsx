@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Key,
@@ -55,6 +55,9 @@ export const Settings: React.FC = () => {
 
   // Danger zone confirmation state
   const [dangerConfirm, setDangerConfirm] = useState<'data' | 'account' | null>(null);
+  const notifSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (notifSavedTimer.current) clearTimeout(notifSavedTimer.current); }, []);
 
   const { colors } = useTheme();
 
@@ -138,7 +141,8 @@ export const Settings: React.FC = () => {
     setNotifPrefs(updated);
     localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(updated));
     setNotifSaved(true);
-    setTimeout(() => setNotifSaved(false), 2000);
+    if (notifSavedTimer.current) clearTimeout(notifSavedTimer.current);
+    notifSavedTimer.current = setTimeout(() => setNotifSaved(false), 2000);
   };
 
   const handleDangerAction = (type: 'data' | 'account') => {

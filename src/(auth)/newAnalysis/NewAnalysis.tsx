@@ -262,7 +262,7 @@ export const NewAnalysis: React.FC = () => {
 
   // ─── Validation ─────────────────────────────────────────────────────────
   const isValidGitUrl = (url: string) => {
-    return /^https?:\/\/(github|gitlab|bitbucket)\.(com|org)\/[\w.-]+\/[\w.-]+(\.git)?$/.test(url);
+    return /^https?:\/\/(github|gitlab|bitbucket)\.(com|org)\/[\w.-]+\/[\w.-]+(\.git)?\/?$/.test(url);
   };
 
   const rawError = jobError || conflictError;

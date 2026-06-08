@@ -240,11 +240,13 @@ Move-Item .\\code-in.exe C:\\code-in\\`}</CodeBlock>
           <p className="text-sm font-mono mb-3" style={{ color: colors.text.secondary }}>
             Baixe o binário correto para sua arquitetura: <code className="px-1.5 py-0.5 text-xs border" style={{ backgroundColor: colors.background.elevated, borderColor: colors.border.default, color: colors.brand.primary }}>code-in-darwin-arm64</code> para Apple Silicon ou <code className="px-1.5 py-0.5 text-xs border" style={{ backgroundColor: colors.background.elevated, borderColor: colors.border.default, color: colors.brand.primary }}>code-in-darwin-x64</code> para Intel.
           </p>
-          <CodeBlock label="Terminal">{`# Apple Silicon (M1/M2/M3)
-curl -L ${CLI_RELEASE_URL.replace('/tag/beta', '/download/beta')}/code-in-darwin-arm64 -o code-in
-
-# Intel
-curl -L ${CLI_RELEASE_URL.replace('/tag/beta', '/download/beta')}/code-in-darwin-x64 -o code-in`}</CodeBlock>
+          <a href={CLI_RELEASE_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-mono transition-colors duration-150"
+            style={{ color: colors.brand.primary }}>
+            <Download className="w-4 h-4" />
+            Ir para a página de download
+            <ChevronRight className="w-3 h-3" />
+          </a>
         </Step>
         <Step number={2} title="Tornar executável e mover para PATH" delay={0.5}>
           <CodeBlock label="Terminal">{`chmod +x ./code-in
@@ -267,7 +269,16 @@ sudo mv ./code-in /usr/local/bin/code-in`}</CodeBlock>
     linux: (
       <>
         <Step number={1} title="Baixar o binário" delay={0.45}>
-          <CodeBlock label="Bash">{`curl -L ${CLI_RELEASE_URL.replace('/tag/beta', '/download/beta')}/code-in-linux-x64 -o code-in`}</CodeBlock>
+          <p className="text-sm font-mono mb-3" style={{ color: colors.text.secondary }}>
+            Acesse a página de releases e baixe o arquivo <code className="px-1.5 py-0.5 text-xs border" style={{ backgroundColor: colors.background.elevated, borderColor: colors.border.default, color: colors.brand.primary }}>code-in-linux-x64</code>.
+          </p>
+          <a href={CLI_RELEASE_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-mono transition-colors duration-150"
+            style={{ color: colors.brand.primary }}>
+            <Download className="w-4 h-4" />
+            Ir para a página de download
+            <ChevronRight className="w-3 h-3" />
+          </a>
         </Step>
         <Step number={2} title="Tornar executável e instalar" delay={0.5}>
           <CodeBlock label="Bash">{`chmod +x ./code-in
@@ -582,7 +593,8 @@ jobs:
 
       - name: Install Code-In CLI
         run: |
-          curl -L https://github.com/MateusMunaro/code-in-cli/releases/download/beta/code-in-linux-x64 -o code-in
+          # Baixe o binário da página de releases: github.com/MateusMunaro/code-in-cli/releases
+          curl -L <URL_DO_BINARIO_LINUX> -o code-in
           chmod +x code-in
           sudo mv code-in /usr/local/bin/
 

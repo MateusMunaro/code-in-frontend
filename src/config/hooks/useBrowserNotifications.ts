@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { getWebSocketClient } from '@shared/lib/websocket';
+import { useJobs } from './useJobs';
 import type { WSMessage } from '@shared/types';
 
 const NOTIF_STORAGE_KEY = 'code-in:notification-prefs';
@@ -22,6 +23,15 @@ export async function requestBrowserNotificationPermission(): Promise<Notificati
 
 export function useBrowserNotifications() {
   const wsClient = useRef(getWebSocketClient());
+  const { jobs } = useJobs();
+
+  // Subscribe to active jobs so the WS server delivers complete events globally
+  useEffect(() => {
+    const client = wsClient.current;
+    jobs
+      .filter((j) => j.status === 'pending' || j.status === 'processing')
+      .forEach((j) => client.subscribe(j.id));
+  }, [jobs]);
 
   useEffect(() => {
     const client = wsClient.current;
