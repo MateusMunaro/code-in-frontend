@@ -18,6 +18,15 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // ===== CSS Variable Mapping =====
 
+// Converts hex or rgb/rgba string to "r g b" (space-separated) for css rgb(r g b / alpha)
+function toRgbComponents(color: string): string {
+    const hex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+    if (hex) return `${parseInt(hex[1], 16)} ${parseInt(hex[2], 16)} ${parseInt(hex[3], 16)}`;
+    const rgb = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (rgb) return `${rgb[1]} ${rgb[2]} ${rgb[3]}`;
+    return '0 0 0';
+}
+
 function applyThemeCSSVariables(colors: ThemeColors) {
     const root = document.documentElement;
 
@@ -25,11 +34,17 @@ function applyThemeCSSVariables(colors: ThemeColors) {
     root.style.setProperty('--color-bg-content', colors.background.content);
     root.style.setProperty('--color-bg-surface', colors.background.surface);
     root.style.setProperty('--color-bg-elevated', colors.background.elevated);
+    root.style.setProperty('--color-bg-content-rgb', toRgbComponents(colors.background.content));
+    root.style.setProperty('--color-bg-surface-rgb', toRgbComponents(colors.background.surface));
+    root.style.setProperty('--color-bg-elevated-rgb', toRgbComponents(colors.background.elevated));
 
     // Text
     root.style.setProperty('--color-text-primary', colors.text.primary);
     root.style.setProperty('--color-text-secondary', colors.text.secondary);
     root.style.setProperty('--color-text-muted', colors.text.muted);
+    root.style.setProperty('--color-text-primary-rgb', toRgbComponents(colors.text.primary));
+    root.style.setProperty('--color-text-secondary-rgb', toRgbComponents(colors.text.secondary));
+    root.style.setProperty('--color-text-muted-rgb', toRgbComponents(colors.text.muted));
 
     // Brand
     root.style.setProperty('--color-brand-primary', colors.brand.primary);
@@ -37,6 +52,11 @@ function applyThemeCSSVariables(colors: ThemeColors) {
     root.style.setProperty('--color-brand-secondary', colors.brand.secondary);
     root.style.setProperty('--color-brand-secondaryHover', colors.brand.secondaryHover);
     root.style.setProperty('--color-brand-accent', colors.brand.accent);
+    root.style.setProperty('--color-brand-primary-rgb', toRgbComponents(colors.brand.primary));
+    root.style.setProperty('--color-brand-primaryHover-rgb', toRgbComponents(colors.brand.primaryHover));
+    root.style.setProperty('--color-brand-secondary-rgb', toRgbComponents(colors.brand.secondary));
+    root.style.setProperty('--color-brand-secondaryHover-rgb', toRgbComponents(colors.brand.secondaryHover));
+    root.style.setProperty('--color-brand-accent-rgb', toRgbComponents(colors.brand.accent));
 
     // Border
     root.style.setProperty('--color-border-default', colors.border.default);
@@ -48,6 +68,10 @@ function applyThemeCSSVariables(colors: ThemeColors) {
     root.style.setProperty('--color-status-error', colors.status.error);
     root.style.setProperty('--color-status-warning', colors.status.warning);
     root.style.setProperty('--color-status-info', colors.status.info);
+    root.style.setProperty('--color-status-success-rgb', toRgbComponents(colors.status.success));
+    root.style.setProperty('--color-status-error-rgb', toRgbComponents(colors.status.error));
+    root.style.setProperty('--color-status-warning-rgb', toRgbComponents(colors.status.warning));
+    root.style.setProperty('--color-status-info-rgb', toRgbComponents(colors.status.info));
 
     // Glow
     root.style.setProperty('--color-glow-primary', colors.glow.primary);

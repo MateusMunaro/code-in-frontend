@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import {
   Key,
@@ -19,6 +19,24 @@ import { PROVIDER_INFO } from '@shared/types';
 import { cn } from '@shared/lib/utils';
 import { ApiKeyModal } from './ApiKeyModal';
 import { useTheme } from '@shared/contexts/ThemeContext';
+import { requestBrowserNotificationPermission } from '@config/hooks';
+
+const NOTIF_STORAGE_KEY = 'code-in:notification-prefs';
+
+const defaultNotifPrefs: Record<string, boolean> = {
+  email_complete: true,
+  email_failed: true,
+  browser: false,
+};
+
+function loadNotifPrefs(): Record<string, boolean> {
+  try {
+    const stored = localStorage.getItem(NOTIF_STORAGE_KEY);
+    return stored ? { ...defaultNotifPrefs, ...JSON.parse(stored) } : defaultNotifPrefs;
+  } catch {
+    return defaultNotifPrefs;
+  }
+}
 
 export const Settings: React.FC = () => {
   const { user } = useAuthStore();
@@ -30,6 +48,16 @@ export const Settings: React.FC = () => {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [keyError, setKeyError] = useState<string | null>(null);
+
+  // Notification prefs state (persisted to localStorage)
+  const [notifPrefs, setNotifPrefs] = useState<Record<string, boolean>>(loadNotifPrefs);
+  const [notifSaved, setNotifSaved] = useState(false);
+
+  // Danger zone confirmation state
+  const [dangerConfirm, setDangerConfirm] = useState<'data' | 'account' | null>(null);
+  const notifSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (notifSavedTimer.current) clearTimeout(notifSavedTimer.current); }, []);
 
   const { colors } = useTheme();
 
@@ -94,8 +122,41 @@ export const Settings: React.FC = () => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    // Refresh keys after modal closes (user may have added new ones)
     fetchKeys();
+  };
+
+  const handleNotifChange = async (id: string, value: boolean) => {
+    if (id === 'browser' && value) {
+      const permission = await requestBrowserNotificationPermission();
+      if (permission !== 'granted') {
+        setKeyError(
+          permission === 'denied'
+            ? 'Permissão de notificações negada. Habilite nas configurações do navegador.'
+            : 'Permissão de notificações não concedida.'
+        );
+        return;
+      }
+    }
+    const updated = { ...notifPrefs, [id]: value };
+    setNotifPrefs(updated);
+    localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(updated));
+    setNotifSaved(true);
+    if (notifSavedTimer.current) clearTimeout(notifSavedTimer.current);
+    notifSavedTimer.current = setTimeout(() => setNotifSaved(false), 2000);
+  };
+
+  const handleDangerAction = (type: 'data' | 'account') => {
+    if (dangerConfirm !== type) {
+      setDangerConfirm(type);
+      return;
+    }
+    // Funcionalidade de exclusão requer endpoint backend — em desenvolvimento
+    setDangerConfirm(null);
+    setKeyError(
+      type === 'account'
+        ? 'Exclusão de conta requer suporte via admin. Entre em contato.'
+        : 'Exclusão de dados requer suporte via admin. Entre em contato.'
+    );
   };
 
   return (
@@ -121,17 +182,18 @@ export const Settings: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center">
-              <span className="text-2xl font-bold text-brand-primary">
-                {user?.email?.charAt(0).toUpperCase() || 'U'}
-              </span>
+            <div
+              className="w-16 h-16 flex items-center justify-center border-2 font-mono font-bold text-2xl"
+              style={{ borderColor: colors.brand.primary, backgroundColor: `${colors.brand.primary}1A`, color: colors.brand.primary }}
+            >
+              {user?.email?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div>
-              <p className="font-semibold text-white">
-                {user?.user_metadata?.full_name || 'Usuário'}
+              <p className="font-semibold font-mono" style={{ color: colors.text.primary }}>
+                {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Usuário'}
               </p>
-              <p className="text-sm text-gray-400">{user?.email}</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-sm font-mono" style={{ color: colors.text.secondary }}>{user?.email}</p>
+              <p className="text-xs font-mono mt-1" style={{ color: colors.text.muted }}>
                 Membro desde {user?.created_at ? new Date(user.created_at).toLocaleDateString('pt-BR') : 'N/A'}
               </p>
             </div>
@@ -183,7 +245,7 @@ export const Settings: React.FC = () => {
             {isLoadingKeys ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-5 h-5 text-brand-primary animate-spin" />
-                <span className="ml-3 text-gray-400 font-mono text-sm">Carregando chaves...</span>
+                <span className="ml-3 font-mono text-sm" style={{ color: colors.text.muted }}>Carregando chaves...</span>
               </div>
             ) : (
               <>
@@ -222,7 +284,7 @@ export const Settings: React.FC = () => {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold text-white text-sm">
+                            <span className="font-mono font-bold text-sm" style={{ color: colors.text.primary }}>
                               {info?.name || provider}
                             </span>
                             <Badge
@@ -234,17 +296,17 @@ export const Settings: React.FC = () => {
                           </div>
                           {providerKeys.length > 0 ? (
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-400 font-mono">
+                              <span className="text-xs font-mono" style={{ color: colors.text.secondary }}>
                                 {providerKeys[0].key_hint}
                               </span>
                               {providerKeys[0].label && (
-                                <span className="text-xs text-gray-500 font-mono">
+                                <span className="text-xs font-mono" style={{ color: colors.text.muted }}>
                                   • {providerKeys[0].label}
                                 </span>
                               )}
                             </div>
                           ) : (
-                            <p className="text-xs text-gray-500 font-mono mt-1">
+                            <p className="text-xs font-mono mt-1" style={{ color: colors.text.muted }}>
                               Nenhuma chave configurada
                             </p>
                           )}
@@ -327,33 +389,60 @@ export const Settings: React.FC = () => {
         transition={{ delay: 0.3 }}
       >
         <Card variant="elevated" padding="lg">
-          <div className="flex items-center gap-2 mb-6">
-            <Bell className="w-5 h-5 text-brand-primary" />
-            <CardTitle>Notificações</CardTitle>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-brand-primary" />
+              <CardTitle>Notificações</CardTitle>
+            </div>
+            {notifSaved && (
+              <span className="text-xs font-mono" style={{ color: colors.status.success }}>
+                ✓ Salvo
+              </span>
+            )}
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-1">
             {[
-              { id: 'email_complete', label: 'Email quando análise concluir', enabled: true },
-              { id: 'email_failed', label: 'Email quando análise falhar', enabled: true },
-              { id: 'browser', label: 'Notificações no navegador', enabled: false },
+              { id: 'email_complete', label: 'Email quando análise concluir' },
+              { id: 'email_failed', label: 'Email quando análise falhar' },
+              { id: 'browser', label: 'Notificações no navegador' },
             ].map((notification) => (
               <div
                 key={notification.id}
-                className="flex items-center justify-between p-4 bg-white/5 rounded-xl"
+                className="flex items-center justify-between p-4"
+                style={{
+                  backgroundColor: colors.background.content,
+                  border: `1px solid ${colors.border.default}`,
+                }}
               >
-                <span className="text-gray-300">{notification.label}</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    defaultChecked={notification.enabled}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-primary"></div>
-                </label>
+                <span className="font-mono text-sm" style={{ color: colors.text.secondary }}>
+                  {notification.label}
+                </span>
+                <button
+                  role="switch"
+                  aria-checked={notifPrefs[notification.id]}
+                  onClick={() => handleNotifChange(notification.id, !notifPrefs[notification.id])}
+                  className="flex-shrink-0 w-16 h-7 font-mono text-xs font-bold uppercase tracking-widest transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-1 border-2"
+                  style={{
+                    backgroundColor: notifPrefs[notification.id]
+                      ? colors.brand.primary
+                      : 'transparent',
+                    borderColor: notifPrefs[notification.id]
+                      ? colors.brand.primary
+                      : colors.border.default,
+                    color: notifPrefs[notification.id]
+                      ? colors.background.content
+                      : colors.text.muted,
+                  }}
+                >
+                  {notifPrefs[notification.id] ? '[SIM]' : '[NÃO]'}
+                </button>
               </div>
             ))}
           </div>
+          <p className="text-[11px] font-mono mt-3" style={{ color: colors.text.muted }}>
+            // Preferências salvas localmente. Notificações de email dependem do backend estar disponível.
+          </p>
         </Card>
       </motion.div>
 
@@ -369,9 +458,70 @@ export const Settings: React.FC = () => {
             Ações irreversíveis para sua conta
           </CardDescription>
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button variant="danger">Excluir todos os dados</Button>
-            <Button variant="danger">Excluir conta</Button>
+          <div className="space-y-4">
+            {/* Delete data */}
+            <div
+              className="p-4"
+              style={{ backgroundColor: colors.background.content, border: `1px solid ${colors.status.error}20` }}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <p className="font-mono font-bold text-sm" style={{ color: colors.text.primary }}>
+                    Excluir todos os dados
+                  </p>
+                  <p className="text-xs font-mono mt-0.5" style={{ color: colors.text.muted }}>
+                    Remove todos os jobs e análises. Sua conta é mantida.
+                  </p>
+                </div>
+                {dangerConfirm === 'data' ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono" style={{ color: colors.status.error }}>Tem certeza?</span>
+                    <Button variant="danger" size="sm" onClick={() => handleDangerAction('data')}>
+                      Confirmar
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setDangerConfirm(null)}>
+                      Cancelar
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="danger" size="sm" onClick={() => handleDangerAction('data')}>
+                    Excluir dados
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* Delete account */}
+            <div
+              className="p-4"
+              style={{ backgroundColor: colors.background.content, border: `1px solid ${colors.status.error}20` }}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <p className="font-mono font-bold text-sm" style={{ color: colors.text.primary }}>
+                    Excluir conta
+                  </p>
+                  <p className="text-xs font-mono mt-0.5" style={{ color: colors.text.muted }}>
+                    Remove permanentemente sua conta e todos os dados associados.
+                  </p>
+                </div>
+                {dangerConfirm === 'account' ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono" style={{ color: colors.status.error }}>Tem certeza?</span>
+                    <Button variant="danger" size="sm" onClick={() => handleDangerAction('account')}>
+                      Confirmar
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => setDangerConfirm(null)}>
+                      Cancelar
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="danger" size="sm" onClick={() => handleDangerAction('account')}>
+                    Excluir conta
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         </Card>
       </motion.div>

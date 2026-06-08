@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Search, Plus, Moon, Sun } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Search, Plus, Moon, Sun, X } from 'lucide-react';
 import { Button } from '@shared/components/ui';
 import { useTheme } from '@shared/contexts';
 
@@ -13,12 +13,44 @@ const pageTitles: Record<string, string> = {
 export const Header: React.FC = () => {
   const location = useLocation();
   const { theme, toggleTheme, colors } = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('q') ?? '';
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const getTitle = () => {
     if (location.pathname.startsWith('/app/jobs/')) {
       return 'Detalhes do Job';
     }
     return pageTitles[location.pathname] || 'Dashboard';
+  };
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchParams(value ? { q: value } : {}, { replace: true });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setSearchParams({}, { replace: true });
+      inputRef.current?.blur();
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchParams({}, { replace: true });
+    inputRef.current?.focus();
   };
 
   return (
@@ -40,22 +72,32 @@ export const Header: React.FC = () => {
           {/* Search */}
           <div className="hidden md:flex items-center gap-2 px-4 py-2" style={{
             backgroundColor: colors.background.surface,
-            borderBottom: `2px solid ${colors.border.default}`
+            borderBottom: `2px solid ${searchQuery ? colors.brand.primary : colors.border.default}`
           }}>
-            <Search className="w-4 h-4" style={{ color: colors.text.muted }} />
+            <Search className="w-4 h-4 shrink-0" style={{ color: searchQuery ? colors.brand.primary : colors.text.muted }} />
             <input
+              ref={inputRef}
               type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              onKeyDown={handleKeyDown}
               placeholder="Buscar jobs..."
               className="bg-transparent border-none outline-none text-sm w-48 font-mono"
               style={{ color: colors.text.primary }}
             />
-            <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs font-mono" style={{
-              color: colors.brand.primary,
-              border: `1px solid ${colors.border.default}`,
-              backgroundColor: colors.background.content
-            }}>
-              ⌘K
-            </kbd>
+            {searchQuery ? (
+              <button onClick={clearSearch} className="shrink-0" style={{ color: colors.text.muted }}>
+                <X className="w-3.5 h-3.5" />
+              </button>
+            ) : (
+              <kbd className="hidden lg:inline-flex items-center px-2 py-0.5 text-xs font-mono shrink-0" style={{
+                color: colors.brand.primary,
+                border: `1px solid ${colors.border.default}`,
+                backgroundColor: colors.background.content
+              }}>
+                ⌘K
+              </kbd>
+            )}
           </div>
 
           {/* Theme Toggle */}

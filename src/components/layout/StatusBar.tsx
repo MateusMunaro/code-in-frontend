@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useMatch } from 'react-router-dom';
-import { Activity, AlertCircle, GitBranch, Wifi, WifiOff, Clock, Cpu } from 'lucide-react';
+import { GitBranch, Wifi, WifiOff, Clock, Cpu } from 'lucide-react';
 import { useStatusBar, useTheme } from '@shared/contexts';
 import { useJob } from '@config/hooks';
 import { formatDate } from '@shared/lib/utils';
@@ -23,16 +23,13 @@ const Sep: React.FC = () => <div className="h-3 w-px bg-black/25" />;
 
 export const StatusBar: React.FC = () => {
   const { colors } = useTheme();
-  const { statusBar, isNetworkOnline, currentTime } = useStatusBar();
+  const { isNetworkOnline, currentTime } = useStatusBar();
   const { pathname } = useLocation();
 
   // Detect if we're on a job details page and extract the jobId
   const jobMatch = useMatch('/app/jobs/:jobId');
   const jobId = jobMatch?.params.jobId;
   const { job } = useJob(jobId || '');
-
-  const isJobPage = !!jobId;
-  const hasJobData = isJobPage && !!job;
 
   return (
     <footer
@@ -45,86 +42,43 @@ export const StatusBar: React.FC = () => {
     >
       {/* ===== Left Section ===== */}
       <div className="min-w-0 flex items-center gap-3 md:gap-4 overflow-hidden">
-        {/* Agent Status */}
+        {/* Network Status — always visible */}
         <div className="flex items-center gap-1.5 whitespace-nowrap">
-          <Activity className="w-3 h-3" />
-          <span>
-            AGENT: <strong>{statusBar.agentStatus}</strong>
-          </span>
-        </div>
-
-        <Sep />
-
-        {/* Network Status */}
-        <div className="hidden sm:flex items-center gap-1.5 whitespace-nowrap">
           {isNetworkOnline ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
-          <span>
-            NET: <strong>{isNetworkOnline ? 'ONLINE' : 'OFFLINE'}</strong>
-          </span>
+          <span>NET: <strong>{isNetworkOnline ? 'ONLINE' : 'OFFLINE'}</strong></span>
         </div>
 
-        {/* ─── Job Context Info (shown only on job detail pages) ─── */}
-        {hasJobData && (
+        {/* Job context — only on job detail pages */}
+        {job && (
           <>
             <Sep />
 
-            {/* Model */}
             <div className="hidden md:flex items-center gap-1.5 whitespace-nowrap">
               <Cpu className="w-3 h-3" />
-              <span>
-                MODEL: <strong>{job.selected_model || 'N/A'}</strong>
-              </span>
+              <span>MODEL: <strong>{job.selected_model}</strong></span>
             </div>
 
             <Sep />
 
-            {/* Created At */}
             <div className="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
               <Clock className="w-3 h-3" />
-              <span>
-                CREATED: <strong>{formatDate(job.created_at)}</strong>
-              </span>
+              <span>CREATED: <strong>{formatDate(job.created_at)}</strong></span>
             </div>
 
-            {/* Branches (if conflict analysis) */}
             {job.branches && job.branches.length > 0 && (
               <>
                 <Sep />
                 <div className="hidden xl:flex items-center gap-1.5 whitespace-nowrap">
                   <GitBranch className="w-3 h-3" />
-                  <span>
-                    BRANCHES: <strong>{job.branches.join(', ')}</strong>
-                  </span>
+                  <span>BRANCHES: <strong>{job.branches.join(', ')}</strong></span>
                 </div>
               </>
             )}
 
             <Sep />
 
-            {/* Job ID */}
             <div className="hidden xl:flex items-center gap-1.5 whitespace-nowrap">
-              <span>
-                ID: <strong className="font-mono">{job.id.slice(0, 8)}</strong>
-              </span>
-            </div>
-          </>
-        )}
-
-        {/* ─── Default info (shown when NOT on a job page) ─── */}
-        {!isJobPage && (
-          <>
-            <div className="h-3 w-px bg-black/25 hidden sm:block" />
-
-            <div className="hidden md:flex items-center gap-1.5 whitespace-nowrap">
-              <span>SPEED:</span>
-              <strong>{statusBar.speed}</strong>
-            </div>
-
-            <div className="h-3 w-px bg-black/25 hidden md:block" />
-
-            <div className="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
-              <span>USAGE:</span>
-              <strong>{statusBar.tokenUsage}</strong>
+              <span>ID: <strong className="font-mono">{job.id.slice(0, 8)}</strong></span>
             </div>
           </>
         )}
@@ -133,26 +87,8 @@ export const StatusBar: React.FC = () => {
       {/* ===== Right Section ===== */}
       <div className="flex items-center gap-3 md:gap-4 whitespace-nowrap">
         <span className="hidden sm:inline">{getPageLabel(pathname)}</span>
-
         <Sep />
-
-        <span className="hidden md:inline">{currentTime}</span>
-
-        <Sep />
-
-        <div className="flex items-center gap-1">
-          <GitBranch className="w-3 h-3" />
-          <span>{statusBar.branch}</span>
-        </div>
-
-        <Sep />
-
-        <span>{statusBar.encoding}</span>
-
-        <div className="flex items-center gap-1 bg-black text-green-400 px-2 h-6 font-bold">
-          <AlertCircle className="w-3 h-3" />
-          <span>{statusBar.alerts} ALERTS</span>
-        </div>
+        <span>{currentTime}</span>
       </div>
     </footer>
   );

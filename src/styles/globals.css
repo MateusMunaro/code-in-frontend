@@ -2,11 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Default Token Values (dark theme) =====
+   ThemeContext overwrites these at runtime when the user has a saved preference.
+   Defined here so the page renders correctly before React hydrates.
+   ================================================ */
+:root {
+  --color-bg-content: #0D0D0D;
+  --color-bg-surface: #1A1A1A;
+  --color-bg-elevated: #252525;
+  --color-bg-content-rgb: 13 13 13;
+  --color-bg-surface-rgb: 26 26 26;
+  --color-bg-elevated-rgb: 37 37 37;
+
+  --color-text-primary: #F2F2F2;
+  --color-text-secondary: #A0A0A0;
+  --color-text-muted: #666666;
+  --color-text-primary-rgb: 242 242 242;
+  --color-text-secondary-rgb: 160 160 160;
+  --color-text-muted-rgb: 102 102 102;
+
+  --color-brand-primary: #00FF41;
+  --color-brand-primaryHover: #33FF6A;
+  --color-brand-secondary: #A0A0A0;
+  --color-brand-secondaryHover: #F2F2F2;
+  --color-brand-accent: #008F11;
+  --color-brand-primary-rgb: 0 255 65;
+  --color-brand-primaryHover-rgb: 51 255 106;
+  --color-brand-secondary-rgb: 160 160 160;
+  --color-brand-secondaryHover-rgb: 242 242 242;
+  --color-brand-accent-rgb: 0 143 17;
+
+  --color-border-default: #333333;
+  --color-border-subtle: rgba(0, 255, 65, 0.15);
+  --color-border-emphasis: rgba(0, 255, 65, 0.5);
+
+  --color-status-success: #00FF41;
+  --color-status-error: #FF3333;
+  --color-status-warning: #FFCC00;
+  --color-status-info: #00B4D8;
+  --color-status-success-rgb: 0 255 65;
+  --color-status-error-rgb: 255 51 51;
+  --color-status-warning-rgb: 255 204 0;
+  --color-status-info-rgb: 0 180 216;
+
+  --color-glow-primary: rgba(0, 255, 65, 0.25);
+  --color-glow-primary-lg: rgba(0, 255, 65, 0.45);
+  --color-glow-secondary: rgba(51, 51, 51, 0.3);
+}
+
 /* ===== Base Styles ===== */
 body {
   font-family: 'JetBrains Mono', monospace;
-  background-color: #0D0D0D;
-  color: #F2F2F2;
+  background-color: var(--color-bg-content);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -30,34 +78,34 @@ body {
 /* ===== Custom Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 12px;
-  background: #0D0D0D;
-  border-left: 1px solid #333;
+  background: var(--color-bg-content);
+  border-left: 1px solid var(--color-border-default);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border: 1px solid #00FF41;
+  background: var(--color-border-default);
+  border: 1px solid var(--color-brand-primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00FF41;
+  background: var(--color-brand-primary);
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #333 #0D0D0D;
+  scrollbar-color: var(--color-border-default) var(--color-bg-content);
 }
 
 /* ===== Selection ===== */
 ::selection {
-  background-color: #00FF41;
+  background-color: var(--color-brand-primary);
   color: #000;
 }
 
 /* ===== Focus Styles ===== */
 :focus-visible {
-  outline: 2px solid #00FF41;
+  outline: 2px solid var(--color-brand-primary);
   outline-offset: 2px;
 }
 
@@ -81,8 +129,8 @@ body {
 /* ===== Grid Background ===== */
 .grid-bg {
   background-image:
-    linear-gradient(#00FF41 1px, transparent 1px),
-    linear-gradient(90deg, #00FF41 1px, transparent 1px);
+    linear-gradient(var(--color-brand-primary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-brand-primary) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
@@ -115,15 +163,20 @@ body {
 
 /* ===== Retro Shadow Utilities ===== */
 .shadow-retro {
-  box-shadow: 4px 4px 0px 0px #00FF41;
+  box-shadow: 4px 4px 0px 0px var(--color-brand-primary);
 }
 
 .shadow-retro-dim {
-  box-shadow: 4px 4px 0px 0px #333333;
+  box-shadow: 4px 4px 0px 0px var(--color-border-default);
 }
 
 .shadow-retro-sm {
-  box-shadow: 2px 2px 0px 0px #00FF41;
+  box-shadow: 2px 2px 0px 0px var(--color-brand-primary);
+}
+
+/* ===== Light theme overrides ===== */
+[data-theme="light"] .grid-bg {
+  opacity: 0.03;
 }
 
 /* ===== Card Hover Effect ===== */
@@ -132,5 +185,5 @@ body {
 }
 
 .card-hover:hover {
-  border-color: #00FF41;
+  border-color: var(--color-brand-primary);
 }

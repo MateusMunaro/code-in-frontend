@@ -69,7 +69,7 @@ export const CardTitle: React.FC<CardTitleProps> = ({
 }) => {
   return (
     <Component
-      className={cn('text-lg font-bold text-white font-display uppercase tracking-wide', className)}
+      className={cn('text-lg font-bold text-theme-text font-display uppercase tracking-wide', className)}
       {...props}
     >
       {children}
@@ -85,7 +85,7 @@ export const CardDescription: React.FC<CardDescriptionProps> = ({
   ...props
 }) => {
   return (
-    <p className={cn('text-sm text-gray-400 mt-1 font-mono', className)} {...props}>
+    <p className={cn('text-sm text-theme-text-secondary mt-1 font-mono', className)} {...props}>
       {children}
     </p>
   );
@@ -114,7 +114,7 @@ export const CardFooter: React.FC<CardFooterProps> = ({
 }) => {
   return (
     <div
-      className={cn('mt-4 pt-4 border-t border-[#333] flex items-center', className)}
+      className={cn('mt-4 pt-4 border-t border-brand-secondary/20 flex items-center', className)}
       {...props}
     >
       {children}
